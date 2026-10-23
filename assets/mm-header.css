@@ -21,3 +21,10 @@ body:has(#header-component[transparent]) .mm-hero:before{content:"";position:abs
 #header-component[data-mm-navigation="drawer"] .header__column--right .search-action{display:flex;margin:0}
 #header-component[data-mm-navigation="drawer"] .header__column--right header-actions{margin:0;gap:4px}
 @media(max-width:374px){#header-component[data-mm-navigation="drawer"] .header__column--right .search-action{position:absolute;left:58px;top:50%;transform:translateY(-50%)}}
+#header-component[data-mm-navigation="drawer"] header-actions{align-items:center}
+#header-component[data-mm-navigation="drawer"] :is(.header-actions__action,.search-action__button,.header__icon--menu){align-items:center}
+#header-component[data-mm-navigation="drawer"] .account-button shopify-account{display:flex;align-items:center;justify-content:center;height:44px;line-height:0}
+#header-component[data-mm-navigation="drawer"] .account-button shopify-account::part(signed-out-avatar){display:flex;align-items:center;justify-content:center;height:44px;padding:0}
+#header-component[data-mm-navigation="drawer"] .account-button [slot="signed-out-avatar"]:not(.hidden){display:flex;align-items:center}
+#header-component[data-mm-navigation="drawer"] .account-button__icon{display:block;width:20px;height:20px}
+@media(max-width:749px){#header-component[data-mm-navigation="drawer"] .account-button__icon{width:18px;height:18px}}
