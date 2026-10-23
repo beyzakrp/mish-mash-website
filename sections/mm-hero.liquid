@@ -36,7 +36,7 @@
 #mm-{{ section.id }} h1{font-size:{{ section.settings.heading_size }}px}
 @media(max-width:749px){#mm-{{ section.id }} .mm-hero{height:{{ section.settings.mobile_height }}px}#mm-{{ section.id }} h1{font-size:{{ section.settings.heading_mobile }}px}}
 {% endstyle %}
-{% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} .mm-hero{max-height:none}{% endstyle %}
+{% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} .mm-hero{max-height:none}{% endstyle %}
 {% style %}{% if section.settings.height_mode == 'responsive' %}#mm-{{ section.id }} .mm-hero{height:calc(100svh - 138px);min-height:680px;max-height:960px}@media(max-width:749px){#mm-{{ section.id }} .mm-hero{height:80svh;min-height:580px;max-height:800px}}{% endif %}{% endstyle %}
 {% schema %}
 {

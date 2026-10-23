@@ -12,7 +12,7 @@
 #mm-{{ section.id }} .mm-button{background:{{ section.settings.button_background }};color:{{ section.settings.button_text }}!important}
 {% endstyle %}
 {% style %}#mm-{{ section.id }} .mm-story{background:{{ section.settings.background }}}#mm-{{ section.id }} .mm-story-flower{color:{{ section.settings.symbol_color }}}{% if section.settings.image_side == 'right' %}@media(min-width:750px){#mm-{{ section.id }} .mm-story-media{order:2}}{% endif %}{% endstyle %}
-{% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}@media(max-width:749px){#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}}{% endstyle %}
+{% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}@media(max-width:749px){#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}}{% endstyle %}
 {% schema %}
 {
   "name": "MM · Image and story",

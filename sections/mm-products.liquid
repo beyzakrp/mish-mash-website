@@ -24,7 +24,7 @@
 @media(max-width:749px){#mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_mobile }}px;padding-bottom:{{ section.settings.padding_mobile }}px}}
 {% endstyle %}
 {% style %}#mm-{{ section.id }} .mm-product-grid{grid-template-columns:repeat({{ section.settings.columns }},minmax(0,1fr))}@media(max-width:749px){#mm-{{ section.id }} .mm-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}{% endstyle %}
-{% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}@media(max-width:749px){#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}}{% endstyle %}
+{% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}@media(max-width:749px){#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}}{% endstyle %}
 {% schema %}
 {
   "name": "MM · Featured products",
