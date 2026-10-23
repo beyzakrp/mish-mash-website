@@ -13,7 +13,7 @@ const designMode = Boolean(window.Shopify && window.Shopify.designMode);
 const REVEAL_SELECTOR = [
   '.mm-section-head',
   '.mm-product',
-  '.mm-character',
+  '.mm-persona',
   '.mm-story-media',
   '.mm-story-copy > *',
   '[data-mm-reveal]',

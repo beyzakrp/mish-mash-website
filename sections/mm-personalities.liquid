@@ -1,16 +1,18 @@
 <section class="mm-home" id="mm-{{ section.id }}">
   <div class="mm-personalities mm-pad" id="{{ section.settings.anchor | default: section.id | handleize }}">
     <div class="mm-section-head"><h2>{{ section.settings.heading | escape | newline_to_br }}</h2><p>{{ section.settings.intro | escape }}</p></div>
-    <div class="mm-character-grid">
+    <div class="mm-persona-list">
       {% for block in section.blocks %}
         {% assign character = block.settings.character %}
-        <a class="mm-character mm-character--{{ character }}" href="{{ block.settings.link | default: block.settings.collection.url | default: collections[character].url | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }} style="background:{{ block.settings.background }};color:{{ block.settings.text_color }}!important">
-          <div class="mm-character-top"><span class="mm-eyebrow">0{{ forloop.index }}</span><span aria-hidden="true">↗</span></div>
-          <div class="mm-symbol" aria-hidden="true">
-            {% assign symbol_asset = 'mm-symbol-' | append: character | append: '.svg' %}
-            {% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 400 | image_tag: class: 'mm-custom-symbol', loading: 'lazy' }}{% else %}<img src="{{ symbol_asset | asset_url }}" alt="" width="120" height="120" loading="lazy" style="filter:{{ block.settings.symbol_filter }}">{% endif %}
-          </div>
-          <h3>{{ block.settings.heading | escape }}</h3><p>{{ block.settings.description | escape }}</p>
+        <a class="mm-persona mm-persona--{{ character }}" href="{{ block.settings.link | default: block.settings.collection.url | default: collections[character].url | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }} style="--mm-accent:{{ block.settings.background }};--mm-accent-ink:{{ block.settings.text_color }};--mm-accent-symbol:{{ block.settings.symbol_filter | default: 'none' }}">
+          <span class="mm-persona__index">0{{ forloop.index }}</span>
+          <span class="mm-persona__symbol" aria-hidden="true">
+            {%- assign symbol_asset = 'mm-symbol-' | append: character | append: '.svg' -%}
+            {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}<img src="{{ symbol_asset | asset_url }}" alt="" width="48" height="48" loading="lazy">{%- endif -%}
+          </span>
+          <span class="mm-persona__name">{{ block.settings.heading | escape }}</span>
+          <span class="mm-persona__line">{{ block.settings.description | escape }}</span>
+          <span class="mm-persona__cta">{{ 'mishmash.discover' | t }} <span aria-hidden="true">↗</span></span>
         </a>
       {% endfor %}
     </div>
@@ -23,11 +25,10 @@
 #mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px}
 @media(max-width:749px){#mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_mobile }}px;padding-bottom:{{ section.settings.padding_mobile }}px}}
 {% endstyle %}
-{% style %}#mm-{{ section.id }} .mm-custom-symbol{filter:none}#mm-{{ section.id }} .mm-symbol{width:120px;height:120px}@media(max-width:749px){#mm-{{ section.id }} .mm-symbol{width:90px;height:90px}}{% endstyle %}
 {% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}@media(max-width:749px){#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}}{% endstyle %}
 {% schema %}
 {
-  "name": "MM · Personality cards",
+  "name": "MM · Personality list",
   "settings": [
     {
       "type": "textarea",
@@ -132,7 +133,7 @@
   ],
   "presets": [
     {
-      "name": "MM · Personality cards",
+      "name": "MM · Personality list",
       "blocks": [
         {
           "type": "personality",
@@ -230,7 +231,7 @@
         {
           "type": "select",
           "id": "symbol_filter",
-          "label": "Symbol appearance",
+          "label": "Symbol on hover",
           "options": [
             {
               "value": "none",
@@ -250,13 +251,13 @@
         {
           "type": "color",
           "id": "background",
-          "label": "Card background",
+          "label": "Hover colour",
           "default": "#1E6448"
         },
         {
           "type": "color",
           "id": "text_color",
-          "label": "Card text",
+          "label": "Hover text colour",
           "default": "#FFFFFF"
         },
         {
