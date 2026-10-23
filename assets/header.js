@@ -91,9 +91,15 @@ class HeaderComponent extends Component {
   #observeStickyPosition = (alwaysSticky = true) => {
     if (this.#intersectionObserver) return;
 
+    // mish-mash: the announcement bar stays pinned above the header, so the header
+    // counts as stuck once it reaches the bar's bottom edge rather than the viewport top.
+    const announcementBar = document.querySelector('#header-group .announcement-bar')?.closest('.shopify-section');
+    const announcementHeight = alwaysSticky && announcementBar instanceof HTMLElement ? announcementBar.offsetHeight : 0;
+
     const config = {
       threshold: alwaysSticky ? 1 : 0,
       root: getIntersectionRoot(),
+      rootMargin: `-${announcementHeight}px 0px 0px 0px`,
     };
 
     this.#intersectionObserver = new IntersectionObserver(([entry]) => {

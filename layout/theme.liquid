@@ -122,6 +122,19 @@
         })();
 
         /**
+         * mish-mash: the announcement bar stays pinned above the sticky header, which offsets
+         * itself by `--mm-announcement-height`. mm-site.js keeps the value fresh after load.
+         */
+        (function setAnnouncementHeight() {
+          const bar = document.querySelector('#header-group .announcement-bar')?.closest('.shopify-section');
+          if (!bar) return;
+
+          window.requestAnimationFrame(function () {
+            document.body.style.setProperty('--mm-announcement-height', `${bar.offsetHeight}px`);
+          });
+        })();
+
+        /**
          * Sets `--transparent-header-offset-boolean` when the first section must offset itself
          * under a transparent header. The non-offset case relies on the `0` default declared in
          * sections/header.liquid — unlike updateTransparentHeaderOffset() in utilities.js, which

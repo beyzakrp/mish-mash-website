@@ -10,7 +10,6 @@
 #header-component[data-mm-navigation="drawer"] .svg-wrapper{width:22px;height:22px}
 #header-component[data-mm-navigation="drawer"] :is(.header-actions__action,.search-action__button,.header__icon--menu){min-width:44px;min-height:44px;justify-content:center}
 #header-component[data-mm-navigation="drawer"] .header__row--top{border:0}
-#header-component[data-mm-navigation="drawer"][data-sticky-state="active"]{box-shadow:0 1px 0 #17151414}
 #header-component[data-mm-navigation="drawer"] :is(a,button,summary):focus-visible{outline:2px solid currentColor;outline-offset:4px}
 body:has(#header-component[transparent]) .mm-hero-content{padding-top:clamp(145px,20vh,220px)}
 body:has(#header-component[transparent]) .mm-hero:before{content:"";position:absolute;inset:0 0 auto;height:160px;background:linear-gradient(#0005,transparent);pointer-events:none;z-index:-1}
@@ -28,3 +27,7 @@ body:has(#header-component[transparent]) .mm-hero:before{content:"";position:abs
 #header-component[data-mm-navigation="drawer"] .account-button [slot="signed-out-avatar"]:not(.hidden){display:flex;align-items:center}
 #header-component[data-mm-navigation="drawer"] .account-button__icon{display:block;width:20px;height:20px}
 @media(max-width:749px){#header-component[data-mm-navigation="drawer"] .account-button__icon{width:18px;height:18px}}
+#header-group>.shopify-section:has(.announcement-bar){position:sticky;top:0;z-index:calc(var(--layer-menu-drawer) + 1)}
+#header-group:has(.announcement-bar) .header-section:has(>#header-component[sticky='always']){top:calc(var(--mm-announcement-height,0px) - 1px)}
+#header-component[data-sticky-state='active']{view-transition-name:none}
+#header-component[data-sticky-state='active'] .header__underlay-closed{background:#ffffffb3!important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 -1px var(--header-border-color,#17151414) inset}

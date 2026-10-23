@@ -74,6 +74,16 @@ function initMagnetic(root = document) {
   }
 }
 
+/* Pinned announcement bar --------------------------------------------------- */
+
+const announcementSection = document.querySelector('#header-group .announcement-bar')?.closest('.shopify-section');
+if (announcementSection instanceof HTMLElement) {
+  const setAnnouncementHeight = () =>
+    document.body.style.setProperty('--mm-announcement-height', `${announcementSection.offsetHeight}px`);
+  setAnnouncementHeight();
+  if ('ResizeObserver' in window) new ResizeObserver(setAnnouncementHeight).observe(announcementSection);
+}
+
 /* Ticker pause control ---------------------------------------------------- */
 
 document.addEventListener('click', (event) => {
