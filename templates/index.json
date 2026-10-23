@@ -165,9 +165,9 @@
         "edge_fade_width": 15,
         "background": "{{ settings.color_palette.background }}",
         "text_color": "{{ settings.color_palette.foreground }}",
-        "height": 78,
+        "height": 66,
         "font_size": 24,
-        "duration": 28,
+        "duration": 50,
         "direction": "left"
       }
     },
