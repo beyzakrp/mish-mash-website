@@ -1,0 +1,351 @@
+<section class="mm-home" id="mm-{{ section.id }}">
+  <div class="mm-objects mm-pad">
+    <div class="mm-section-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h2>{{ section.settings.heading | escape | newline_to_br }}</h2>
+      </div>
+      {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="mm-object-grid">
+      {%- assign stock_images = 'mm-reference-story.webp,mm-reference-hero.webp,mm-reference-mobile.webp' | split: ',' -%}
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign object_collection = block.settings.collection
+          assign object_title = block.settings.title | default: object_collection.title
+          assign object_url = object_collection.url | default: routes.all_products_collection_url
+          assign object_image = block.settings.image | default: object_collection.featured_image
+          assign stock_index = forloop.index0 | modulo: 3
+          if block.settings.size == 'large'
+            assign sizes = '(min-width: 750px) 42vw, 100vw'
+          else
+            assign sizes = '(min-width: 750px) 34vw, 50vw'
+          endif
+        -%}
+        <a
+          class="mm-object mm-object--{{ block.settings.size }}"
+          href="{{ object_url }}"
+          style="--mm-accent:{{ block.settings.colour }}"
+          {{ block.shopify_attributes }}
+        >
+          <span class="mm-object-media">
+            {%- if object_image -%}
+              {{ object_image | image_url: width: 1400 | image_tag: widths: '400,700,1000,1400', sizes: sizes, loading: 'lazy', alt: '' }}
+            {%- else -%}
+              <img src="{{ stock_images[stock_index] | asset_url }}" alt="" loading="lazy" width="1000" height="1250">
+            {%- endif -%}
+          </span>
+          <span class="mm-object-badge">
+            {%- if block.settings.icon_image -%}
+              {{ block.settings.icon_image | image_url: width: 160 | image_tag: alt: '', class: 'mm-object-icon', loading: 'lazy' }}
+            {%- else -%}
+              {% render 'mm-object-icon', kind: block.settings.icon %}
+            {%- endif -%}
+          </span>
+          <span class="mm-object-meta">
+            <span>
+              <h3>{{ object_title | escape }}</h3>
+              {%- if object_collection and object_collection.products_count > 0 and section.settings.count_label != blank -%}
+                <small>{{ object_collection.products_count }} {{ section.settings.count_label | escape }}</small>
+              {%- elsif block.settings.caption != blank -%}
+                <small>{{ block.settings.caption | escape }}</small>
+              {%- endif -%}
+            </span>
+            <span class="mm-object-arrow" aria-hidden="true">↗</span>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+#mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};background:var(--mm-paper);color:var(--mm-ink)}
+#mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px}
+#mm-{{ section.id }} .mm-object-grid{grid-auto-rows:{{ section.settings.row_height }}px}
+#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}
+@media(max-width:749px){
+  #mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_mobile }}px;padding-bottom:{{ section.settings.padding_mobile }}px}
+  #mm-{{ section.id }} .mm-object-grid{grid-auto-rows:auto}
+  #mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}
+}
+{%- if section.settings.heading_font == 'cocogoose' -%}
+#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}
+{%- elsif section.settings.heading_font == 'proxima' -%}
+#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}
+{%- endif -%}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "MM · Meet the objects",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Meet the objects"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Five objects.\nEndless characters."
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Description",
+      "default": "Everyday pieces, designed to be noticed."
+    },
+    {
+      "type": "text",
+      "id": "count_label",
+      "label": "Product count label",
+      "info": "Shown after the number of products in each collection.",
+      "default": "objects"
+    },
+    {
+      "type": "range",
+      "id": "row_height",
+      "label": "Desktop row height",
+      "min": 200,
+      "max": 420,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "blocks": [
+    {
+      "type": "object",
+      "name": "Object",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Defaults to the collection title."
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption",
+          "info": "Shown when the collection has no products yet."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Defaults to the collection image, then a stock photo."
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Tile size",
+          "default": "small",
+          "options": [
+            {
+              "value": "large",
+              "label": "Large"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "wide",
+              "label": "Wide"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "vase",
+          "options": [
+            {
+              "value": "vase",
+              "label": "Vase"
+            },
+            {
+              "value": "lamp",
+              "label": "Lamp"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "candle",
+              "label": "Candle"
+            },
+            {
+              "value": "frame",
+              "label": "Magnet frame"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Custom icon",
+          "info": "Replaces the built-in icon."
+        },
+        {
+          "type": "color",
+          "id": "colour",
+          "label": "Icon colour",
+          "default": "#FF6EA7"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Meet the objects",
+      "blocks": [
+        {
+          "type": "object",
+          "settings": {
+            "title": "Vase",
+            "size": "large",
+            "icon": "vase",
+            "colour": "#FF6EA7"
+          }
+        },
+        {
+          "type": "object",
+          "settings": {
+            "title": "Lamp",
+            "size": "medium",
+            "icon": "lamp",
+            "colour": "#F37400"
+          }
+        },
+        {
+          "type": "object",
+          "settings": {
+            "title": "Clock",
+            "size": "small",
+            "icon": "clock",
+            "colour": "#4CA7FF"
+          }
+        },
+        {
+          "type": "object",
+          "settings": {
+            "title": "Candle",
+            "size": "small",
+            "icon": "candle",
+            "colour": "#1E6448"
+          }
+        },
+        {
+          "type": "object",
+          "settings": {
+            "title": "Magnet Frame",
+            "size": "medium",
+            "icon": "frame",
+            "colour": "#171514"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

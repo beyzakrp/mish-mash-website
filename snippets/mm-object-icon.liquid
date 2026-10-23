@@ -1,0 +1,18 @@
+{%- comment -%}
+  Chunky category icon for the Meet the Objects grid. Drawn in currentColor.
+  Accepts: kind ('vase', 'lamp', 'clock', 'candle', 'frame')
+{%- endcomment -%}
+<svg class="mm-object-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+  {%- case kind -%}
+    {%- when 'vase' -%}
+      <path d="M18 5h12v5c0 3 9 7 9 18 0 9-6.5 15-15 15S9 37 9 28c0-11 9-15 9-18z"/>
+    {%- when 'lamp' -%}
+      <path d="M15 5h18l7 17H8z"/><rect x="22" y="22" width="4" height="15"/><rect x="13" y="36" width="22" height="7" rx="3.5"/>
+    {%- when 'clock' -%}
+      <path fill-rule="evenodd" d="M24 4a20 20 0 1 1 0 40 20 20 0 0 1 0-40zm-2 9v13l9 6 2-3.4-7-4.6V13z"/>
+    {%- when 'candle' -%}
+      <path d="M24 3c5 6 6 9 6 11.5a6 6 0 0 1-12 0C18 12 19 9 24 3z"/><rect x="15" y="22" width="18" height="22" rx="3"/>
+    {%- else -%}
+      <path fill-rule="evenodd" d="M7 7h34v34H7zm7 7v20h20V14z"/><circle cx="24" cy="7" r="4"/>
+  {%- endcase -%}
+</svg>
