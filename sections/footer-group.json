@@ -72,7 +72,8 @@
         "gradient_direction": "to top",
         "padding-block-start": 0,
         "padding-block-end": 0
-      }
+      },
+      "disabled": true
     },
     "footer": {
       "type": "footer",
@@ -458,7 +459,8 @@
         "background_color": "{{ settings.color_palette.color3 }}",
         "padding-block-start": 0,
         "padding-block-end": 0
-      }
+      },
+      "disabled": true
     },
     "utilities": {
       "type": "footer-utilities",
@@ -505,10 +507,19 @@
         "background_color": "{{ settings.color_palette.color3 }}",
         "padding-block-start": 20,
         "padding-block-end": 20
+      },
+      "disabled": true
+    },
+    "mm_footer": {
+      "type": "mm-footer",
+      "settings": {
+        "menu_1": "footer",
+        "menu_heading_1": "Shop"
       }
     }
   },
   "order": [
+    "mm_footer",
     "section_bfa9EJ",
     "footer",
     "utilities"
