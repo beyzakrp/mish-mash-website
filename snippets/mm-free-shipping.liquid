@@ -1,0 +1,32 @@
+{% doc %}
+  Progress bar towards the free shipping threshold set in Theme settings > Mish-mash.
+  Hidden when the threshold is 0, the cart is empty or the shopper uses another currency.
+{% enddoc %}
+{%- liquid
+  assign threshold = settings.mm_free_shipping_threshold | times: 100
+  assign show_bar = false
+  if threshold > 0 and cart.item_count > 0 and cart.currency.iso_code == shop.currency
+    assign show_bar = true
+  endif
+  assign remaining = threshold | minus: cart.total_price
+  assign progress = 0
+  if threshold > 0
+    assign progress = cart.total_price | times: 100 | divided_by: threshold
+  endif
+  if progress > 100
+    assign progress = 100
+  endif
+-%}
+{%- if show_bar -%}
+  <div class="mm-shipping{% if remaining <= 0 %} is-unlocked{% endif %}" role="status">
+    <p>
+      {%- if remaining > 0 -%}
+        {%- assign amount = remaining | money -%}
+        {{ 'mishmash.free_shipping_remaining' | t: amount: amount }}
+      {%- else -%}
+        <span aria-hidden="true">✳</span> {{ 'mishmash.free_shipping_unlocked' | t }}
+      {%- endif -%}
+    </p>
+    <div class="mm-shipping__bar" aria-hidden="true"><span style="--mm-shipping-progress:{{ progress }}%"></span></div>
+  </div>
+{%- endif -%}

@@ -1,5 +1,16 @@
 {
   "sections": {
+    "mishmash_chrome": {
+      "type": "mm-chrome-hero",
+      "settings": {
+        "tagline": "Design objects with personality",
+        "show_symbols": true,
+        "show_scroll_hint": true,
+        "scroll_length": 180,
+        "background": "#171514",
+        "text_color": "#FAF9F5"
+      }
+    },
     "mishmash_hero": {
       "type": "mm-hero",
       "settings": {
@@ -215,6 +226,7 @@
     }
   },
   "order": [
+    "mishmash_chrome",
     "mishmash_hero",
     "mishmash_ticker",
     "mishmash_products",

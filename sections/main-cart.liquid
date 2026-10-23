@@ -48,6 +48,7 @@
       </div>
 
       <div class="cart-page__items">
+        {% render 'mm-free-shipping' %}
         {%- content_for 'block', id: 'cart-page-items', type: '_cart-products' %}
       </div>
 

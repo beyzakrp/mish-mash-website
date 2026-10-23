@@ -372,6 +372,10 @@
     "trickster_text": "Küçük sürpriz. Büyük neşe.",
     "helper": "The Helper",
     "helper_text": "Hem güzel hem işlevli.",
-    "sold_out": "Tükendi"
+    "sold_out": "Tükendi",
+    "free_shipping_remaining": "Ücretsiz kargoya {{ amount }} kaldı",
+    "free_shipping_unlocked": "Kargo bizden",
+    "upsell_heading": "Bununla iyi gider",
+    "scroll": "Kaydır"
   }
 }

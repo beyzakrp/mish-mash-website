@@ -1,5 +1,9 @@
 <section class="mm-home" id="mm-{{ section.id }}">
-<div class="mm-ticker">{% for block in section.blocks %}<span {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</span>{% endfor %}</div>
+<div class="mm-ticker" data-mm-ticker style="--mm-ticker-duration:{{ section.settings.duration }}s">
+  <div class="mm-ticker-track{% if section.settings.direction == 'right' %} mm-ticker-track--reverse{% endif %}">
+    {% for i in (1..2) %}<div class="mm-ticker-group"{% if i == 2 %} aria-hidden="true"{% endif %}>{% for block in section.blocks %}<span{% if i == 1 %} {{ block.shopify_attributes }}{% endif %}>{{ block.settings.text | escape }}</span>{% endfor %}</div>{% endfor %}
+  </div>
+</div>
 </section>
 
 {% style %}
@@ -41,6 +45,27 @@
       "step": 2,
       "unit": "px",
       "default": 36
+    },
+    {
+      "type": "range",
+      "id": "duration",
+      "label": "Scroll duration",
+      "info": "Seconds for one full loop. Higher is slower.",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "unit": "s",
+      "default": 34
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
     }
   ],
   "presets": [
