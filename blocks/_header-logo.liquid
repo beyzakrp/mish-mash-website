@@ -58,7 +58,7 @@
     data-testid="header-logo"
   >
     {% if settings.logo == blank %}
-      <img src="{{ 'mm-logo-mono.svg' | asset_url }}" alt="{{ shop.name | escape }}" class="mm-header-mark" width="84" height="70">
+      <img src="{{ 'mm-logo.svg' | asset_url }}" alt="{{ shop.name | escape }}" class="mm-header-mark" width="84" height="70">
     {% else %}
     {% render 'image',
       image: settings.logo,
@@ -77,7 +77,7 @@
       data-testid="header-logo-inverse"
     >
       {% if inverse_logo == blank %}
-        <img class="mm-header-mark" src="{{ 'mm-logo-colour.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="84" height="70">
+        <img class="mm-header-mark" src="{{ 'mm-logo-white.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="84" height="70">
       {% else %}
       {% render 'image',
         image: inverse_logo,
