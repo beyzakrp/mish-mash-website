@@ -1,5 +1,17 @@
 {
   "sections": {
+    "mishmash_chrome": {
+      "type": "mm-chrome-hero",
+      "settings": {
+        "tagline": "Design objects with personality",
+        "finish": "flat",
+        "show_symbols": true,
+        "show_scroll_hint": true,
+        "scroll_length": 180,
+        "background": "#171514",
+        "text_color": "#FAF9F5"
+      }
+    },
     "mishmash_hero": {
       "type": "mm-hero",
       "settings": {
@@ -13,7 +25,7 @@
         "height": 680,
         "mobile_height": 640,
         "heading_size": 80,
-        "heading_mobile": 54,
+        "heading_mobile": 46,
         "overlay": 45,
         "background": "#DDD9CD",
         "text_color": "#FFFFFF",
@@ -215,6 +227,7 @@
     }
   },
   "order": [
+    "mishmash_chrome",
     "mishmash_hero",
     "mishmash_ticker",
     "mishmash_products",

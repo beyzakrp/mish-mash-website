@@ -1,0 +1,20 @@
+{% doc %}
+  Renders a coloured personality badge for a product.
+
+  @param {object} product - The product
+  @param {boolean} [show_description] - Adds the personality's one-liner
+  @param {string} [class] - Extra class names
+{% enddoc %}
+{%- capture personality -%}{%- render 'mm-personality', product: product -%}{%- endcapture -%}
+{%- liquid
+  assign personality = personality | strip
+  assign label_key = 'mishmash.' | append: personality
+  assign line_key = label_key | append: '_text'
+-%}
+{%- if personality != blank -%}
+  <span class="mm-badge mm-badge--{{ personality }} {{ class }}">
+    <img src="{{ 'mm-symbol-' | append: personality | append: '.svg' | asset_url }}" alt="" width="18" height="18" loading="lazy">
+    <span>{{ label_key | t }}</span>
+    {%- if show_description -%}<span class="mm-badge__line">{{ line_key | t }}</span>{%- endif -%}
+  </span>
+{%- endif -%}

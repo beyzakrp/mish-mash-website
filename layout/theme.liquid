@@ -26,6 +26,8 @@
     {% render 'mishmash-fonts' %}
     {{ 'mm-header.css' | asset_url | stylesheet_tag }}
     {{ 'mm-sections.css' | asset_url | stylesheet_tag }}
+    {{ 'mm-motion.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'mm-site.js' | asset_url }}" type="module" fetchpriority="low"></script>
 
     {% if request.design_mode %}
       {%- render 'theme-editor' -%}

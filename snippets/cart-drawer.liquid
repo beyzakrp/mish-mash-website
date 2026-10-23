@@ -110,8 +110,18 @@
                 class="cart-drawer__content"
                 aria-label="{{ 'accessibility.cart' | t }}"
               >
+                {% render 'mm-free-shipping' %}
                 <scroll-hint class="cart-drawer__items">
                   {% render 'cart-products', context: 'drawer' %}
+                  {%- if settings.mm_cart_upsell -%}
+                    {%- assign mm_cart_ids = cart.items | map: 'product_id' | join: ',' -%}
+                    <mm-cart-upsell
+                      hidden
+                      data-product-id="{{ cart.items.first.product_id }}"
+                      data-exclude="{{ mm_cart_ids }}"
+                      data-url="{{ routes.product_recommendations_url }}"
+                    ></mm-cart-upsell>
+                  {%- endif -%}
                 </scroll-hint>
 
                 <div class="cart-drawer__summary">

@@ -86,6 +86,12 @@
             "padding-inline-end": 12
           },
           "blocks": {
+            "mm_personality": {
+              "type": "mm-personality",
+              "settings": {
+                "show_description": true
+              }
+            },
             "text_WE3K4w": {
               "type": "text",
               "name": "t:names.title",
@@ -376,6 +382,7 @@
             }
           },
           "block_order": [
+            "mm_personality",
             "text_WE3K4w",
             "reviews",
             "price_a7krng",

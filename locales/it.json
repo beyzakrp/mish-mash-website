@@ -379,6 +379,11 @@
     "trickster_text": "Small surprise. Big joy.",
     "helper": "The Helper",
     "helper_text": "Looks good. Works too.",
-    "sold_out": "Sold out"
+    "sold_out": "Sold out",
+    "free_shipping_remaining": "You are {{ amount }} away from free shipping",
+    "free_shipping_unlocked": "Free shipping unlocked",
+    "upsell_heading": "Goes well with",
+    "scroll": "Scroll",
+    "pause_motion": "Pause moving text"
   }
 }

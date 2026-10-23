@@ -4,7 +4,7 @@
     <div class="mm-character-grid">
       {% for block in section.blocks %}
         {% assign character = block.settings.character %}
-        <a class="mm-character mm-character--{{ character }}" href="{{ block.settings.link | default: block.settings.collection.url | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }} style="background:{{ block.settings.background }};color:{{ block.settings.text_color }}!important">
+        <a class="mm-character mm-character--{{ character }}" href="{{ block.settings.link | default: block.settings.collection.url | default: collections[character].url | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }} style="background:{{ block.settings.background }};color:{{ block.settings.text_color }}!important">
           <div class="mm-character-top"><span class="mm-eyebrow">0{{ forloop.index }}</span><span aria-hidden="true">↗</span></div>
           <div class="mm-symbol" aria-hidden="true">
             {% assign symbol_asset = 'mm-symbol-' | append: character | append: '.svg' %}

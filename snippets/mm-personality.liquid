@@ -1,0 +1,20 @@
+{% doc %}
+  Outputs the personality handle (showoff, player, trickster or helper) for a product, or nothing.
+  Reads the `custom.personality` metafield first, then tags such as "personality:showoff" or "The Show-off".
+
+  @param {object} product - The product to look up
+{% enddoc %}
+{%- liquid
+  assign tag_list = product.tags | join: ','
+  assign candidates = product.metafields.custom.personality.value | append: ',' | append: tag_list
+  assign found = ''
+  assign items = candidates | split: ','
+  for item in items
+    assign key = item | handleize | remove: 'personality-' | remove: 'the-' | remove: '-'
+    if key == 'showoff' or key == 'player' or key == 'trickster' or key == 'helper'
+      assign found = key
+      break
+    endif
+  endfor
+  echo found
+-%}

@@ -1,0 +1,29 @@
+{%- comment -%} Rendered through the product recommendations API for the cart drawer suggestions. {%- endcomment -%}
+{%- if recommendations.performed and recommendations.products_count > 0 -%}
+  <div class="mm-upsell">
+    <p class="mm-upsell__heading">{{ 'mishmash.upsell_heading' | t }}</p>
+    <ul class="mm-upsell__list" role="list">
+      {%- for product in recommendations.products limit: 4 -%}
+        {%- if product.available -%}
+          <li data-product-id="{{ product.id }}">
+            <a class="mm-upsell__item" href="{{ product.url }}">
+              {%- if product.featured_image -%}
+                {{ product.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', width: 64, height: 80, alt: '' }}
+              {%- endif -%}
+              <span class="mm-upsell__title">{{ product.title | escape }}</span>
+              <span class="mm-upsell__price">{{ product.price | money }}</span>
+              <span class="mm-upsell__arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "MM · Cart suggestions",
+  "settings": []
+}
+{% endschema %}

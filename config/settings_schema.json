@@ -2118,8 +2118,28 @@
     ]
   },
   {
-    "name": "Mish-mash typography",
+    "name": "Mish-mash",
     "settings": [
+      {
+        "type": "header",
+        "content": "Cart"
+      },
+      {
+        "type": "number",
+        "id": "mm_free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "info": "Order total in your store currency. Shows a progress bar in the cart. Use 0 to hide it."
+      },
+      {
+        "type": "checkbox",
+        "id": "mm_cart_upsell",
+        "label": "Show product suggestions in cart drawer",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Typography"
+      },
       {
         "type": "select",
         "id": "mm_heading_font",
