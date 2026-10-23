@@ -343,5 +343,35 @@
       "default_title": "Varsayılan Başlık",
       "sticky_add_to_cart": "Sepete hızlı ekle çubuğu"
     }
+  },
+  "mishmash": {
+    "eyebrow": "Hayata oyun katan objeler",
+    "heading": "Biraz beklenmedik.\nBolca karakter.",
+    "intro": "Günlük yaşam alanlarına neşeli bir eşlikçi.",
+    "shop": "Koleksiyonu keşfet",
+    "meet": "Karakterini bul",
+    "selection": "İyi ki varlar",
+    "selection_note": "Küçük objeler. Farklı bir bakış.",
+    "all": "Tüm ürünler",
+    "empty": "Yeni favorin çok yakında burada.",
+    "empty_note": "Koleksiyonumuz yakında burada yerini alacak.",
+    "characters": "Dört karakter.\nBir mutlu ev.",
+    "characters_note": "Hangisi sana daha yakın?",
+    "discover": "Explore",
+    "story_label": "Mish-mash dünyası",
+    "story_heading": "Tasarımda özenli.\nRuhunda oyun var.",
+    "story_text": "Bir parça renk. Beklenmedik bir form. Sıradan bir köşeyi sana ait hissettiren küçük bir detay. Mish-mash tam da burada başlıyor.",
+    "story_link": "Günlük hayatına renk kat",
+    "hero_alt": "Bir masa üzerinde renkli tasarım objeleri",
+    "story_alt": "Yaşam alanında renkli bir tasarım objesi",
+    "showoff": "The Show-off",
+    "showoff_text": "Görünüşü yeter.",
+    "player": "The Player",
+    "player_text": "Dokun. Oyna. Birleştir.",
+    "trickster": "The Trickster",
+    "trickster_text": "Küçük sürpriz. Büyük neşe.",
+    "helper": "The Helper",
+    "helper_text": "Hem güzel hem işlevli.",
+    "sold_out": "Tükendi"
   }
 }

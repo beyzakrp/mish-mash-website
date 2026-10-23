@@ -343,5 +343,35 @@
       "success_moderated": "댓글이 게시되었습니다. 조정 대기 중입니다",
       "success": "댓글 게시됨"
     }
+  },
+  "mishmash": {
+    "eyebrow": "Objects with a playful side",
+    "heading": "A little unexpected.\nA lot of personality.",
+    "intro": "Good company for your everyday spaces.",
+    "shop": "Explore the collection",
+    "meet": "Meet your match",
+    "selection": "The good stuff",
+    "selection_note": "Small objects. A different point of view.",
+    "all": "Shop all objects",
+    "empty": "Your next favourite is on its way.",
+    "empty_note": "Our collection will appear here soon.",
+    "characters": "Four personalities.\nOne happy home.",
+    "characters_note": "Which one feels like you?",
+    "discover": "Explore",
+    "story_label": "The mish-mash way",
+    "story_heading": "Serious about design.\nPlayful by nature.",
+    "story_text": "A splash of colour. An unexpected shape. A little something that makes an ordinary corner feel like you. Thatâ€™s where mish-mash comes in.",
+    "story_link": "Find your everyday favourite",
+    "hero_alt": "Colourful design objects arranged on a sunlit table",
+    "story_alt": "A colourful object styled in a living space",
+    "showoff": "The Show-off",
+    "showoff_text": "Just looks good.",
+    "player": "The Player",
+    "player_text": "Touch. Play. Combine.",
+    "trickster": "The Trickster",
+    "trickster_text": "Small surprise. Big joy.",
+    "helper": "The Helper",
+    "helper_text": "Looks good. Works too.",
+    "sold_out": "Sold out"
   }
 }
