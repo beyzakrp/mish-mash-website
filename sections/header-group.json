@@ -25,10 +25,10 @@
       "settings": {
         "speed": 5,
         "section_width": "full-width",
-        "background_color": "{{ settings.color_palette.color1 }}",
+        "background_color": "#171514",
         "divider_width": 0,
-        "padding-block-start": 15,
-        "padding-block-end": 15
+        "padding-block-start": 9,
+        "padding-block-end": 9
       }
     },
     "header_section": {
@@ -67,30 +67,34 @@
       },
       "settings": {
         "logo_position": "center",
-        "menu_position": "center",
-        "menu_row": "bottom",
+        "menu_position": "left",
+        "menu_row": "top",
         "show_search": true,
-        "search_position": "left",
+        "search_position": "right",
         "search_row": "top",
-        "show_country": true,
+        "show_country": false,
         "country_selector_style": true,
-        "show_language": true,
+        "show_language": false,
         "localization_font": "heading",
         "localization_font_size": "0.875rem",
         "localization_position": "right",
         "localization_row": "top",
-        "section_width": "page-width",
+        "section_width": "full-width",
         "section_height": "standard",
-        "enable_sticky_header": "never",
-        "divider_width": 1,
+        "enable_sticky_header": "always",
+        "divider_width": 0,
         "divider_size": "page-width",
         "divider_color": "{{ settings.color_palette.color3 }}",
-        "border_width": 1,
+        "border_width": 0,
         "bottom_border_color": "{{ settings.color_palette.color3 }}",
         "background_color_top": "{{ settings.color_palette.background }}",
-        "enable_transparent_header_home": false,
+        "enable_transparent_header_home": true,
         "enable_transparent_header_product": false,
-        "enable_transparent_header_collection": false
+        "enable_transparent_header_collection": false,
+        "home_inverse_logo": true,
+        "text_color_transparent_home": "#FFFFFF",
+        "text_color_top": "#171514",
+        "actions_display_style": "icon"
       }
     }
   },

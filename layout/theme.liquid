@@ -24,6 +24,7 @@
     {%- render 'theme-styles-variables' -%}
     {%- render 'color-palette' -%}
     {% render 'mishmash-fonts' %}
+    {{ 'mm-header.css' | asset_url | stylesheet_tag }}
 
     {% if request.design_mode %}
       {%- render 'theme-editor' -%}

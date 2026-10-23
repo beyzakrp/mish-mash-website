@@ -58,7 +58,7 @@
     data-testid="header-logo"
   >
     {% if settings.logo == blank %}
-      <img src="{{ 'mm-logo.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="78" height="65" style="width:78px;height:65px;object-fit:contain">
+      <img src="{{ 'mm-logo-mono.svg' | asset_url }}" alt="{{ shop.name | escape }}" class="mm-header-mark" width="84" height="70">
     {% else %}
     {% render 'image',
       image: settings.logo,
@@ -76,6 +76,9 @@
       class="header-logo__transparent-header-image-container"
       data-testid="header-logo-inverse"
     >
+      {% if inverse_logo == blank %}
+        <img class="mm-header-mark" src="{{ 'mm-logo-white.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="84" height="70">
+      {% else %}
       {% render 'image',
         image: inverse_logo,
         class: 'header-logo__image',
@@ -84,6 +87,7 @@
         text_fallback: shop.name,
         style: inverse_logo_style
       %}
+      {% endif %}
     </span>
   {% endif %}
 </a>
