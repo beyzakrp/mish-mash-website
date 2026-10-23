@@ -290,11 +290,70 @@
         "heading_size": 54,
         "heading_mobile": 38
       }
+    },
+    "mishmash_objects": {
+      "type": "mm-objects",
+      "blocks": {
+        "object_vase": {
+          "type": "object",
+          "settings": {
+            "title": "Vase",
+            "size": "large",
+            "icon": "vase",
+            "colour": "#FF6EA7"
+          }
+        },
+        "object_lamp": {
+          "type": "object",
+          "settings": {
+            "title": "Lamp",
+            "size": "medium",
+            "icon": "lamp",
+            "colour": "#F37400"
+          }
+        },
+        "object_clock": {
+          "type": "object",
+          "settings": {
+            "title": "Clock",
+            "size": "small",
+            "icon": "clock",
+            "colour": "#4CA7FF"
+          }
+        },
+        "object_candle": {
+          "type": "object",
+          "settings": {
+            "title": "Candle",
+            "size": "small",
+            "icon": "candle",
+            "colour": "#1E6448"
+          }
+        },
+        "object_frame": {
+          "type": "object",
+          "settings": {
+            "title": "Magnet Frame",
+            "size": "medium",
+            "icon": "frame",
+            "colour": "#171514"
+          }
+        }
+      },
+      "block_order": [
+        "object_vase",
+        "object_lamp",
+        "object_clock",
+        "object_candle",
+        "object_frame"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "mishmash_hero",
     "mishmash_ticker",
+    "mishmash_objects",
     "mishmash_products",
     "mishmash_personalities",
     "mishmash_story"
