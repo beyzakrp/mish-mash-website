@@ -74,6 +74,16 @@ function initMagnetic(root = document) {
   }
 }
 
+/* Ticker pause control ---------------------------------------------------- */
+
+document.addEventListener('click', (event) => {
+  const toggle = event.target instanceof Element ? event.target.closest('[data-mm-ticker-toggle]') : null;
+  if (!toggle) return;
+  const paused = toggle.getAttribute('aria-pressed') !== 'true';
+  toggle.setAttribute('aria-pressed', String(paused));
+  toggle.closest('.mm-ticker')?.classList.toggle('is-paused', paused);
+});
+
 /* Chrome wordmark hero ----------------------------------------------------- */
 
 class MMChromeHero extends HTMLElement {
@@ -83,14 +93,15 @@ class MMChromeHero extends HTMLElement {
     this.onScroll = () => this.requestUpdate();
     this.onPointer = (/** @type {PointerEvent} */ event) => this.moveLight(event);
 
-    window.addEventListener('scroll', this.onScroll, { passive: true });
+    // Above 990px the theme scrolls .page-wrapper, not the window; scroll events don't bubble, so capture them.
+    document.addEventListener('scroll', this.onScroll, { passive: true, capture: true });
     window.addEventListener('resize', this.onScroll, { passive: true });
     if (finePointer.matches && !reducedMotion.matches) this.addEventListener('pointermove', this.onPointer);
     this.update();
   }
 
   disconnectedCallback() {
-    window.removeEventListener('scroll', this.onScroll);
+    document.removeEventListener('scroll', this.onScroll, { capture: true });
     window.removeEventListener('resize', this.onScroll);
     this.removeEventListener('pointermove', this.onPointer);
   }
@@ -142,6 +153,9 @@ class MMCartUpsell extends HTMLElement {
   /** @type {Map<string, Element | null>} */
   static cache = new Map();
 
+  /** @type {Set<string>} */
+  static pending = new Set();
+
   connectedCallback() {
     this.load();
   }
@@ -162,6 +176,7 @@ class MMCartUpsell extends HTMLElement {
     if (this.renderedKey === this.key && !this.hidden && this.firstElementChild) return;
 
     const key = this.key;
+    const inCart = (this.dataset.exclude || '').split(',');
     if (MMCartUpsell.cache.has(key)) {
       this.show(MMCartUpsell.cache.get(key) || null, key);
       return;
@@ -174,11 +189,13 @@ class MMCartUpsell extends HTMLElement {
       intent: 'related',
     });
 
+    if (MMCartUpsell.pending.has(key)) return;
+    MMCartUpsell.pending.add(key);
+
     fetch(`${url}?${query}`)
       .then((response) => (response.ok ? response.text() : ''))
       .then((text) => {
         const list = new DOMParser().parseFromString(text, 'text/html').querySelector('.mm-upsell');
-        const inCart = (this.dataset.exclude || '').split(',');
         for (const item of list ? list.querySelectorAll('[data-product-id]') : []) {
           if (item instanceof HTMLElement && inCart.includes(item.dataset.productId || '')) item.remove();
         }
@@ -186,7 +203,8 @@ class MMCartUpsell extends HTMLElement {
         MMCartUpsell.cache.set(key, usable);
         if (key === this.key) this.show(usable, key);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => MMCartUpsell.pending.delete(key));
   }
 
   /**

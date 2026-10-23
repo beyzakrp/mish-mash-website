@@ -376,6 +376,7 @@
     "free_shipping_remaining": "Ücretsiz kargoya {{ amount }} kaldı",
     "free_shipping_unlocked": "Kargo bizden",
     "upsell_heading": "Bununla iyi gider",
-    "scroll": "Kaydır"
+    "scroll": "Kaydır",
+    "pause_motion": "Kayan yazıyı durdur"
   }
 }

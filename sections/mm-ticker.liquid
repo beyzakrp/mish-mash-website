@@ -3,6 +3,9 @@
   <div class="mm-ticker-track{% if section.settings.direction == 'right' %} mm-ticker-track--reverse{% endif %}">
     {% for i in (1..2) %}<div class="mm-ticker-group"{% if i == 2 %} aria-hidden="true"{% endif %}>{% for block in section.blocks %}<span{% if i == 1 %} {{ block.shopify_attributes }}{% endif %}>{{ block.settings.text | escape }}</span>{% endfor %}</div>{% endfor %}
   </div>
+  <button type="button" class="mm-ticker-toggle" aria-pressed="false" aria-label="{{ 'mishmash.pause_motion' | t }}" data-mm-ticker-toggle>
+    <span class="mm-ticker-toggle__pause" aria-hidden="true">❚❚</span><span class="mm-ticker-toggle__play" aria-hidden="true">▶</span>
+  </button>
 </div>
 </section>
 

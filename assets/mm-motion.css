@@ -2,11 +2,16 @@
 .mm-home,.mm-badge,.mm-shipping,.mm-upsell{--mm-ease-out:cubic-bezier(.22,1,.36,1);--mm-ease-spring:cubic-bezier(.34,1.56,.64,1)}
 
 /* Ticker */
-.mm-ticker{justify-content:flex-start;gap:0}
+.mm-ticker{position:relative;justify-content:flex-start;gap:0}
 .mm-ticker-track{display:flex;flex:none;width:max-content;animation:mm-marquee var(--mm-ticker-duration,34s) linear infinite}
 .mm-ticker-track--reverse{animation-direction:reverse}
-.mm-ticker-group{display:flex;flex:none;align-items:center;gap:30px;padding-right:30px}
-.mm-ticker:hover .mm-ticker-track{animation-play-state:paused}
+.mm-ticker-group{display:flex;flex:none;align-items:center;justify-content:space-around;gap:30px;padding-right:30px;min-width:100vw}
+.mm-ticker:hover .mm-ticker-track,.mm-ticker.is-paused .mm-ticker-track{animation-play-state:paused}
+.mm-ticker-toggle{position:absolute;right:12px;top:50%;translate:0 -50%;display:grid;place-items:center;width:32px;height:32px;padding:0;border:0;border-radius:50%;background:var(--mm-paper);color:var(--mm-ink);font-size:10px;line-height:1;letter-spacing:-.1em;cursor:pointer;opacity:.85;transition:opacity .2s}
+.mm-ticker-toggle:hover,.mm-ticker-toggle:focus-visible{opacity:1}
+.mm-ticker-toggle:focus-visible{outline:2px solid var(--mm-ink);outline-offset:2px}
+.mm-ticker-toggle__play,.mm-ticker-toggle[aria-pressed="true"] .mm-ticker-toggle__pause{display:none}
+.mm-ticker-toggle[aria-pressed="true"] .mm-ticker-toggle__play{display:block}
 @keyframes mm-marquee{to{transform:translateX(-50%)}}
 
 /* Hero entrance */
@@ -105,7 +110,6 @@
 
 /* Mobile */
 @media(max-width:749px){
-  .mm-hero h1{font-size:clamp(38px,11.5vw,48px)}
   .mm-chrome-stage{width:84vw}
   .mm-character-grid{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:minmax(220px,68%);overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-20px;padding:6px 20px 14px;scrollbar-width:none}
   .mm-character-grid::-webkit-scrollbar{display:none}
@@ -118,6 +122,8 @@
 @media(prefers-reduced-motion:reduce){
   .mm-ticker-track,.mm-hero-content>*,.mm-hero-image,.mm-hero-bottom,.mm-chrome-mark,.mm-chrome-symbols path,.mm-chrome-tagline,.mm-chrome-hint span{animation:none}
   .mm-ticker{justify-content:space-around}
+  .mm-ticker-toggle{display:none}
+  .mm-shipping__bar span,.mm-upsell__item,.mm-upsell__arrow{transition:none}
   .mm-ticker-group[aria-hidden]{display:none}
   .mm-chrome{height:auto}
   .mm-chrome-sticky{position:relative}

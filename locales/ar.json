@@ -404,6 +404,7 @@
     "free_shipping_remaining": "You are {{ amount }} away from free shipping",
     "free_shipping_unlocked": "Free shipping unlocked",
     "upsell_heading": "Goes well with",
-    "scroll": "Scroll"
+    "scroll": "Scroll",
+    "pause_motion": "Pause moving text"
   }
 }
