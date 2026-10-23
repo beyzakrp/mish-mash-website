@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "mishmash_hero": {
@@ -8,28 +17,25 @@
         "intro": "Good company for your everyday spaces.",
         "image_alt": "Colourful design objects arranged on a sunlit table",
         "button_label": "Explore the collection",
+        "button_link": "",
         "secondary_label": "Meet your match",
+        "secondary_link": "#personalities",
         "reference_images": true,
         "height": 680,
         "mobile_height": 640,
         "heading_size": 80,
         "heading_mobile": 46,
         "overlay": 45,
-        "background": "#DDD9CD",
-        "text_color": "#FFFFFF",
-        "button_background": "#FAF9F5",
+        "background": "#ddd9cd",
+        "text_color": "#ffffff",
+        "button_background": "#faf9f5",
         "button_text": "#171514",
-        "secondary_link": "#personalities"
+        "heading_font": "theme",
+        "height_mode": "responsive"
       }
     },
     "mishmash_ticker": {
       "type": "mm-ticker",
-      "settings": {
-        "background": "#FF6EA7",
-        "text_color": "#171514",
-        "height": 78,
-        "font_size": 36
-      },
       "blocks": {
         "word_0": {
           "type": "word",
@@ -153,7 +159,15 @@
         "symbol_6",
         "word_7",
         "symbol_7"
-      ]
+      ],
+      "settings": {
+        "background": "#ff6ea7",
+        "text_color": "#110E0F",
+        "height": 78,
+        "font_size": 36,
+        "duration": 34,
+        "direction": "left"
+      }
     },
     "mishmash_products": {
       "type": "mm-products",
@@ -161,73 +175,77 @@
         "eyebrow": "Small objects. A different point of view.",
         "heading": "The good stuff",
         "button_label": "Shop all objects",
+        "collection": "",
         "product_limit": 4,
         "columns": 4,
+        "second_image": true,
+        "show_personality": true,
         "show_price": true,
         "empty_heading": "Your next favourite is on its way.",
         "empty_text": "Our collection will appear here soon.",
-        "background": "#FAF9F5",
+        "background": "#faf9f5",
         "text_color": "#171514",
         "padding_top": 90,
         "padding_bottom": 90,
-        "padding_mobile": 55
+        "padding_mobile": 55,
+        "heading_font": "theme",
+        "heading_size": 54,
+        "heading_mobile": 38
       }
     },
     "mishmash_personalities": {
       "type": "mm-personalities",
-      "settings": {
-        "heading": "Four personalities.\nOne happy home.",
-        "intro": "Which one feels like you?",
-        "anchor": "personalities",
-        "background": "#FAF9F5",
-        "text_color": "#171514",
-        "padding_top": 20,
-        "padding_bottom": 90,
-        "padding_mobile": 55
-      },
       "blocks": {
         "showoff": {
           "type": "personality",
           "settings": {
-            "character": "showoff",
             "heading": "The Show-off",
             "description": "Just looks good.",
-            "background": "#1E6448",
-            "text_color": "#FFFFFF",
-            "symbol_filter": "brightness(0) invert(1)"
+            "character": "showoff",
+            "symbol_filter": "brightness(0) invert(1)",
+            "background": "#1e6448",
+            "text_color": "#ffffff",
+            "link": "",
+            "collection": ""
           }
         },
         "player": {
           "type": "personality",
           "settings": {
-            "character": "player",
             "heading": "The Player",
             "description": "Touch. Play. Combine.",
-            "background": "#F37400",
+            "character": "player",
+            "symbol_filter": "brightness(0)",
+            "background": "#f37400",
             "text_color": "#171514",
-            "symbol_filter": "brightness(0)"
+            "link": "",
+            "collection": ""
           }
         },
         "trickster": {
           "type": "personality",
           "settings": {
-            "character": "trickster",
             "heading": "The Trickster",
             "description": "Small surprise. Big joy.",
-            "background": "#4CA7FF",
+            "character": "trickster",
+            "symbol_filter": "brightness(0)",
+            "background": "#4ca7ff",
             "text_color": "#171514",
-            "symbol_filter": "brightness(0)"
+            "link": "",
+            "collection": ""
           }
         },
         "helper": {
           "type": "personality",
           "settings": {
-            "character": "helper",
             "heading": "The Helper",
             "description": "Looks good. Works too.",
-            "background": "#FF6EA7",
+            "character": "helper",
+            "symbol_filter": "brightness(0)",
+            "background": "#ff6ea7",
             "text_color": "#171514",
-            "symbol_filter": "brightness(0)"
+            "link": "",
+            "collection": ""
           }
         }
       },
@@ -236,7 +254,20 @@
         "player",
         "trickster",
         "helper"
-      ]
+      ],
+      "settings": {
+        "heading": "Four personalities.\nOne happy home.",
+        "intro": "Which one feels like you?",
+        "anchor": "personalities",
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "padding_top": 20,
+        "padding_bottom": 90,
+        "padding_mobile": 55,
+        "heading_font": "theme",
+        "heading_size": 54,
+        "heading_mobile": 38
+      }
     },
     "mishmash_story": {
       "type": "mm-story",
@@ -246,14 +277,18 @@
         "description": "A splash of colour. An unexpected shape. A little something that makes an ordinary corner feel like you. That’s where mish-mash comes in.",
         "image_alt": "A colourful object styled in a living space",
         "button_label": "Find your everyday favourite",
+        "button_link": "",
         "reference_images": true,
         "image_side": "left",
         "show_symbol": true,
-        "symbol_color": "#1E6448",
-        "background": "#E9EDDF",
+        "symbol_color": "#1e6448",
+        "background": "#e9eddf",
         "text_color": "#171514",
         "button_background": "#171514",
-        "button_text": "#FFFFFF"
+        "button_text": "#ffffff",
+        "heading_font": "theme",
+        "heading_size": 54,
+        "heading_mobile": 38
       }
     }
   },
