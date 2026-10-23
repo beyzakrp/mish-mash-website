@@ -4,6 +4,7 @@
       "type": "mm-chrome-hero",
       "settings": {
         "tagline": "Design objects with personality",
+        "finish": "flat",
         "show_symbols": true,
         "show_scroll_hint": true,
         "scroll_length": 180,
