@@ -1,0 +1,277 @@
+<section class="mm-home" id="mm-{{ section.id }}">
+  <div class="mm-personalities mm-pad" id="{{ section.settings.anchor | default: section.id | handleize }}">
+    <div class="mm-section-head"><h2>{{ section.settings.heading | escape | newline_to_br }}</h2><p>{{ section.settings.intro | escape }}</p></div>
+    <div class="mm-character-grid">
+      {% for block in section.blocks %}
+        {% assign character = block.settings.character %}
+        <a class="mm-character mm-character--{{ character }}" href="{{ block.settings.link | default: block.settings.collection.url | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }} style="background:{{ block.settings.background }};color:{{ block.settings.text_color }}!important">
+          <div class="mm-character-top"><span class="mm-eyebrow">0{{ forloop.index }}</span><span aria-hidden="true">↗</span></div>
+          <div class="mm-symbol" aria-hidden="true">
+            {% assign symbol_asset = 'mm-symbol-' | append: character | append: '.svg' %}
+            {% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 400 | image_tag: class: 'mm-custom-symbol', loading: 'lazy' }}{% else %}<img src="{{ symbol_asset | asset_url }}" alt="" width="120" height="120" loading="lazy" style="filter:{{ block.settings.symbol_filter }}">{% endif %}
+          </div>
+          <h3>{{ block.settings.heading | escape }}</h3><p>{{ block.settings.description | escape }}</p>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+</section>
+
+{% style %}
+#mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};background:var(--mm-paper);color:var(--mm-ink)}
+#mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px}
+@media(max-width:749px){#mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_mobile }}px;padding-bottom:{{ section.settings.padding_mobile }}px}}
+{% endstyle %}
+{% style %}#mm-{{ section.id }} .mm-custom-symbol{filter:none}#mm-{{ section.id }} .mm-symbol{width:120px;height:120px}@media(max-width:749px){#mm-{{ section.id }} .mm-symbol{width:90px;height:90px}}{% endstyle %}
+{% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}@media(max-width:749px){#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}}{% endstyle %}
+{% schema %}
+{
+  "name": "MM · Personality cards",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Four personalities.\nOne happy home."
+    },
+    {
+      "type": "text",
+      "id": "intro",
+      "label": "Description",
+      "default": "Which one feels like you?"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor name",
+      "default": "personalities"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Personality cards",
+      "blocks": [
+        {
+          "type": "personality",
+          "settings": {
+            "character": "showoff",
+            "heading": "The Show-off",
+            "description": "Just looks good.",
+            "background": "#1E6448",
+            "text_color": "#FFFFFF",
+            "symbol_filter": "brightness(0) invert(1)"
+          }
+        },
+        {
+          "type": "personality",
+          "settings": {
+            "character": "player",
+            "heading": "The Player",
+            "description": "Touch. Play. Combine.",
+            "background": "#F37400",
+            "text_color": "#171514",
+            "symbol_filter": "brightness(0)"
+          }
+        },
+        {
+          "type": "personality",
+          "settings": {
+            "character": "trickster",
+            "heading": "The Trickster",
+            "description": "Small surprise. Big joy.",
+            "background": "#4CA7FF",
+            "text_color": "#171514",
+            "symbol_filter": "brightness(0)"
+          }
+        },
+        {
+          "type": "personality",
+          "settings": {
+            "character": "helper",
+            "heading": "The Helper",
+            "description": "Looks good. Works too.",
+            "background": "#FF6EA7",
+            "text_color": "#171514",
+            "symbol_filter": "brightness(0)"
+          }
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "personality",
+      "name": "Personality card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "The Show-off"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Just looks good."
+        },
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Brand symbol",
+          "options": [
+            {
+              "value": "showoff",
+              "label": "Showoff"
+            },
+            {
+              "value": "player",
+              "label": "Player"
+            },
+            {
+              "value": "trickster",
+              "label": "Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "Helper"
+            }
+          ],
+          "default": "showoff"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image"
+        },
+        {
+          "type": "select",
+          "id": "symbol_filter",
+          "label": "Symbol appearance",
+          "options": [
+            {
+              "value": "none",
+              "label": "Original colours"
+            },
+            {
+              "value": "brightness(0)",
+              "label": "Black"
+            },
+            {
+              "value": "brightness(0) invert(1)",
+              "label": "White"
+            }
+          ],
+          "default": "brightness(0)"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Card background",
+          "default": "#1E6448"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Card text",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection (if link is empty)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12
+}
+{% endschema %}

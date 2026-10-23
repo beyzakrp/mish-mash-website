@@ -1,0 +1,135 @@
+<section class="mm-home" id="mm-{{ section.id }}">
+<div class="mm-ticker">{% for block in section.blocks %}<span {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</span>{% endfor %}</div>
+</section>
+
+{% style %}
+#mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};background:var(--mm-paper);color:var(--mm-ink)}
+{% endstyle %}
+{% style %}#mm-{{ section.id }} .mm-ticker{background:{{ section.settings.background }};height:{{ section.settings.height }}px;font-size:{{ section.settings.font_size }}px}#mm-{{ section.id }} .mm-ticker span{font-size:inherit}{% endstyle %}
+{% schema %}
+{
+  "name": "MM · Text strip",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Height",
+      "min": 30,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 78
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Text size",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Text strip",
+      "blocks": [
+        {
+          "type": "word",
+          "settings": {
+            "text": "mish."
+          }
+        },
+        {
+          "type": "word",
+          "settings": {
+            "text": "✳"
+          }
+        },
+        {
+          "type": "word",
+          "settings": {
+            "text": "mash."
+          }
+        },
+        {
+          "type": "word",
+          "settings": {
+            "text": "✿"
+          }
+        },
+        {
+          "type": "word",
+          "settings": {
+            "text": "mish."
+          }
+        },
+        {
+          "type": "word",
+          "settings": {
+            "text": "✳"
+          }
+        },
+        {
+          "type": "word",
+          "settings": {
+            "text": "mash."
+          }
+        },
+        {
+          "type": "word",
+          "settings": {
+            "text": "✿"
+          }
+        },
+        {
+          "type": "word",
+          "settings": {
+            "text": "mish."
+          }
+        },
+        {
+          "type": "word",
+          "settings": {
+            "text": "✳"
+          }
+        },
+        {
+          "type": "word",
+          "settings": {
+            "text": "mash."
+          }
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "word",
+      "name": "Text or symbol",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "mish."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12
+}
+{% endschema %}

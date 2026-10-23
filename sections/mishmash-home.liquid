@@ -60,16 +60,73 @@
 {% endstylesheet %}
 {% schema %}
 {
- "name":"Mish-mash home",
- "settings":[
-  {"type":"text","id":"heading","label":"Opening heading"},
-  {"type":"image_picker","id":"hero_image","label":"Opening image"},
-  {"type":"image_picker","id":"story_image","label":"Story image"},
-  {"type":"collection","id":"collection","label":"Featured collection"},
-  {"type":"checkbox","id":"reference_images","label":"Use temporary reference photos","default":false,"info":"Replace these Roki reference photos with your own images before publishing."}
- ],
- "max_blocks":4,
- "blocks":[{"type":"personality","name":"Personality","settings":[{"type":"select","id":"character","label":"Character","options":[{"value":"showoff","label":"The Show-off"},{"value":"player","label":"The Player"},{"value":"trickster","label":"The Trickster"},{"value":"helper","label":"The Helper"}],"default":"showoff"},{"type":"collection","id":"collection","label":"Linked collection"}]}],
- "presets":[{"name":"Mish-mash home","blocks":[{"type":"personality","settings":{"character":"showoff"}},{"type":"personality","settings":{"character":"player"}},{"type":"personality","settings":{"character":"trickster"}},{"type":"personality","settings":{"character":"helper"}}]}]
+  "name": "Mish-mash home",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Opening heading"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Opening image"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Story image"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Featured collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "reference_images",
+      "label": "Use temporary reference photos",
+      "default": false,
+      "info": "Replace these Roki reference photos with your own images before publishing."
+    }
+  ],
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "personality",
+      "name": "Personality",
+      "settings": [
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Character",
+          "options": [
+            {
+              "value": "showoff",
+              "label": "The Show-off"
+            },
+            {
+              "value": "player",
+              "label": "The Player"
+            },
+            {
+              "value": "trickster",
+              "label": "The Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "The Helper"
+            }
+          ],
+          "default": "showoff"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Linked collection"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

@@ -1,0 +1,180 @@
+<section class="mm-home" id="mm-{{ section.id }}">
+  <div class="mm-products mm-pad">
+    <div class="mm-section-head"><div><p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2></div>{% if section.settings.button_label != blank %}<a class="mm-text-link" href="{{ section.settings.collection.url | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">↗</span></a>{% endif %}</div>
+    {% assign selected_collection = section.settings.collection | default: collections.all %}
+    {% if selected_collection.products.size > 0 %}
+      <div class="mm-product-grid">
+        {% for product in selected_collection.products limit: section.settings.product_limit %}
+          <a class="mm-product" href="{{ product.url }}"><div class="mm-product-media">
+            {% if product.featured_image %}{{ product.featured_image | image_url: width: 1000 | image_tag: widths: '300,500,750,1000', sizes: '(min-width: 750px) 25vw, 50vw', loading: 'lazy' }}{% else %}{{ 'product-1' | placeholder_svg_tag }}{% endif %}
+            <span class="mm-product-arrow" aria-hidden="true">↗</span>
+          </div><div class="mm-product-meta"><h3>{{ product.title | escape }}</h3>{% if section.settings.show_price %}<span>{{ product.price | money }}</span>{% endif %}</div>{% unless product.available %}<small>{{ 'mishmash.sold_out' | t }}</small>{% endunless %}</a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="mm-empty"><span aria-hidden="true">✳</span><h3>{{ section.settings.empty_heading | escape }}</h3><p>{{ section.settings.empty_text | escape }}</p></div>
+    {% endif %}
+  </div>
+
+</section>
+
+{% style %}
+#mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};background:var(--mm-paper);color:var(--mm-ink)}
+#mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px}
+@media(max-width:749px){#mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_mobile }}px;padding-bottom:{{ section.settings.padding_mobile }}px}}
+{% endstyle %}
+{% style %}#mm-{{ section.id }} .mm-product-grid{grid-template-columns:repeat({{ section.settings.columns }},minmax(0,1fr))}@media(max-width:749px){#mm-{{ section.id }} .mm-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}{% endstyle %}
+{% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}@media(max-width:749px){#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}}{% endstyle %}
+{% schema %}
+{
+  "name": "MM · Featured products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Small objects. A different point of view."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The good stuff"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Collection link label",
+      "default": "Shop all objects"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Product count",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show prices",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "Empty collection heading",
+      "default": "Your next favourite is on its way."
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty collection description",
+      "default": "Our collection will appear here soon."
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Featured products"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,165 @@
+<section class="mm-home" id="mm-{{ section.id }}">
+  <div class="mm-story">
+    <div class="mm-story-media">
+      {% if section.settings.story_image != blank %}{{ section.settings.story_image | image_url: width: 1400 | image_tag: widths: '500,900,1400', sizes: '(min-width: 750px) 50vw, 100vw', loading: 'lazy' }}{% elsif section.settings.reference_images %}<img src="{{ 'mm-reference-story.webp' | asset_url }}" alt="{{ section.settings.image_alt | escape }}" width="1000" height="1250" loading="lazy">{% else %}{{ 'lifestyle-1' | placeholder_svg_tag }}{% endif %}
+    </div>
+    <div class="mm-story-copy"><p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape | newline_to_br }}</h2><p>{{ section.settings.description | escape }}</p>{% if section.settings.button_label != blank %}<a class="mm-button mm-button--light" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">↗</span></a>{% endif %}{% if section.settings.show_symbol %}<span class="mm-story-flower" aria-hidden="true">✳</span>{% endif %}</div>
+  </div>
+</section>
+
+{% style %}
+#mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};background:var(--mm-paper);color:var(--mm-ink)}
+#mm-{{ section.id }} .mm-button{background:{{ section.settings.button_background }};color:{{ section.settings.button_text }}!important}
+{% endstyle %}
+{% style %}#mm-{{ section.id }} .mm-story{background:{{ section.settings.background }}}#mm-{{ section.id }} .mm-story-flower{color:{{ section.settings.symbol_color }}}{% if section.settings.image_side == 'right' %}@media(min-width:750px){#mm-{{ section.id }} .mm-story-media{order:2}}{% endif %}{% endstyle %}
+{% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}@media(max-width:749px){#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}}{% endstyle %}
+{% schema %}
+{
+  "name": "MM · Image and story",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "The mish-mash way"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Serious about design.\nPlayful by nature."
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "A splash of colour. An unexpected shape. A little something that makes an ordinary corner feel like you. That’s where mish-mash comes in."
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Reference image description",
+      "default": "A colourful object styled in a living space"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Find your everyday favourite"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "reference_images",
+      "label": "Use reference photo when no image is selected",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "image_side",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_symbol",
+      "label": "Show decorative symbol",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "symbol_color",
+      "label": "Symbol colour",
+      "default": "#1E6448"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#E9EDDF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Image and story"
+    }
+  ]
+}
+{% endschema %}
