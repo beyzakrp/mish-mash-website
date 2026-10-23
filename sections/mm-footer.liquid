@@ -1,0 +1,241 @@
+<footer class="mm-home mm-footer" id="mm-{{ section.id }}">
+  <div class="mm-footer__top">
+    <div class="mm-footer__signup">
+      {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2>{{ section.settings.heading | escape | newline_to_br }}</h2>
+      {%- if section.settings.text != blank -%}<p class="mm-footer__text">{{ section.settings.text | escape }}</p>{%- endif -%}
+      {%- form 'customer', id: 'mm-footer-signup', class: 'mm-footer__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label for="MMFooterEmail-{{ section.id }}" class="visually-hidden">{{ 'blocks.email_signup.label' | t }}</label>
+        <input
+          id="MMFooterEmail-{{ section.id }}"
+          type="email"
+          name="contact[email]"
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          placeholder="{{ section.settings.placeholder | escape }}"
+          required
+          {% if form.errors %}aria-invalid="true" aria-describedby="MMFooterMessage-{{ section.id }}"{% endif %}
+        >
+        <button type="submit" aria-label="{{ 'actions.sign_up' | t }}"><span aria-hidden="true">→</span></button>
+        {%- if form.posted_successfully? -%}
+          <p class="mm-footer__message" id="MMFooterMessage-{{ section.id }}" role="status">{{ section.settings.success | escape }}</p>
+        {%- elsif form.errors -%}
+          <p class="mm-footer__message" id="MMFooterMessage-{{ section.id }}" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+
+    <nav class="mm-footer__menus" aria-label="Footer">
+      {%- for i in (1..3) -%}
+        {%- liquid
+          assign menu_key = 'menu_' | append: i
+          assign heading_key = 'menu_heading_' | append: i
+          assign menu = section.settings[menu_key]
+          assign menu_heading = section.settings[heading_key] | default: menu.title
+        -%}
+        {%- if menu != blank and menu.links.size > 0 -%}
+          <div class="mm-footer__menu">
+            <p class="mm-eyebrow">{{ menu_heading | escape }}</p>
+            <ul role="list">
+              {%- for link in menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- capture social_links -%}
+        {%- if section.settings.instagram != blank -%}<li><a href="{{ section.settings.instagram }}" target="_blank" rel="noopener">Instagram</a></li>{%- endif -%}
+        {%- if section.settings.tiktok != blank -%}<li><a href="{{ section.settings.tiktok }}" target="_blank" rel="noopener">TikTok</a></li>{%- endif -%}
+        {%- if section.settings.pinterest != blank -%}<li><a href="{{ section.settings.pinterest }}" target="_blank" rel="noopener">Pinterest</a></li>{%- endif -%}
+      {%- endcapture -%}
+      {%- if social_links != blank -%}
+        <div class="mm-footer__menu">
+          <p class="mm-eyebrow">{{ section.settings.social_heading | escape }}</p>
+          <ul role="list">{{ social_links }}</ul>
+        </div>
+      {%- endif -%}
+    </nav>
+  </div>
+
+  <div class="mm-footer__mark">
+    <a href="{{ routes.root_url }}" class="mm-footer__logo">
+      <img src="{{ 'mm-logo-white.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="314" height="261" loading="lazy">
+    </a>
+    {%- if section.settings.tagline != blank -%}<p class="mm-footer__tagline">{{ section.settings.tagline | escape | newline_to_br }}</p>{%- endif -%}
+  </div>
+
+  <div class="mm-footer__bottom">
+    <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</p>
+    {%- if shop.policies.size > 0 -%}
+      <ul class="mm-footer__policies" role="list">
+        {%- for policy in shop.policies -%}
+          <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      <ul class="mm-footer__payments" role="list">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% style %}
+#mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};--mm-accent:{{ section.settings.accent }};background:var(--mm-paper);color:var(--mm-ink)}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "MM · Footer",
+  "class": "mm-footer-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "The mish-mash letter"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Small joys,\nstraight to your inbox."
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Description",
+      "default": "New objects, early access and the odd surprise. No spam, just good company."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Your email"
+    },
+    {
+      "type": "text",
+      "id": "success",
+      "label": "Success message",
+      "default": "You're in. Welcome to the club."
+    },
+    {
+      "type": "header",
+      "content": "Menus"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_1",
+      "label": "Menu 1",
+      "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "menu_heading_1",
+      "label": "Menu 1 heading",
+      "default": "Shop"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_2",
+      "label": "Menu 2"
+    },
+    {
+      "type": "text",
+      "id": "menu_heading_2",
+      "label": "Menu 2 heading",
+      "default": "Help"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_3",
+      "label": "Menu 3"
+    },
+    {
+      "type": "text",
+      "id": "menu_heading_3",
+      "label": "Menu 3 heading",
+      "default": "About"
+    },
+    {
+      "type": "header",
+      "content": "Social"
+    },
+    {
+      "type": "text",
+      "id": "social_heading",
+      "label": "Heading",
+      "default": "Follow"
+    },
+    {
+      "type": "url",
+      "id": "instagram",
+      "label": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "tiktok",
+      "label": "TikTok"
+    },
+    {
+      "type": "url",
+      "id": "pinterest",
+      "label": "Pinterest"
+    },
+    {
+      "type": "header",
+      "content": "Bottom"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Serious about design.\nPlayful by nature."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Footer"
+    }
+  ]
+}
+{% endschema %}
