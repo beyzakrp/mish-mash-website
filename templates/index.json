@@ -161,12 +161,96 @@
         "symbol_7"
       ],
       "settings": {
-        "background": "#ff6ea7",
-        "text_color": "#110E0F",
+        "edge_fade": true,
+        "edge_fade_width": 12,
+        "background": "{{ settings.color_palette.background }}",
+        "text_color": "{{ settings.color_palette.foreground }}",
         "height": 78,
         "font_size": 36,
         "duration": 34,
         "direction": "left"
+      }
+    },
+    "mishmash_objects": {
+      "type": "mm-objects",
+      "blocks": {
+        "object_vase": {
+          "type": "object",
+          "settings": {
+            "collection": "",
+            "title": "Vase",
+            "caption": "",
+            "size": "large",
+            "icon": "vase",
+            "colour": "#ff6ea7"
+          }
+        },
+        "object_lamp": {
+          "type": "object",
+          "settings": {
+            "collection": "",
+            "title": "Lamp",
+            "caption": "",
+            "size": "medium",
+            "icon": "lamp",
+            "colour": "#f37400"
+          }
+        },
+        "object_clock": {
+          "type": "object",
+          "settings": {
+            "collection": "",
+            "title": "Clock",
+            "caption": "",
+            "size": "small",
+            "icon": "clock",
+            "colour": "#4ca7ff"
+          }
+        },
+        "object_candle": {
+          "type": "object",
+          "settings": {
+            "collection": "",
+            "title": "Candle",
+            "caption": "",
+            "size": "small",
+            "icon": "candle",
+            "colour": "#1e6448"
+          }
+        },
+        "object_frame": {
+          "type": "object",
+          "settings": {
+            "collection": "",
+            "title": "Magnet Frame",
+            "caption": "",
+            "size": "medium",
+            "icon": "frame",
+            "colour": "#171514"
+          }
+        }
+      },
+      "block_order": [
+        "object_vase",
+        "object_lamp",
+        "object_clock",
+        "object_candle",
+        "object_frame"
+      ],
+      "settings": {
+        "eyebrow": "Meet the objects",
+        "heading": "Five objects.\nEndless characters.",
+        "text": "Everyday pieces, designed to be noticed.",
+        "count_label": "objects",
+        "row_height": 300,
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "padding_mobile": 55
       }
     },
     "mishmash_products": {
@@ -290,64 +374,6 @@
         "heading_size": 54,
         "heading_mobile": 38
       }
-    },
-    "mishmash_objects": {
-      "type": "mm-objects",
-      "blocks": {
-        "object_vase": {
-          "type": "object",
-          "settings": {
-            "title": "Vase",
-            "size": "large",
-            "icon": "vase",
-            "colour": "#FF6EA7"
-          }
-        },
-        "object_lamp": {
-          "type": "object",
-          "settings": {
-            "title": "Lamp",
-            "size": "medium",
-            "icon": "lamp",
-            "colour": "#F37400"
-          }
-        },
-        "object_clock": {
-          "type": "object",
-          "settings": {
-            "title": "Clock",
-            "size": "small",
-            "icon": "clock",
-            "colour": "#4CA7FF"
-          }
-        },
-        "object_candle": {
-          "type": "object",
-          "settings": {
-            "title": "Candle",
-            "size": "small",
-            "icon": "candle",
-            "colour": "#1E6448"
-          }
-        },
-        "object_frame": {
-          "type": "object",
-          "settings": {
-            "title": "Magnet Frame",
-            "size": "medium",
-            "icon": "frame",
-            "colour": "#171514"
-          }
-        }
-      },
-      "block_order": [
-        "object_vase",
-        "object_lamp",
-        "object_clock",
-        "object_candle",
-        "object_frame"
-      ],
-      "settings": {}
     }
   },
   "order": [
