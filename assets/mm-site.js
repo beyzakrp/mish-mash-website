@@ -95,6 +95,16 @@ document.addEventListener('click', (event) => {
   toggle.closest('.mm-ticker')?.classList.toggle('is-paused', paused);
 });
 
+/* Category row: on touch screens the first tap opens a block, the second follows its link */
+
+document.addEventListener('click', (event) => {
+  const link = event.target instanceof Element ? event.target.closest('.mm-cat-link') : null;
+  const card = link?.closest('.mm-cat');
+  if (!card || card.classList.contains('is-active') || !window.matchMedia('(max-width: 749px)').matches) return;
+  event.preventDefault();
+  for (const sibling of card.parentElement?.children || []) sibling.classList.toggle('is-active', sibling === card);
+});
+
 /* Cart drawer suggestions -------------------------------------------------- */
 
 class MMCartUpsell extends HTMLElement {

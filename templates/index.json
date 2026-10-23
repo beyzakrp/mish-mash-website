@@ -374,11 +374,65 @@
         "heading_size": 54,
         "heading_mobile": 38
       }
+    },
+    "mishmash_category_row": {
+      "type": "mm-category-row",
+      "blocks": {
+        "category_vase": {
+          "type": "category",
+          "settings": {
+            "title": "Vase",
+            "character": "showoff",
+            "text": "Made to be looked at. A sculptural centrepiece that steals the room, with or without flowers."
+          }
+        },
+        "category_lamp": {
+          "type": "category",
+          "settings": {
+            "title": "Lamp",
+            "character": "helper",
+            "text": "Quietly useful, always there. Soft light for slow evenings and late-night reading."
+          }
+        },
+        "category_clock": {
+          "type": "category",
+          "settings": {
+            "title": "Clock",
+            "character": "player",
+            "text": "Time, but make it fun. Bold shapes and colours that turn every glance into a small game."
+          }
+        },
+        "category_candle": {
+          "type": "category",
+          "settings": {
+            "title": "Candle",
+            "character": "trickster",
+            "text": "Not quite what it seems. Playful forms that change character once they are lit."
+          }
+        },
+        "category_frame": {
+          "type": "category",
+          "settings": {
+            "title": "Magnet Frame",
+            "character": "player",
+            "text": "Swap, stack, rearrange. A frame that lets your memories play musical chairs."
+          }
+        }
+      },
+      "block_order": [
+        "category_vase",
+        "category_lamp",
+        "category_clock",
+        "category_candle",
+        "category_frame"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "mishmash_hero",
     "mishmash_ticker",
+    "mishmash_category_row",
     "mishmash_objects",
     "mishmash_products",
     "mishmash_personalities",

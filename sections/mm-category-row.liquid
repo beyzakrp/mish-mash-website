@@ -1,0 +1,270 @@
+{%- liquid
+  assign character_colours = 'showoff:#1E6448,player:#F37400,trickster:#4CA7FF,helper:#FF6EA7' | split: ','
+  assign stock_images = 'mm-reference-story.webp,mm-reference-hero.webp,mm-reference-mobile.webp' | split: ','
+-%}
+<section class="mm-home" id="mm-{{ section.id }}">
+  <div class="mm-cat-wrap mm-pad">
+    {%- if section.settings.heading != blank -%}
+      <div class="mm-section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          <h2>{{ section.settings.heading | escape | newline_to_br }}</h2>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="mm-cat-row" data-mm-cat-row>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign cat_collection = block.settings.collection
+          assign cat_title = block.settings.title | default: cat_collection.title
+          assign cat_url = cat_collection.url | default: routes.all_products_collection_url
+          assign cat_image = block.settings.image | default: cat_collection.featured_image
+          assign stock_index = forloop.index0 | modulo: 3
+          assign character = block.settings.character
+          assign character_key = 'mishmash.' | append: character
+          assign accent = '#171514'
+          for pair in character_colours
+            assign parts = pair | split: ':'
+            if parts[0] == character
+              assign accent = parts[1]
+            endif
+          endfor
+          assign accent_ink = '#171514'
+          if character == 'showoff'
+            assign accent_ink = '#FFFFFF'
+          endif
+        -%}
+        <article
+          class="mm-cat mm-cat--{{ character }}{% if forloop.first %} is-active{% endif %}"
+          style="--mm-accent:{{ accent }};--mm-accent-ink:{{ accent_ink }}"
+          {{ block.shopify_attributes }}
+        >
+          <span class="mm-cat-media" aria-hidden="true">
+            {%- if cat_image -%}
+              {{ cat_image | image_url: width: 1400 | image_tag: widths: '400,700,1000,1400', sizes: '(min-width: 750px) 50vw, 100vw', loading: 'lazy', alt: '' }}
+            {%- else -%}
+              <img src="{{ stock_images[stock_index] | asset_url }}" alt="" loading="lazy" width="1000" height="1250">
+            {%- endif -%}
+          </span>
+          <span class="mm-cat-index" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <img
+            class="mm-cat-symbol"
+            src="{{ 'mm-symbol-' | append: character | append: '.svg' | asset_url }}"
+            alt=""
+            width="64"
+            height="64"
+            loading="lazy"
+          >
+          <div class="mm-cat-body">
+            <span class="mm-cat-character">{{ character_key | t }}</span>
+            <h3><a href="{{ cat_url }}" class="mm-cat-link">{{ cat_title | escape }}</a></h3>
+            <div class="mm-cat-detail">
+              <div>
+                {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape }}</p>{%- endif -%}
+                <span class="mm-cat-cta" aria-hidden="true">{{ 'mishmash.discover' | t }} <span>↗</span></span>
+              </div>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+#mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};background:var(--mm-paper);color:var(--mm-ink)}
+#mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px}
+#mm-{{ section.id }} .mm-cat-row{height:{{ section.settings.row_height }}px}
+@media(max-width:749px){
+  #mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_mobile }}px;padding-bottom:{{ section.settings.padding_mobile }}px}
+  #mm-{{ section.id }} .mm-cat-row{height:auto}
+}
+{%- if section.settings.full_width -%}
+#mm-{{ section.id }} .mm-cat-wrap{padding-left:0;padding-right:0}
+#mm-{{ section.id }} .mm-cat-wrap .mm-section-head{padding-left:5%;padding-right:5%}
+#mm-{{ section.id }} .mm-cat-row{gap:0}
+#mm-{{ section.id }} .mm-cat{border-radius:0}
+{%- endif -%}
+#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "MM · Category row",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Leave empty to start straight with the row."
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "row_height",
+      "label": "Desktop height",
+      "min": 360,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "default": 560
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Defaults to the collection title."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Defaults to the collection image, then a stock photo."
+        },
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Personality symbol",
+          "default": "showoff",
+          "options": [
+            {
+              "value": "showoff",
+              "label": "The Show-off"
+            },
+            {
+              "value": "player",
+              "label": "The Player"
+            },
+            {
+              "value": "trickster",
+              "label": "The Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "The Helper"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "info": "Shown when the block opens on hover."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Category row",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Vase",
+            "character": "showoff",
+            "text": "Made to be looked at. A sculptural centrepiece that steals the room, with or without flowers."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Lamp",
+            "character": "helper",
+            "text": "Quietly useful, always there. Soft light for slow evenings and late-night reading."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Clock",
+            "character": "player",
+            "text": "Time, but make it fun. Bold shapes and colours that turn every glance into a small game."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Candle",
+            "character": "trickster",
+            "text": "Not quite what it seems. Playful forms that change character once they are lit."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Magnet Frame",
+            "character": "player",
+            "text": "Swap, stack, rearrange. A frame that lets your memories play musical chairs."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

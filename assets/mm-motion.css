@@ -174,7 +174,54 @@
 }
 .mm-object:focus-visible{outline-offset:4px}
 
+/* Category row */
+.mm-cat-row{display:flex;gap:8px;min-height:360px}
+.mm-cat{position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:26px 24px;flex:1 1 0;min-width:0;overflow:hidden;border-radius:4px;background:#2a2725;color:#faf9f5;isolation:isolate;transition:flex-grow .8s var(--mm-ease-out)}
+.mm-cat-media{position:absolute;inset:0;z-index:-2}
+.mm-cat-media img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.04);transition:transform 1.2s var(--mm-ease-out),filter .6s}
+.mm-cat:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(23,21,20,.15),rgba(23,21,20,0) 30%,rgba(23,21,20,.7));transition:opacity .6s}
+.mm-cat:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;z-index:1;background:var(--mm-accent);transform:scaleX(0);transform-origin:left;transition:transform .7s var(--mm-ease-out)}
+.mm-cat-index{position:absolute;top:22px;left:24px;font-size:11px;font-weight:700;letter-spacing:.16em}
+.mm-cat-symbol{position:absolute;top:22px;right:22px;width:clamp(56px,6vw,96px);height:auto;opacity:0;transform:scale(.3) rotate(-60deg);transition:opacity .35s,transform .8s var(--mm-ease-spring);pointer-events:none}
+.mm-cat-body{min-width:0}
+.mm-cat h3{font-size:clamp(22px,2.2vw,36px);line-height:1;letter-spacing:-.03em;overflow-wrap:anywhere}
+.mm-cat-link:after{content:"";position:absolute;inset:0;z-index:2}
+.mm-cat-character{display:inline-block;margin-bottom:12px;padding:6px 11px;border-radius:100px;background:var(--mm-accent);color:var(--mm-accent-ink);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:0;translate:0 8px;transition:opacity .35s,translate .5s var(--mm-ease-out)}
+.mm-cat-detail{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:0fr;opacity:0;transition:grid-template-rows .6s var(--mm-ease-out),opacity .3s}
+.mm-cat-detail>div{min-height:0;overflow:hidden}
+.mm-cat-detail p{max-width:360px;padding-top:14px;font-size:15px;line-height:1.55}
+.mm-cat-cta{display:inline-flex;gap:10px;margin-top:16px;padding-bottom:4px;border-bottom:1px solid;font-size:12px;font-weight:700;letter-spacing:.06em}
+@media(min-width:750px){
+  .mm-cat-row:has(.mm-cat:hover,.mm-cat:focus-within) .mm-cat:not(:hover,:focus-within){flex-grow:.7}
+  .mm-cat-row:has(.mm-cat:hover,.mm-cat:focus-within) .mm-cat:not(:hover,:focus-within) .mm-cat-media img{filter:saturate(.6) brightness(.8)}
+  .mm-cat-row .mm-cat:is(:hover,:focus-within){flex-grow:3.4}
+  .mm-cat-row:has(.mm-cat:hover,.mm-cat:focus-within) .mm-cat:not(:hover,:focus-within) h3{font-size:clamp(16px,1.4vw,22px)}
+  .mm-cat h3{transition:font-size .5s var(--mm-ease-out)}
+  .mm-cat:is(:hover,:focus-within) .mm-cat-media img{transform:scale(1);filter:none}
+  .mm-cat:is(:hover,:focus-within) .mm-cat-symbol{opacity:1;transform:none;transition-delay:.12s}
+  .mm-cat:is(:hover,:focus-within) .mm-cat-character{opacity:1;translate:0 0;transition-delay:.2s}
+  .mm-cat:is(:hover,:focus-within) .mm-cat-detail{grid-template-rows:1fr;opacity:1;transition-delay:.15s,.3s}
+  .mm-cat:is(:hover,:focus-within):after{transform:none}
+}
+.mm-cat-link:focus-visible{outline:none}
+.mm-cat:has(.mm-cat-link:focus-visible){outline:3px solid var(--mm-accent);outline-offset:-3px}
+
 /* Mobile */
+@media(max-width:749px){
+  .mm-cat-row{flex-direction:column;gap:6px;min-height:0}
+  .mm-cat{flex:none;height:96px;padding:18px;transition:height .7s var(--mm-ease-out)}
+  .mm-cat.is-active{height:440px}
+  .mm-cat-index{top:16px;left:18px}
+  .mm-cat:not(.is-active){justify-content:center}
+  .mm-cat:not(.is-active) .mm-cat-body{padding-left:34px}
+  .mm-cat:not(.is-active) .mm-cat-index{top:50%;translate:0 -50%}
+  .mm-cat-symbol{top:16px;right:16px;width:64px}
+  .mm-cat.is-active .mm-cat-symbol{opacity:1;transform:none;transition-delay:.15s}
+  .mm-cat.is-active .mm-cat-character{opacity:1;translate:0 0;transition-delay:.2s}
+  .mm-cat.is-active .mm-cat-detail{grid-template-rows:1fr;opacity:1;transition-delay:.15s,.3s}
+  .mm-cat.is-active:after{transform:none}
+  .mm-cat:not(.is-active) .mm-cat-character{display:none}
+}
 @media(max-width:749px){
   .mm-object-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .mm-object,.mm-object--medium{grid-column:span 1;grid-row:auto;aspect-ratio:4/5}
