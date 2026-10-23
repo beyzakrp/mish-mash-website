@@ -1,17 +1,5 @@
 {
   "sections": {
-    "mishmash_chrome": {
-      "type": "mm-chrome-hero",
-      "settings": {
-        "tagline": "Design objects with personality",
-        "finish": "flat",
-        "show_symbols": true,
-        "show_scroll_hint": true,
-        "scroll_length": 180,
-        "background": "#171514",
-        "text_color": "#FAF9F5"
-      }
-    },
     "mishmash_hero": {
       "type": "mm-hero",
       "settings": {
@@ -43,85 +31,128 @@
         "font_size": 36
       },
       "blocks": {
-        "0": {
+        "word_0": {
           "type": "word",
           "settings": {
             "text": "mish."
           }
         },
-        "1": {
-          "type": "word",
+        "symbol_0": {
+          "type": "symbol",
           "settings": {
-            "text": "✳"
+            "character": "showoff",
+            "colour": "ink"
           }
         },
-        "2": {
+        "word_1": {
           "type": "word",
           "settings": {
             "text": "mash."
           }
         },
-        "3": {
-          "type": "word",
+        "symbol_1": {
+          "type": "symbol",
           "settings": {
-            "text": "✿"
+            "character": "player",
+            "colour": "ink"
           }
         },
-        "4": {
+        "word_2": {
           "type": "word",
           "settings": {
             "text": "mish."
           }
         },
-        "5": {
-          "type": "word",
+        "symbol_2": {
+          "type": "symbol",
           "settings": {
-            "text": "✳"
+            "character": "trickster",
+            "colour": "ink"
           }
         },
-        "6": {
+        "word_3": {
           "type": "word",
           "settings": {
             "text": "mash."
           }
         },
-        "7": {
-          "type": "word",
+        "symbol_3": {
+          "type": "symbol",
           "settings": {
-            "text": "✿"
+            "character": "helper",
+            "colour": "ink"
           }
         },
-        "8": {
+        "word_4": {
           "type": "word",
           "settings": {
             "text": "mish."
           }
         },
-        "9": {
-          "type": "word",
+        "symbol_4": {
+          "type": "symbol",
           "settings": {
-            "text": "✳"
+            "character": "showoff",
+            "colour": "ink"
           }
         },
-        "10": {
+        "word_5": {
           "type": "word",
           "settings": {
             "text": "mash."
+          }
+        },
+        "symbol_5": {
+          "type": "symbol",
+          "settings": {
+            "character": "player",
+            "colour": "ink"
+          }
+        },
+        "word_6": {
+          "type": "word",
+          "settings": {
+            "text": "mish."
+          }
+        },
+        "symbol_6": {
+          "type": "symbol",
+          "settings": {
+            "character": "trickster",
+            "colour": "ink"
+          }
+        },
+        "word_7": {
+          "type": "word",
+          "settings": {
+            "text": "mash."
+          }
+        },
+        "symbol_7": {
+          "type": "symbol",
+          "settings": {
+            "character": "helper",
+            "colour": "ink"
           }
         }
       },
       "block_order": [
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10"
+        "word_0",
+        "symbol_0",
+        "word_1",
+        "symbol_1",
+        "word_2",
+        "symbol_2",
+        "word_3",
+        "symbol_3",
+        "word_4",
+        "symbol_4",
+        "word_5",
+        "symbol_5",
+        "word_6",
+        "symbol_6",
+        "word_7",
+        "symbol_7"
       ]
     },
     "mishmash_products": {
@@ -227,7 +258,6 @@
     }
   },
   "order": [
-    "mishmash_chrome",
     "mishmash_hero",
     "mishmash_ticker",
     "mishmash_products",

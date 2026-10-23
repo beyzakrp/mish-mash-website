@@ -1,6 +1,6 @@
 /**
- * mish-mash motion layer: scroll reveals, magnetic buttons, the chrome
- * wordmark hero and the cart drawer suggestions.
+ * mish-mash motion layer: scroll reveals, magnetic buttons, the ticker pause
+ * control and the cart drawer suggestions.
  * Everything here is progressive enhancement; the page works without it.
  */
 
@@ -83,67 +83,6 @@ document.addEventListener('click', (event) => {
   toggle.setAttribute('aria-pressed', String(paused));
   toggle.closest('.mm-ticker')?.classList.toggle('is-paused', paused);
 });
-
-/* Chrome wordmark hero ----------------------------------------------------- */
-
-class MMChromeHero extends HTMLElement {
-  connectedCallback() {
-    this.stage = this.querySelector('.mm-chrome-stage');
-    this.light = this.querySelector('fePointLight');
-    this.onScroll = () => this.requestUpdate();
-    this.onPointer = (/** @type {PointerEvent} */ event) => this.moveLight(event);
-
-    // Above 990px the theme scrolls .page-wrapper, not the window; scroll events don't bubble, so capture them.
-    document.addEventListener('scroll', this.onScroll, { passive: true, capture: true });
-    window.addEventListener('resize', this.onScroll, { passive: true });
-    if (finePointer.matches && !reducedMotion.matches) this.addEventListener('pointermove', this.onPointer);
-    this.update();
-  }
-
-  disconnectedCallback() {
-    document.removeEventListener('scroll', this.onScroll, { capture: true });
-    window.removeEventListener('resize', this.onScroll);
-    this.removeEventListener('pointermove', this.onPointer);
-  }
-
-  requestUpdate() {
-    if (this.frame) return;
-    this.frame = requestAnimationFrame(() => {
-      this.frame = 0;
-      this.update();
-    });
-  }
-
-  update() {
-    if (reducedMotion.matches) {
-      this.style.setProperty('--mm-progress', '0');
-      return;
-    }
-    const rect = this.getBoundingClientRect();
-    const travel = Math.max(rect.height - window.innerHeight, 1);
-    const progress = Math.min(Math.max(-rect.top / travel, 0), 1);
-    this.style.setProperty('--mm-progress', progress.toFixed(4));
-    this.classList.toggle('is-zooming', progress > 0 && progress < 1);
-  }
-
-  /** @param {PointerEvent} event */
-  moveLight(event) {
-    if (!this.light || !this.stage) return;
-    const svg = this.light.ownerSVGElement;
-    if (!svg) return;
-    const rect = svg.getBoundingClientRect();
-    const box = svg.viewBox.baseVal;
-    const x = box.x + ((event.clientX - rect.left) / rect.width) * box.width;
-    const y = box.y + ((event.clientY - rect.top) / rect.height) * box.height;
-    if (this.lightFrame) cancelAnimationFrame(this.lightFrame);
-    this.lightFrame = requestAnimationFrame(() => {
-      this.light?.setAttribute('x', x.toFixed(0));
-      this.light?.setAttribute('y', (y - 120).toFixed(0));
-    });
-  }
-}
-
-if (!customElements.get('mm-chrome-hero')) customElements.define('mm-chrome-hero', MMChromeHero);
 
 /* Cart drawer suggestions -------------------------------------------------- */
 
