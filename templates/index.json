@@ -162,12 +162,12 @@
       ],
       "settings": {
         "edge_fade": true,
-        "edge_fade_width": 12,
+        "edge_fade_width": 15,
         "background": "{{ settings.color_palette.background }}",
         "text_color": "{{ settings.color_palette.foreground }}",
         "height": 78,
-        "font_size": 36,
-        "duration": 34,
+        "font_size": 24,
+        "duration": 28,
         "direction": "left"
       }
     },
