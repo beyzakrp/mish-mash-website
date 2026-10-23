@@ -2116,5 +2116,26 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "Mish-mash typography",
+    "settings": [
+      {
+        "type": "select",
+        "id": "mm_heading_font",
+        "label": "Heading font",
+        "options": [
+          {
+            "value": "proxima",
+            "label": "Proxima Nova"
+          },
+          {
+            "value": "cocogoose",
+            "label": "Cocogoose Pro Regular"
+          }
+        ],
+        "default": "proxima"
+      }
+    ]
   }
 ]
