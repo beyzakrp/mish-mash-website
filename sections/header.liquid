@@ -339,8 +339,10 @@
 
 <header-component
   id="header-component"
-  data-mm-navigation="drawer"
-  data-menu-style="drawer"
+  data-mm-navigation="{{ section.settings.mm_navigation | default: 'menu' }}"
+  {% if section.settings.mm_navigation == 'drawer' %}
+    data-menu-style="drawer"
+  {% endif %}
   class="{{ class }}"
   data-theme-color="rgb({{ section.settings.background_color_top.rgb | default: settings.page_background_color.rgb }})"
   data-bubble-style="{{ section.settings.bubble_style }}"
@@ -1261,6 +1263,23 @@
   "tag": "header",
   "class": "header-section",
   "settings": [
+    {
+      "type": "select",
+      "id": "mm_navigation",
+      "label": "Desktop navigation",
+      "info": "Phones always use the hamburger menu. Desktop also falls back to it when the menu does not fit.",
+      "options": [
+        {
+          "value": "menu",
+          "label": "Menu bar"
+        },
+        {
+          "value": "drawer",
+          "label": "Hamburger menu"
+        }
+      ],
+      "default": "menu"
+    },
     {
       "type": "header",
       "content": "t:content.logo"

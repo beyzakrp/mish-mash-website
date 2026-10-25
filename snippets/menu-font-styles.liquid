@@ -21,3 +21,14 @@
   var(--menu-font-sm--line-height);
 {% endif %}
 --menu-top-level-font-color: var(--color-foreground); --menu-top-level-font-color-rgb: var(--color-foreground-rgb);
+{%- case settings.mm_menu_font -%}
+  {%- when 'proxima' -%}
+    --menu-top-level-font-family: 'MM Proxima Nova', Arial, sans-serif; --menu-top-level-font-style: normal;
+  {%- when 'cocogoose' -%}
+    --menu-top-level-font-family: 'MM Cocogoose', 'MM Proxima Nova', Arial, sans-serif; --menu-top-level-font-style: normal;
+{%- endcase -%}
+{%- if settings.mm_menu_font == 'cocogoose' -%}
+  --menu-top-level-font-weight: 400;
+{%- elsif settings.mm_menu_weight != blank and settings.mm_menu_weight != 'theme' -%}
+  --menu-top-level-font-weight: {{ settings.mm_menu_weight }};
+{%- endif -%}

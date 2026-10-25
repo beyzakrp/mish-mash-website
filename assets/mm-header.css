@@ -1,32 +1,34 @@
-#header-component[data-mm-navigation="drawer"]{--header-padding:12px;--header-content-transition-timing:180ms;transition:background-color .2s,color .2s}
-#header-component[data-mm-navigation="drawer"] .header__columns{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"left center right";gap:20px;min-height:88px;padding:0 clamp(20px,4vw,64px);align-items:center}
-#header-component[data-mm-navigation="drawer"] .header__column--left{display:flex;grid-area:left;justify-content:flex-start}
-#header-component[data-mm-navigation="drawer"] .header__column--center{display:flex;grid-area:center;justify-content:center}
-#header-component[data-mm-navigation="drawer"] .header__column--right{display:flex;grid-area:right;justify-content:flex-end;gap:8px}
-#header-component[data-mm-navigation="drawer"] .header-menu{display:none}
-#header-component[data-mm-navigation="drawer"] .header__drawer{display:flex}
-#header-component[data-mm-navigation="drawer"] .header-logo{padding:0;min-width:84px}
+#header-component#header-component[data-menu-style="drawer"]{--header-padding:12px;--header-content-transition-timing:180ms;transition:background-color .2s,color .2s}
+#header-component#header-component[data-menu-style="drawer"] .header__columns{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"left center right";gap:20px;min-height:88px;padding:0 clamp(20px,4vw,64px);align-items:center}
+#header-component#header-component[data-menu-style="drawer"] .header__column--left{display:flex;grid-area:left;justify-content:flex-start}
+#header-component#header-component[data-menu-style="drawer"] .header__column--center{display:flex;grid-area:center;justify-content:center}
+#header-component#header-component[data-menu-style="drawer"] .header__column--right{display:flex;grid-area:right;justify-content:flex-end;gap:8px}
+#header-component#header-component[data-menu-style="drawer"] .header-menu{display:none}
+#header-component#header-component[data-menu-style="drawer"] .header__drawer{display:flex}
+#header-component#header-component[data-menu-style="drawer"] .header-logo{padding:0;min-width:84px}
 #header-component .mm-header-mark{display:block;width:84px;height:70px;object-fit:contain}
-#header-component[data-mm-navigation="drawer"] .svg-wrapper{width:22px;height:22px}
-#header-component[data-mm-navigation="drawer"] :is(.header-actions__action,.search-action__button,.header__icon--menu){min-width:44px;min-height:44px;justify-content:center}
-#header-component[data-mm-navigation="drawer"] .header__row--top{border:0}
-#header-component[data-mm-navigation="drawer"] :is(a,button,summary):focus-visible{outline:2px solid currentColor;outline-offset:4px}
+#header-component#header-component[data-menu-style="drawer"] .svg-wrapper{width:22px;height:22px}
+#header-component#header-component[data-menu-style="drawer"] :is(.header-actions__action,.search-action__button,.header__icon--menu){min-width:44px;min-height:44px;justify-content:center}
+#header-component#header-component[data-menu-style="drawer"] .header__row--top{border:0}
+#header-component#header-component[data-menu-style="drawer"] :is(a,button,summary):focus-visible{outline:2px solid currentColor;outline-offset:4px}
 body:has(#header-component[transparent]) .mm-hero-content{padding-top:clamp(145px,20vh,220px)}
 body:has(#header-component[transparent]) .mm-hero:before{content:"";position:absolute;inset:0 0 auto;height:160px;background:linear-gradient(#0005,transparent);pointer-events:none;z-index:-1}
-@media(max-width:749px){#header-component[data-mm-navigation="drawer"] .header__columns{min-height:76px;gap:8px;padding-inline:16px}#header-component .mm-header-mark{width:64px;height:54px}#header-component[data-mm-navigation="drawer"] .header-logo{min-width:64px}#header-component[data-mm-navigation="drawer"] .header__column--right{gap:0}#header-component[data-mm-navigation="drawer"] .svg-wrapper{width:20px;height:20px}body:has(#header-component[transparent]) .mm-hero-content{padding-top:145px}}
-@media(prefers-reduced-motion:reduce){#header-component[data-mm-navigation="drawer"]{transition:none}}
+/* Narrow windows without touch get the drawer layout from media queries only, so mirror the drawer rules there. */
+@media(max-width:749px){#header-component#header-component{--header-padding:12px;--header-content-transition-timing:180ms;transition:background-color .2s,color .2s}#header-component#header-component .header__columns{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"left center right";gap:20px;min-height:88px;padding:0 clamp(20px,4vw,64px);align-items:center}#header-component#header-component .header__column--left{display:flex;grid-area:left;justify-content:flex-start}#header-component#header-component .header__column--center{display:flex;grid-area:center;justify-content:center}#header-component#header-component .header__column--right{display:flex;grid-area:right;justify-content:flex-end;gap:8px}#header-component#header-component .header-menu{display:none}#header-component#header-component .header__drawer{display:flex}#header-component#header-component .header-logo{padding:0;min-width:84px}#header-component#header-component .svg-wrapper{width:22px;height:22px}#header-component#header-component :is(.header-actions__action,.search-action__button,.header__icon--menu){min-width:44px;min-height:44px;justify-content:center}#header-component#header-component .header__row--top{border:0}#header-component#header-component :is(a,button,summary):focus-visible{outline:2px solid currentColor;outline-offset:4px}#header-component#header-component .header__column--left .search-action{display:none}#header-component#header-component .header__column--right .search-action{display:flex;margin:0}#header-component#header-component .header__column--right header-actions{margin:0;gap:4px}#header-component#header-component header-actions{align-items:center}#header-component#header-component :is(.header-actions__action,.search-action__button,.header__icon--menu){align-items:center}#header-component#header-component .account-button shopify-account{display:flex;align-items:center;justify-content:center;height:44px;line-height:0}#header-component#header-component .account-button shopify-account::part(signed-out-avatar){display:flex;align-items:center;justify-content:center;height:44px;padding:0}#header-component#header-component .account-button [slot="signed-out-avatar"]:not(.hidden){display:flex;align-items:center}#header-component#header-component .account-button__icon{display:block;width:20px;height:20px}}
+@media(max-width:749px){#header-component#header-component .header__columns{min-height:76px;gap:8px;padding-inline:16px}#header-component .mm-header-mark{width:64px;height:54px}#header-component#header-component .header-logo{min-width:64px}#header-component#header-component .header__column--right{gap:0}#header-component#header-component .svg-wrapper{width:20px;height:20px}body:has(#header-component[transparent]) .mm-hero-content{padding-top:145px}}
+@media(prefers-reduced-motion:reduce){#header-component#header-component[data-menu-style="drawer"]{transition:none}}
 
-#header-component[data-mm-navigation="drawer"] .header__column--left .search-action{display:none}
-#header-component[data-mm-navigation="drawer"] .header__column--right .search-action{display:flex;margin:0}
-#header-component[data-mm-navigation="drawer"] .header__column--right header-actions{margin:0;gap:4px}
-@media(max-width:374px){#header-component[data-mm-navigation="drawer"] .header__column--right .search-action{position:absolute;left:58px;top:50%;transform:translateY(-50%)}}
-#header-component[data-mm-navigation="drawer"] header-actions{align-items:center}
-#header-component[data-mm-navigation="drawer"] :is(.header-actions__action,.search-action__button,.header__icon--menu){align-items:center}
-#header-component[data-mm-navigation="drawer"] .account-button shopify-account{display:flex;align-items:center;justify-content:center;height:44px;line-height:0}
-#header-component[data-mm-navigation="drawer"] .account-button shopify-account::part(signed-out-avatar){display:flex;align-items:center;justify-content:center;height:44px;padding:0}
-#header-component[data-mm-navigation="drawer"] .account-button [slot="signed-out-avatar"]:not(.hidden){display:flex;align-items:center}
-#header-component[data-mm-navigation="drawer"] .account-button__icon{display:block;width:20px;height:20px}
-@media(max-width:749px){#header-component[data-mm-navigation="drawer"] .account-button__icon{width:18px;height:18px}}
+#header-component#header-component[data-menu-style="drawer"] .header__column--left .search-action{display:none}
+#header-component#header-component[data-menu-style="drawer"] .header__column--right .search-action{display:flex;margin:0}
+#header-component#header-component[data-menu-style="drawer"] .header__column--right header-actions{margin:0;gap:4px}
+@media(max-width:374px){#header-component#header-component :is(.header-actions__action,.search-action__button,.header__icon--menu){min-width:38px}#header-component#header-component .header__columns{gap:4px;padding-inline:12px}}
+#header-component#header-component[data-menu-style="drawer"] header-actions{align-items:center}
+#header-component#header-component[data-menu-style="drawer"] :is(.header-actions__action,.search-action__button,.header__icon--menu){align-items:center}
+#header-component#header-component[data-menu-style="drawer"] .account-button shopify-account{display:flex;align-items:center;justify-content:center;height:44px;line-height:0}
+#header-component#header-component[data-menu-style="drawer"] .account-button shopify-account::part(signed-out-avatar){display:flex;align-items:center;justify-content:center;height:44px;padding:0}
+#header-component#header-component[data-menu-style="drawer"] .account-button [slot="signed-out-avatar"]:not(.hidden){display:flex;align-items:center}
+#header-component#header-component[data-menu-style="drawer"] .account-button__icon{display:block;width:20px;height:20px}
+@media(max-width:749px){#header-component#header-component .account-button__icon{width:18px;height:18px}}
 #header-group>.shopify-section:has(.announcement-bar){position:sticky;top:0;z-index:calc(var(--layer-menu-drawer) + 1)}
 #header-group:has(.announcement-bar) .header-section:has(>#header-component[sticky='always']){top:calc(var(--mm-announcement-height,0px) - 1px)}
 #header-component[data-sticky-state='active']{view-transition-name:none}
