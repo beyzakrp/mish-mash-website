@@ -68,6 +68,8 @@
             "type_font_primary_link": "subheading",
             "mm_menu_font": "proxima",
             "mm_menu_weight": "400",
+            "mm_menu_item_gap": 40,
+            "mm_menu_animation": true,
             "type_case_primary_link": "uppercase",
             "menu_style": "featured_collections",
             "featured_products_aspect_ratio": "4 / 5",
