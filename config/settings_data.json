@@ -9,11 +9,11 @@
  */
 {
   "current": {
-    "mm_heading_font": "cocogoose",
-    "show_cart_note": true,
-    "logo_height": 36,
+    "logo": "shopify://shop_images/Only-text-logo-black.svg",
+    "logo_inverse": "shopify://shop_images/Only-text-logo-white.svg",
+    "logo_height": 45,
     "logo_height_mobile": 28,
-    "page_background_color": "{{ settings.color_palette.background }}",
+    "favicon": "shopify://shop_images/Only-text-logo-white.svg",
     "page_text_color": "{{ settings.color_palette.foreground }}",
     "type_body_font": "red_hat_display_n5",
     "type_subheading_font": "red_hat_display_n5",
@@ -33,6 +33,7 @@
     "type_line_height_h6": "display-normal",
     "type_letter_spacing_h6": "heading-loose",
     "type_case_h6": "uppercase",
+    "page_background_color": "{{ settings.color_palette.background }}",
     "badge_corner_radius": 0,
     "badge_sale_background_color": "{{ settings.color_palette.color1 }}",
     "badge_sale_text_color": "{{ settings.color_palette.background }}",
@@ -51,6 +52,7 @@
     "button_border_radius_secondary": 40,
     "cart_type": "drawer",
     "auto_open_cart_drawer": true,
+    "show_cart_note": true,
     "drawer_background_color": "{{ settings.color_palette.background }}",
     "drawer_text_color": "{{ settings.color_palette.foreground }}",
     "palette_input_background": "{{ settings.color_palette.background }}",
@@ -73,6 +75,8 @@
     "palette_selected_variant_border": "{{ settings.color_palette.foreground }}",
     "variant_button_radius": 0,
     "variant_button_width": "default-width-buttons",
+    "mm_heading_font": "cocogoose",
+    "content_for_index": [],
     "color_palette": {
       "background": "#FAF9F5",
       "foreground": "#171514",
