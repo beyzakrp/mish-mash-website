@@ -192,7 +192,7 @@
 
     <header-menu
       ref="headerMenu"
-      class="header-menu"
+      class="header-menu{% if block_settings.mm_menu_animation %} mm-menu-animate{% endif %}"
       {{ block.shopify_attributes }}
       data-hydration-key="header-menu"
       data-skip-node-update
@@ -201,7 +201,7 @@
         <nav
           class="menu-list"
           aria-label="{{ 'accessibility.header_navigation_label' | t }}"
-          style="{% render 'menu-font-styles', settings: block_settings, menu_type: 'mega_menu' %}"
+          style="{% render 'menu-font-styles', settings: block_settings, menu_type: 'mega_menu' %} --mm-menu-item-gap: {{ block_settings.mm_menu_item_gap | default: 22 }}px;"
         >
           {% assign class = 'overflow-menu' | append: background_color_classes %}
           {% render 'overflow-list',
@@ -971,6 +971,23 @@
         }
       ],
       "default": "theme"
+    },
+    {
+      "type": "range",
+      "id": "mm_menu_item_gap",
+      "label": "Space between items",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "checkbox",
+      "id": "mm_menu_animation",
+      "label": "Hover animation",
+      "info": "Underlines menu links on hover and animates the mega menu content in.",
+      "default": true
     },
     {
       "type": "select",
