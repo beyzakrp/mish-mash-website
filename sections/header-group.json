@@ -66,6 +66,8 @@
             "type_font_primary_size": "1rem",
             "menu_font_style": "inverse",
             "type_font_primary_link": "subheading",
+            "mm_menu_font": "theme",
+            "mm_menu_weight": "400",
             "type_case_primary_link": "uppercase",
             "menu_style": "featured_collections",
             "featured_products_aspect_ratio": "4 / 5",
@@ -82,6 +84,7 @@
         }
       },
       "settings": {
+        "mm_navigation": "menu",
         "logo_position": "center",
         "menu_position": "left",
         "menu_row": "top",
