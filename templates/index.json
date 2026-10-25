@@ -234,7 +234,7 @@
         "row_height": 560,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "padding_top": 40,
+        "padding_top": 0,
         "padding_bottom": 0,
         "padding_mobile": 0
       }
