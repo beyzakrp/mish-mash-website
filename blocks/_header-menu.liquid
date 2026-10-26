@@ -148,7 +148,7 @@
                 {% assign list_id = 'MegaMenuList-' | append: forloop.index %}
                 <div class="mega-menu section section--full-width-margin section--{{ section.settings.section_width }}">
                   {%- if block_settings.mm_mega_symbol_image != blank or block_settings.mm_mega_symbol != 'none' -%}
-                    <span class="mm-mega-symbol{% if block_settings.mm_mega_symbol_spin %} mm-mega-symbol--spin{% endif %}" aria-hidden="true" style="--mm-mega-symbol-size: {{ block_settings.mm_mega_symbol_size }}px; --mm-mega-symbol-opacity: {{ block_settings.mm_mega_symbol_opacity | divided_by: 100.0 }};">
+                    <span class="mm-mega-symbol mm-mega-symbol--{{ block_settings.mm_mega_symbol_position | default: 'center' }}{% if block_settings.mm_mega_symbol_spin %} mm-mega-symbol--spin{% endif %}" aria-hidden="true" style="--mm-mega-symbol-size: {{ block_settings.mm_mega_symbol_size }}px; --mm-mega-symbol-opacity: {{ block_settings.mm_mega_symbol_opacity | divided_by: 100.0 }};">
                       {%- if block_settings.mm_mega_symbol_image != blank -%}
                         {{ block_settings.mm_mega_symbol_image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: '' }}
                       {%- else -%}
@@ -1136,7 +1136,7 @@
       "type": "select",
       "id": "mm_mega_symbol",
       "label": "Background symbol",
-      "info": "A large symbol that turns slowly in the corner while the mega menu is open.",
+      "info": "A large symbol that turns slowly behind the mega menu while it is open.",
       "options": [
         {
           "value": "none",
@@ -1168,6 +1168,26 @@
       "info": "PNG or SVG. Replaces the symbol above."
     },
     {
+      "type": "select",
+      "id": "mm_mega_symbol_position",
+      "label": "Background symbol position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
       "type": "range",
       "id": "mm_mega_symbol_size",
       "label": "Background symbol size",
@@ -1195,67 +1215,67 @@
     },
     {
       "type": "paragraph",
-      "content": "Collection images: pick a collection from the menu and the image to show on its card."
+      "content": "Card images: Card 1 image is used on the first card of the menu, Card 2 image on the second, and so on. Pick a collection too if the image should follow that collection wherever it appears instead."
     },
     {
       "type": "collection",
       "id": "mm_mega_collection_1",
-      "label": "Collection 1"
+      "label": "Card 1 collection (optional)"
     },
     {
       "type": "image_picker",
       "id": "mm_mega_image_1",
-      "label": "Image 1"
+      "label": "Card 1 image"
     },
     {
       "type": "collection",
       "id": "mm_mega_collection_2",
-      "label": "Collection 2"
+      "label": "Card 2 collection (optional)"
     },
     {
       "type": "image_picker",
       "id": "mm_mega_image_2",
-      "label": "Image 2"
+      "label": "Card 2 image"
     },
     {
       "type": "collection",
       "id": "mm_mega_collection_3",
-      "label": "Collection 3"
+      "label": "Card 3 collection (optional)"
     },
     {
       "type": "image_picker",
       "id": "mm_mega_image_3",
-      "label": "Image 3"
+      "label": "Card 3 image"
     },
     {
       "type": "collection",
       "id": "mm_mega_collection_4",
-      "label": "Collection 4"
+      "label": "Card 4 collection (optional)"
     },
     {
       "type": "image_picker",
       "id": "mm_mega_image_4",
-      "label": "Image 4"
+      "label": "Card 4 image"
     },
     {
       "type": "collection",
       "id": "mm_mega_collection_5",
-      "label": "Collection 5"
+      "label": "Card 5 collection (optional)"
     },
     {
       "type": "image_picker",
       "id": "mm_mega_image_5",
-      "label": "Image 5"
+      "label": "Card 5 image"
     },
     {
       "type": "collection",
       "id": "mm_mega_collection_6",
-      "label": "Collection 6"
+      "label": "Card 6 collection (optional)"
     },
     {
       "type": "image_picker",
       "id": "mm_mega_image_6",
-      "label": "Image 6"
+      "label": "Card 6 image"
     },
     {
       "type": "header",

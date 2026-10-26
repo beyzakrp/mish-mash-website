@@ -334,6 +334,11 @@
           {% endif %}
           {% liquid
             assign image_override = nil
+            assign position_key = 'mm_mega_collection_' | append: forloop.index
+            if menu_settings[position_key] == blank
+              assign position_image_key = 'mm_mega_image_' | append: forloop.index
+              assign image_override = menu_settings[position_image_key]
+            endif
             for i in (1..6)
               assign override_collection_key = 'mm_mega_collection_' | append: i
               assign override_image_key = 'mm_mega_image_' | append: i
