@@ -14,6 +14,21 @@
     "header_announcements_pbXTDf": {
       "type": "header-announcements",
       "blocks": {
+        "announcement_9wMUaK": {
+          "type": "_announcement",
+          "name": "t:names.announcement",
+          "settings": {
+            "text": "5000₺ ve Uzerine Kargo Ucretsiz",
+            "link": "",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "weight": "",
+            "letter_spacing": "loose",
+            "case": "uppercase",
+            "text_color": ""
+          },
+          "blocks": {}
+        },
         "announcement_KMAGKG": {
           "type": "_announcement",
           "settings": {
@@ -30,6 +45,7 @@
         }
       },
       "block_order": [
+        "announcement_9wMUaK",
         "announcement_KMAGKG"
       ],
       "name": "t:names.announcement_bar",
@@ -69,6 +85,8 @@
             "mm_menu_font": "proxima",
             "mm_menu_weight": "400",
             "mm_menu_item_gap": 40,
+            "mm_menu_hover_style": "roll",
+            "mm_menu_dim": 40,
             "mm_menu_animation": true,
             "type_case_primary_link": "uppercase",
             "menu_style": "featured_collections",
