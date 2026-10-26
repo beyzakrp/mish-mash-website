@@ -17,7 +17,7 @@
         "image_fit": "cover",
         "background_color": "#2a2725",
         "image_zoom": 100,
-        "focus_x": 0,
+        "focus_x": 100,
         "focus_y": 0,
         "overlay_color": "#000000",
         "overlay_opacity": 0,
@@ -25,10 +25,10 @@
         "height_mobile": 360,
         "eyebrow": "",
         "heading_source": "description",
-        "heading": "<p>Designed to stand out. Statement pieces that bring <strong>personality, style, and visual impact</strong> to any space.</p>",
-        "show_title": true,
-        "text": "",
-        "heading_font": "proxima",
+        "heading": "{{ collection.description }}",
+        "show_title": false,
+        "text": "{{ collection.description }}",
+        "heading_font": "cocogoose",
         "heading_weight": "800",
         "uppercase": true,
         "heading_size": 42,
@@ -42,18 +42,18 @@
         "badge_small": "The",
         "badge_name": "",
         "badge_font": "cocogoose",
-        "badge_size": 44,
+        "badge_size": 60,
         "badge_color": "#ffffff",
         "badge_position": "right",
         "show_symbol": true,
         "symbol_colour_mode": "custom",
         "symbol_colour": "#ffffff",
         "symbol_size": 120,
-        "symbol_drop": 45,
+        "symbol_drop": 25,
         "symbol_spin": false,
-        "padding_top": 30,
-        "padding_x": 40,
-        "margin_bottom": 0
+        "padding_top": 65,
+        "padding_x": 120,
+        "margin_bottom": 44
       }
     },
     "section": {
@@ -89,6 +89,7 @@
       "block_order": [
         "text_tqQTNE"
       ],
+      "disabled": true,
       "name": "t:names.heading",
       "settings": {
         "content_direction": "row",
