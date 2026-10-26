@@ -1,0 +1,609 @@
+{%- liquid
+  assign stock_images = 'mm-reference-story.webp,mm-reference-hero.webp,mm-reference-mobile.webp' | split: ','
+  assign first_object_id = ''
+  assign first_character_id = ''
+  for block in section.blocks
+    if block.type == 'object' and first_object_id == ''
+      assign first_object = block
+      assign first_object_id = block.id
+    endif
+    if block.type == 'character' and first_character_id == ''
+      assign first_character = block
+      assign first_character_id = block.id
+    endif
+  endfor
+-%}
+<section class="mm-home mm-mix" id="mm-{{ section.id }}">
+  <div class="mm-pad">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+      <div class="mm-section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+        </div>
+        {%- if section.settings.text != blank -%}<p class="mm-section-text">{{ section.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <mm-mix class="mm-mix__studio mm-mix__studio--stage-{{ section.settings.stage_position }}">
+      <div class="mm-mix__controls">
+        <div class="mm-mix__group">
+          {%- if section.settings.object_label != blank -%}<p class="mm-mix__label"><span>1</span> {{ section.settings.object_label | escape }}</p>{%- endif -%}
+          <div class="mm-mix__options" role="group" aria-label="{{ section.settings.object_label | escape }}">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'object' -%}
+                <button
+                  type="button"
+                  class="mm-mix__option"
+                  data-mix-object="{{ block.id }}"
+                  data-name="{{ block.settings.name | escape }}"
+                  data-price="{{ block.settings.price | escape }}"
+                  data-link="{{ block.settings.link | default: routes.all_products_collection_url }}"
+                  aria-pressed="{% if block.id == first_object_id %}true{% else %}false{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+                  {%- if block.settings.thumbnail != blank -%}
+                    {{ block.settings.thumbnail | image_url: width: 120 | image_tag: alt: '', loading: 'lazy', class: 'mm-mix__thumb' }}
+                  {%- endif -%}
+                  {{ block.settings.name | escape }}
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div class="mm-mix__group">
+          {%- if section.settings.character_label != blank -%}<p class="mm-mix__label"><span>2</span> {{ section.settings.character_label | escape }}</p>{%- endif -%}
+          <div class="mm-mix__options" role="group" aria-label="{{ section.settings.character_label | escape }}">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'character' -%}
+                {%- liquid
+                  assign mix_character = block.settings.character
+                  assign mix_name_key = 'mishmash.' | append: mix_character
+                  assign mix_name = block.settings.name
+                  if mix_name == blank
+                    assign mix_name = mix_name_key | t
+                  endif
+                  case mix_character
+                    when 'showoff'
+                      assign mix_tint = '#D7E8DE'
+                    when 'player'
+                      assign mix_tint = '#FFE3C8'
+                    when 'trickster'
+                      assign mix_tint = '#D9ECFF'
+                    else
+                      assign mix_tint = '#FFDCEA'
+                  endcase
+                  if block.settings.stage_colour != blank and block.settings.stage_colour != 'rgba(0,0,0,0)'
+                    assign mix_tint = block.settings.stage_colour
+                  endif
+                -%}
+                {%- liquid
+  case mix_character
+    when 'showoff'
+      assign mix_colour = '#1E6448'
+    when 'player'
+      assign mix_colour = '#F37400'
+    when 'trickster'
+      assign mix_colour = '#4CA7FF'
+    when 'helper'
+      assign mix_colour = '#FF6EA7'
+    else
+      assign mix_colour = 'currentColor'
+  endcase
+-%}
+                <button
+                  type="button"
+                  class="mm-mix__option mm-mix__option--character"
+                  data-mix-character="{{ mix_character }}"
+                  data-name="{{ mix_name | escape }}"
+                  data-text="{{ block.settings.text | escape }}"
+                  data-colour="{{ mix_colour }}"
+                  data-tint="{{ mix_tint }}"
+                  data-symbol="{{ 'mm-symbol-' | append: mix_character | append: '.svg' | asset_url }}"
+                  style="--mm-char: {{ mix_colour }};"
+                  aria-pressed="{% if block.id == first_character_id %}true{% else %}false{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+                  <span class="mm-symbol-mask" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: mix_character | append: '.svg' | asset_url }});" aria-hidden="true"></span>
+                  {{ mix_name | escape }}
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
+      {%- liquid
+        assign start_character = first_character.settings.character | default: 'showoff'
+        assign start_name_key = 'mishmash.' | append: start_character
+        assign start_name = first_character.settings.name
+        if start_name == blank
+          assign start_name = start_name_key | t
+        endif
+      -%}
+      <div class="mm-mix__stage" data-mix-stage>
+        <span class="mm-mix__bg-symbol{% if section.settings.spin_symbol %} mm-mix__bg-symbol--spin{% endif %}" aria-hidden="true" data-mix-symbol style="--mm-symbol-url: url({{ 'mm-symbol-' | append: start_character | append: '.svg' | asset_url }});"></span>
+        <div class="mm-mix__objects">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'object' -%}
+              {%- assign stock_index = forloop.index0 | modulo: 3 -%}
+              <div class="mm-mix__object{% if block.id == first_object_id %} is-active{% endif %}" data-mix-object-image="{{ block.id }}">
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 1200 | image_tag: alt: block.settings.name, loading: 'lazy', widths: '400,700,1000,1200', sizes: '(min-width: 750px) 50vw, 90vw' }}
+                {%- else -%}
+                  <img src="{{ stock_images[stock_index] | asset_url }}" alt="{{ block.settings.name | escape }}" loading="lazy" width="1000" height="1250">
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        <div class="mm-mix__caption">
+          <p class="mm-mix__combo mm-display"><span data-mix-object-name>{{ first_object.settings.name | escape }}</span> <em>{{ section.settings.joiner | escape }}</em> <span data-mix-character-name>{{ start_name | escape }}</span></p>
+          <p class="mm-mix__text" data-mix-text>{{ first_character.settings.text | escape }}</p>
+          <div class="mm-mix__buy">
+            {%- if section.settings.show_price -%}<span class="mm-mix__price" data-mix-price>{{ first_object.settings.price | escape }}</span>{%- endif -%}
+            {%- if section.settings.button_label != blank -%}
+              <a class="mm-mix__button" data-mix-link href="{{ first_object.settings.link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">→</span></a>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </mm-mix>
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }} .mm-mix__stage{--mm-mix-radius:{{ section.settings.stage_radius }}px;--mm-mix-symbol-opacity:{{ section.settings.symbol_opacity | divided_by: 100.0 }};height:{{ section.settings.stage_height }}px}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-mix__studio{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,64px);align-items:stretch}
+.mm-mix__studio--stage-left .mm-mix__stage{order:-1}
+.mm-mix__controls{display:grid;align-content:center;gap:36px}
+.mm-mix__label{display:flex;align-items:center;gap:10px;margin-bottom:14px!important;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.mm-mix__label span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--mm-ink);color:var(--mm-paper);font-size:11px;letter-spacing:0}
+.mm-mix__options{display:flex;flex-wrap:wrap;gap:10px}
+.mm-mix__option{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border:1px solid color-mix(in srgb,var(--mm-ink) 20%,transparent);border-radius:100px;background:transparent;color:inherit;font:inherit;font-size:15px;cursor:pointer;transition:background .25s,color .25s,border-color .25s,translate .3s}
+.mm-mix__option:hover{translate:0 -2px;border-color:var(--mm-ink)}
+.mm-mix__option[aria-pressed="true"]{background:var(--mm-ink);color:var(--mm-paper);border-color:var(--mm-ink)}
+.mm-mix__thumb{width:28px;height:28px;border-radius:50%;object-fit:cover;margin-left:-8px}
+.mm-mix__option .mm-symbol-mask{width:20px;background-color:currentColor;transition:background-color .3s,rotate .6s cubic-bezier(.34,1.56,.64,1)}
+.mm-mix__option--character:hover .mm-symbol-mask,.mm-mix__option--character[aria-pressed="true"] .mm-symbol-mask{background-color:var(--mm-char);rotate:90deg}
+.mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
+.mm-mix__stage{position:relative;display:grid;grid-template-rows:1fr auto;border-radius:var(--mm-mix-radius);background:var(--mm-mix-tint,#FFDCEA);overflow:hidden;isolation:isolate;transition:background-color .7s ease}
+.mm-mix__bg-symbol{position:absolute;inset:8% 8% 22%;z-index:-1;background-color:var(--mm-mix-colour,#FF6EA7);opacity:var(--mm-mix-symbol-opacity);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:background-color .7s ease,scale .8s cubic-bezier(.34,1.56,.64,1),rotate .8s cubic-bezier(.34,1.56,.64,1)}
+.mm-mix__bg-symbol--spin{animation:mm-mix-spin 60s linear infinite}
+.mm-mix__stage.is-swapping .mm-mix__bg-symbol{scale:.6;rotate:-40deg}
+@keyframes mm-mix-spin{to{rotate:360deg}}
+.mm-mix__objects{position:relative;min-height:0;height:100%}
+.mm-mix__object{position:absolute;inset:6% 10% 0;opacity:0;scale:.92;translate:0 16px;transition:opacity .5s ease,scale .8s cubic-bezier(.22,1,.36,1),translate .8s cubic-bezier(.22,1,.36,1)}
+.mm-mix__object.is-active{opacity:1;scale:1;translate:0 0}
+.mm-mix__object img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 24px 30px rgb(0 0 0/.18))}
+.mm-mix__caption{position:relative;z-index:1;display:grid;gap:8px;padding:clamp(18px,3vw,32px)}
+.mm-mix__combo{font-size:clamp(24px,2.6vw,38px);line-height:1.05}
+.mm-mix__combo em{font-style:normal;color:var(--mm-mix-colour)}
+.mm-mix__text{font-size:15px;line-height:1.5;max-width:44ch;min-height:1.5em}
+.mm-mix__buy{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:6px}
+.mm-mix__price{font-size:18px;font-weight:700}
+.mm-mix__price:empty{display:none}
+.mm-mix__button{display:inline-flex;align-items:center;gap:16px;border-radius:100px;padding:15px 24px;background:var(--mm-ink);color:var(--mm-paper)!important;font-size:14px;font-weight:700;transition:background .25s,color .25s,translate .3s}
+.mm-mix__button:hover{background:var(--mm-mix-colour);color:#fff!important;translate:0 -2px}
+@media(max-width:749px){.mm-mix__studio{grid-template-columns:1fr}.mm-mix__stage{order:-1;height:460px!important}.mm-mix__controls{gap:24px}}
+@media(prefers-reduced-motion:reduce){.mm-mix__bg-symbol,.mm-mix__object{animation:none;transition:opacity .2s}}
+{% endstylesheet %}
+
+{% javascript %}
+if (!customElements.get('mm-mix')) {
+  customElements.define(
+    'mm-mix',
+    class MMMix extends HTMLElement {
+      connectedCallback() {
+        this.addEventListener('click', (event) => {
+          const button = event.target instanceof Element ? event.target.closest('[data-mix-object],[data-mix-character]') : null;
+          if (!(button instanceof HTMLElement)) return;
+          const group = button.parentElement;
+          if (!group) return;
+          for (const sibling of group.querySelectorAll('[aria-pressed]')) sibling.setAttribute('aria-pressed', String(sibling === button));
+          this.update(button.dataset.mixCharacter !== undefined);
+        });
+        this.update(false);
+      }
+
+      update(characterChanged) {
+        const object = this.querySelector('[data-mix-object][aria-pressed="true"]');
+        const character = this.querySelector('[data-mix-character][aria-pressed="true"]');
+        const stage = this.querySelector('[data-mix-stage]');
+        if (!(stage instanceof HTMLElement)) return;
+
+        if (object instanceof HTMLElement) {
+          for (const image of this.querySelectorAll('[data-mix-object-image]')) {
+            image.classList.toggle('is-active', image.getAttribute('data-mix-object-image') === object.dataset.mixObject);
+          }
+          this.setText('[data-mix-object-name]', object.dataset.name);
+          this.setText('[data-mix-price]', object.dataset.price);
+          const link = this.querySelector('[data-mix-link]');
+          if (link instanceof HTMLAnchorElement && object.dataset.link) link.href = object.dataset.link;
+        }
+
+        if (character instanceof HTMLElement) {
+          stage.style.setProperty('--mm-mix-tint', character.dataset.tint || '');
+          stage.style.setProperty('--mm-mix-colour', character.dataset.colour || '');
+          this.setText('[data-mix-character-name]', character.dataset.name);
+          this.setText('[data-mix-text]', character.dataset.text);
+          const symbol = this.querySelector('[data-mix-symbol]');
+          if (symbol instanceof HTMLElement && character.dataset.symbol) {
+            if (characterChanged) {
+              stage.classList.add('is-swapping');
+              setTimeout(() => {
+                symbol.style.setProperty('--mm-symbol-url', `url("${character.dataset.symbol}")`);
+                stage.classList.remove('is-swapping');
+              }, 220);
+            } else {
+              symbol.style.setProperty('--mm-symbol-url', `url("${character.dataset.symbol}")`);
+            }
+          }
+        }
+      }
+
+      setText(selector, value) {
+        const element = this.querySelector(selector);
+        if (element) element.textContent = value || '';
+      }
+    }
+  );
+}
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "MM · Mix & Match Studio",
+  "tag": "div",
+  "class": "mm-mix-section",
+  "max_blocks": 16,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Mix & Match Studio"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Pick an object.\nGive it a character."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Every piece comes in four personalities. Try them on."
+    },
+    {
+      "type": "header",
+      "content": "Studio"
+    },
+    {
+      "type": "text",
+      "id": "object_label",
+      "label": "Step 1 label",
+      "default": "Pick an object"
+    },
+    {
+      "type": "text",
+      "id": "character_label",
+      "label": "Step 2 label",
+      "default": "Pick a character"
+    },
+    {
+      "type": "text",
+      "id": "joiner",
+      "label": "Word between object and character",
+      "default": "×"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop this match"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "stage_position",
+      "label": "Stage position",
+      "default": "right",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "stage_height",
+      "label": "Stage height",
+      "min": 360,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "default": 560
+    },
+    {
+      "type": "range",
+      "id": "stage_radius",
+      "label": "Stage corner radius",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "symbol_opacity",
+      "label": "Background symbol visibility",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 35
+    },
+    {
+      "type": "checkbox",
+      "id": "spin_symbol",
+      "label": "Turn the background symbol slowly",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "blocks": [
+    {
+      "type": "object",
+      "name": "Object",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Vase"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "A cut-out PNG on a transparent background looks best."
+        },
+        {
+          "type": "image_picker",
+          "id": "thumbnail",
+          "label": "Small button image"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price text",
+          "info": "For example: from ₺1.200"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Product or collection page."
+        }
+      ]
+    },
+    {
+      "type": "character",
+      "name": "Character",
+      "settings": [
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Character",
+          "default": "showoff",
+          "options": [
+            {
+              "value": "showoff",
+              "label": "The Show-off"
+            },
+            {
+              "value": "player",
+              "label": "The Player"
+            },
+            {
+              "value": "trickster",
+              "label": "The Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "The Helper"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "info": "Defaults to the character name."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description"
+        },
+        {
+          "type": "color",
+          "id": "stage_colour",
+          "label": "Stage colour",
+          "info": "Leave empty for the character's soft colour."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Mix & Match Studio",
+      "blocks": [
+        {
+          "type": "object",
+          "settings": {
+            "name": "Vase"
+          }
+        },
+        {
+          "type": "object",
+          "settings": {
+            "name": "Lamp"
+          }
+        },
+        {
+          "type": "object",
+          "settings": {
+            "name": "Clock"
+          }
+        },
+        {
+          "type": "object",
+          "settings": {
+            "name": "Candle"
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "showoff",
+            "text": "Bold, sculptural and made to be looked at."
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "player",
+            "text": "Bright colours and parts you can swap around."
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "trickster",
+            "text": "A small twist that surprises every time."
+          }
+        },
+        {
+          "type": "character",
+          "settings": {
+            "character": "helper",
+            "text": "Soft colours, smart details, always useful."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

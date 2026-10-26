@@ -1,0 +1,19 @@
+{%- doc -%}
+  Shared colour, spacing and heading styles for the mm-* homepage sections.
+  Output it inside a {% style %} tag.
+
+  @param {object} settings - The section settings (background, text_color, accent, padding_*, heading_*).
+  @param {string} id - The section id.
+{%- enddoc -%}
+#mm-{{ id }}{--mm-paper:{{ settings.background }};--mm-ink:{{ settings.text_color }};--mm-accent:{{ settings.accent | default: '#FF6EA7' }};background:var(--mm-paper);color:var(--mm-ink)}
+#mm-{{ id }} .mm-pad{padding-top:{{ settings.padding_top }}px;padding-bottom:{{ settings.padding_bottom }}px}
+#mm-{{ id }} h2{font-size:{{ settings.heading_size }}px}
+@media(max-width:749px){
+  #mm-{{ id }} .mm-pad{padding-top:{{ settings.padding_mobile }}px;padding-bottom:{{ settings.padding_mobile }}px}
+  #mm-{{ id }} h2{font-size:{{ settings.heading_mobile }}px}
+}
+{%- if settings.heading_font == 'cocogoose' -%}
+#mm-{{ id }} :is(h2,h3,.mm-display){font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}
+{%- elsif settings.heading_font == 'proxima' -%}
+#mm-{{ id }} :is(h2,h3,.mm-display){font-family:'MM Proxima Nova',Arial,sans-serif}
+{%- endif -%}

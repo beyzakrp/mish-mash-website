@@ -1,0 +1,475 @@
+{%- capture review_cards -%}
+  {%- for block in section.blocks -%}
+    {%- assign review_symbol = block.settings.character -%}
+    {%- liquid
+  case review_symbol
+    when 'showoff'
+      assign review_colour = '#1E6448'
+    when 'player'
+      assign review_colour = '#F37400'
+    when 'trickster'
+      assign review_colour = '#4CA7FF'
+    when 'helper'
+      assign review_colour = '#FF6EA7'
+    else
+      assign review_colour = 'currentColor'
+  endcase
+-%}
+    <figure class="mm-review" style="--mm-char: {{ review_colour }};">
+      <div class="mm-review__top">
+        {%- if section.settings.show_stars -%}
+          <span class="mm-review__stars" aria-label="{{ block.settings.rating }} / 5">
+            {%- for i in (1..5) -%}<span{% if i > block.settings.rating %} class="is-off"{% endif %} aria-hidden="true">★</span>{%- endfor -%}
+          </span>
+        {%- endif -%}
+        {%- if section.settings.show_symbols and review_symbol != 'none' -%}
+          <span class="mm-symbol-mask mm-review__symbol" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: review_symbol | append: '.svg' | asset_url }});" aria-hidden="true"></span>
+        {%- endif -%}
+      </div>
+      <blockquote class="mm-review__quote">{{ block.settings.quote | escape }}</blockquote>
+      <figcaption class="mm-review__meta">
+        {%- if block.settings.product != blank and section.settings.show_product_image -%}
+          {{ block.settings.product.featured_image | image_url: width: 120 | image_tag: alt: '', loading: 'lazy', class: 'mm-review__product-image' }}
+        {%- endif -%}
+        <span>
+          <strong>{{ block.settings.author | escape }}</strong>
+          {%- assign review_product_name = block.settings.product_name | default: block.settings.product.title -%}
+          {%- if review_product_name != blank or block.settings.meta != blank -%}
+            <small>
+              {%- if review_product_name != blank -%}
+                {%- if block.settings.product != blank -%}<a href="{{ block.settings.product.url }}">{{ review_product_name | escape }}</a>{%- else -%}{{ review_product_name | escape }}{%- endif -%}
+              {%- endif -%}
+              {%- if review_product_name != blank and block.settings.meta != blank %} · {% endif -%}
+              {{- block.settings.meta | escape -}}
+            </small>
+          {%- endif -%}
+        </span>
+      </figcaption>
+    </figure>
+  {%- endfor -%}
+{%- endcapture -%}
+
+<section class="mm-home mm-reviews" id="mm-{{ section.id }}">
+  <div class="mm-pad mm-reviews__pad">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+      <div class="mm-section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+        </div>
+        {%- if section.settings.text != blank -%}<p class="mm-section-text">{{ section.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+  {%- if section.blocks.size > 0 -%}
+    <div class="mm-reviews__rows{% if section.settings.pause_on_hover %} mm-reviews__rows--pause{% endif %}{% if section.settings.edge_fade %} mm-reviews__rows--fade{% endif %}">
+      {%- liquid
+        assign row_count = 1
+        if section.settings.two_rows
+          assign row_count = 2
+        endif
+      -%}
+      {%- for row in (1..row_count) -%}
+        <div class="mm-reviews__row{% if section.settings.direction == 'right' %} mm-reviews__row--reverse{% endif %}{% if row == 2 %} mm-reviews__row--second{% endif %}">
+          <div class="mm-reviews__track">
+            <div class="mm-reviews__group">{{ review_cards }}</div>
+            <div class="mm-reviews__group" aria-hidden="true" inert>{{ review_cards }}</div>
+            <div class="mm-reviews__group" aria-hidden="true" inert>{{ review_cards }}</div>
+            <div class="mm-reviews__group" aria-hidden="true" inert>{{ review_cards }}</div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }} .mm-reviews__rows{--mm-review-speed:{{ section.settings.speed }}s;--mm-review-card:{{ section.settings.card_background }};--mm-review-ink:{{ section.settings.card_text }};--mm-review-width:{{ section.settings.card_width }}px;--mm-review-radius:{{ section.settings.card_radius }}px;--mm-review-gap:{{ section.settings.gap }}px;--mm-review-star:{{ section.settings.star_colour }}}
+#mm-{{ section.id }} .mm-reviews__pad{padding-bottom:0}
+#mm-{{ section.id }} .mm-reviews__rows{padding-bottom:{{ section.settings.padding_bottom }}px}
+@media(max-width:749px){#mm-{{ section.id }} .mm-reviews__rows{padding-bottom:{{ section.settings.padding_mobile }}px}}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-reviews__rows{display:grid;gap:var(--mm-review-gap,16px);overflow:hidden}
+.mm-reviews__rows--fade{-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mm-reviews__row{display:flex;overflow:hidden}
+.mm-reviews__track{display:flex;flex:none;animation:mm-reviews-scroll var(--mm-review-speed,60s) linear infinite}
+.mm-reviews__row--reverse .mm-reviews__track,.mm-reviews__row--second:not(.mm-reviews__row--reverse) .mm-reviews__track{animation-direction:reverse}
+.mm-reviews__row--reverse.mm-reviews__row--second .mm-reviews__track{animation-direction:normal}
+.mm-reviews__row--second .mm-reviews__track{animation-duration:calc(var(--mm-review-speed,60s) * 1.15)}
+.mm-reviews__rows--pause .mm-reviews__row:hover .mm-reviews__track{animation-play-state:paused}
+.mm-reviews__group{display:flex;gap:var(--mm-review-gap,16px);padding-right:var(--mm-review-gap,16px)}
+@keyframes mm-reviews-scroll{to{translate:-50% 0}}
+.mm-review{display:flex;flex-direction:column;gap:16px;width:var(--mm-review-width,340px);margin:0;padding:24px;border-radius:var(--mm-review-radius,18px);background:var(--mm-review-card);color:var(--mm-review-ink);flex:none;transition:translate .4s cubic-bezier(.22,1,.36,1)}
+.mm-review:hover{translate:0 -4px}
+.mm-review__top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mm-review__stars{display:flex;gap:2px;color:var(--mm-review-star);font-size:15px;letter-spacing:0}
+.mm-review__stars .is-off{opacity:.2}
+.mm-review__symbol{width:28px;background-color:var(--mm-review-ink);transition:background-color .35s,rotate .7s cubic-bezier(.34,1.56,.64,1)}
+.mm-review:hover .mm-review__symbol{background-color:var(--mm-char);rotate:120deg}
+.mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
+.mm-review__quote{margin:0;font-size:17px;line-height:1.45;flex:1}
+.mm-review__meta{display:flex;align-items:center;gap:12px;font-size:13px}
+.mm-review__meta span{display:grid;gap:2px}
+.mm-review__meta small{opacity:.65;font-size:12px}
+.mm-review__meta a{text-decoration:underline;text-underline-offset:3px}
+.mm-review__product-image{width:40px;height:40px;border-radius:10px;object-fit:cover}
+@media(max-width:749px){.mm-review{width:min(var(--mm-review-width,340px),78vw)}}
+@media(prefers-reduced-motion:reduce){.mm-reviews__row{overflow-x:auto}.mm-reviews__track{animation:none}.mm-reviews__group[aria-hidden]{display:none}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · Reviews",
+  "tag": "div",
+  "class": "mm-reviews-section",
+  "max_blocks": 16,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Happy homes"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Little objects,\nbig smiles."
+    },
+    {
+      "type": "header",
+      "content": "Strip"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Loop duration",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "s",
+      "default": 60,
+      "info": "Lower is faster."
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "To the left"
+        },
+        {
+          "value": "right",
+          "label": "To the right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "two_rows",
+      "label": "Two rows (opposite directions)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "edge_fade",
+      "label": "Fade the edges",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "label": "Card width",
+      "min": 240,
+      "max": 480,
+      "step": 10,
+      "unit": "px",
+      "default": 340
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space between cards",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_text",
+      "label": "Card text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "star_colour",
+      "label": "Star colour",
+      "default": "#F37400"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stars",
+      "label": "Show stars",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_symbols",
+      "label": "Show symbols",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_image",
+      "label": "Show product image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review",
+          "default": "It makes me smile every single morning."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Name",
+          "default": "Elif K."
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Small note",
+          "info": "For example a city or date."
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Stars",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Symbol",
+          "default": "showoff",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "showoff",
+              "label": "The Show-off"
+            },
+            {
+              "value": "player",
+              "label": "The Player"
+            },
+            {
+              "value": "trickster",
+              "label": "The Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "The Helper"
+            }
+          ]
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product name",
+          "info": "Defaults to the product title."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "quote": "It makes me smile every single morning.",
+            "author": "Elif K.",
+            "character": "showoff",
+            "product_name": "Vase"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Everyone who visits asks where the lamp is from.",
+            "author": "Can D.",
+            "character": "helper",
+            "product_name": "Lamp"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Fun, colourful and beautifully packed. Perfect gift.",
+            "author": "Zeynep A.",
+            "character": "player",
+            "product_name": "Clock"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "quote": "Looks like a sculpture until you light it. Magic.",
+            "author": "Mert Y.",
+            "character": "trickster",
+            "product_name": "Candle"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

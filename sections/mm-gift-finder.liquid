@@ -1,0 +1,576 @@
+<section class="mm-home mm-gift" id="mm-{{ section.id }}">
+  <div class="mm-pad">
+    <mm-gift class="mm-gift__box">
+      <div class="mm-gift__intro">
+        {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+          <div class="mm-section-head">
+            <div>
+              {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+              {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+            </div>
+            {%- if section.settings.text != blank -%}<p class="mm-section-text">{{ section.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <ol class="mm-gift__steps" role="list" aria-hidden="true">
+          <li class="is-current" data-gift-dot="1">{{ section.settings.step_1_short | escape }}</li>
+          <li data-gift-dot="2">{{ section.settings.step_2_short | escape }}</li>
+          <li data-gift-dot="3">{{ section.settings.step_3_short | escape }}</li>
+        </ol>
+      </div>
+
+      <div class="mm-gift__panel">
+        <div class="mm-gift__step is-in" data-gift-step="1">
+          <h3 class="mm-display">{{ section.settings.step_1_heading | escape }}</h3>
+          <div class="mm-gift__choices">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'recipient' -%}
+                {%- assign gift_symbol = block.settings.character -%}
+                {%- liquid
+  case gift_symbol
+    when 'showoff'
+      assign gift_colour = '#1E6448'
+    when 'player'
+      assign gift_colour = '#F37400'
+    when 'trickster'
+      assign gift_colour = '#4CA7FF'
+    when 'helper'
+      assign gift_colour = '#FF6EA7'
+    else
+      assign gift_colour = 'currentColor'
+  endcase
+-%}
+                <button type="button" class="mm-gift__choice" data-gift-recipient="{{ block.id }}" style="--mm-char: {{ gift_colour }};" {{ block.shopify_attributes }}>
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', class: 'mm-gift__choice-image' }}
+                  {%- elsif gift_symbol != 'none' -%}
+                    <span class="mm-symbol-mask" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: gift_symbol | append: '.svg' | asset_url }});" aria-hidden="true"></span>
+                  {%- endif -%}
+                  <span class="mm-gift__choice-label">{{ block.settings.label | escape }}</span>
+                  {%- if block.settings.note != blank -%}<span class="mm-gift__choice-note">{{ block.settings.note | escape }}</span>{%- endif -%}
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div class="mm-gift__step" data-gift-step="2" hidden>
+          <h3 class="mm-display">{{ section.settings.step_2_heading | escape }}</h3>
+          <div class="mm-gift__choices mm-gift__choices--budget">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'budget' -%}
+                {%- liquid
+                  assign budget_min = block.settings.min | default: 0 | times: 100
+                  assign budget_max = block.settings.max | default: 0 | times: 100
+                -%}
+                <button type="button" class="mm-gift__choice mm-gift__choice--budget" data-gift-budget data-min="{{ budget_min }}" data-max="{{ budget_max }}" {{ block.shopify_attributes }}>
+                  <span class="mm-gift__choice-label">{{ block.settings.label | escape }}</span>
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <button type="button" class="mm-gift__back" data-gift-back="1">← {{ section.settings.back_label | escape }}</button>
+        </div>
+
+        <div class="mm-gift__step" data-gift-step="3" hidden>
+          <h3 class="mm-display">{{ section.settings.step_3_heading | escape }}</h3>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'recipient' -%}
+              <div class="mm-gift__results" data-gift-results="{{ block.id }}" hidden>
+                <ul class="mm-gift__products" role="list">
+                  {%- for product in block.settings.collection.products limit: section.settings.product_limit -%}
+                    <li data-gift-price="{{ product.price }}">
+                      <a href="{{ product.url }}" class="mm-gift__product">
+                        <span class="mm-gift__product-media">
+                          {%- if product.featured_image -%}
+                            {{ product.featured_image | image_url: width: 600 | image_tag: alt: product.featured_image.alt, loading: 'lazy', widths: '300,450,600', sizes: '(min-width: 750px) 220px, 45vw' }}
+                          {%- endif -%}
+                        </span>
+                        <span class="mm-gift__product-title">{{ product.title | escape }}</span>
+                        <span class="mm-gift__product-price">{{ product.price | money }}</span>
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+                <div class="mm-gift__empty" data-gift-empty hidden>
+                  <p>{{ section.settings.empty_text | escape }}</p>
+                </div>
+                <a class="mm-gift__all" href="{{ block.settings.collection.url | default: routes.all_products_collection_url }}">{{ section.settings.view_all_label | escape }} <span aria-hidden="true">→</span></a>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+          <div class="mm-gift__end">
+            <button type="button" class="mm-gift__back" data-gift-back="2">← {{ section.settings.back_label | escape }}</button>
+            <button type="button" class="mm-gift__back" data-gift-restart>{{ section.settings.restart_label | escape }}</button>
+          </div>
+        </div>
+      </div>
+    </mm-gift>
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }} .mm-gift__box{--mm-gift-card:{{ section.settings.card_background }};--mm-gift-radius:{{ section.settings.card_radius }}px}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-gift__box{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,5vw,80px);align-items:start}
+.mm-gift__intro .mm-section-head{display:block;margin-bottom:28px}
+.mm-gift__intro .mm-section-text{margin-top:16px!important;font-size:16px;line-height:1.5;max-width:36ch}
+.mm-gift__steps{display:flex;gap:8px;margin:0;padding:0;list-style:none;counter-reset:mm-gift}
+.mm-gift__steps li{counter-increment:mm-gift;display:flex;align-items:center;gap:8px;padding:8px 14px 8px 8px;border-radius:100px;background:color-mix(in srgb,var(--mm-ink) 6%,transparent);font-size:12px;font-weight:700;opacity:.5;transition:opacity .3s,background .3s,color .3s}
+.mm-gift__steps li:before{content:counter(mm-gift);display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--mm-paper);font-size:11px}
+.mm-gift__steps li.is-current,.mm-gift__steps li.is-done{opacity:1}
+.mm-gift__steps li.is-current{background:var(--mm-ink);color:var(--mm-paper)}
+.mm-gift__steps li.is-current:before{color:var(--mm-ink)}
+.mm-gift__panel{display:grid;background:var(--mm-gift-card);border-radius:var(--mm-gift-radius);padding:clamp(22px,4vw,48px);min-height:380px}
+.mm-gift__panel>*{grid-area:1/1}
+.mm-gift__step{display:flex;flex-direction:column;gap:22px;opacity:0;translate:16px 0;transition:opacity .4s ease,translate .6s cubic-bezier(.22,1,.36,1)}
+.mm-gift__step.is-in{opacity:1;translate:0 0}
+.mm-gift__step[hidden]{display:none}
+.mm-gift__step h3{font-size:clamp(24px,2.6vw,38px);line-height:1.05}
+.mm-gift__choices{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.mm-gift__choice{display:grid;justify-items:start;align-content:start;gap:8px;padding:18px;border:1px solid color-mix(in srgb,var(--mm-ink) 16%,transparent);border-radius:16px;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;transition:border-color .25s,background .25s,translate .3s}
+.mm-gift__choice:hover,.mm-gift__choice:focus-visible{border-color:var(--mm-char,var(--mm-accent));background:color-mix(in srgb,var(--mm-char,var(--mm-accent)) 10%,transparent);translate:0 -3px}
+.mm-gift__choice .mm-symbol-mask{width:34px;background-color:var(--mm-ink);transition:background-color .3s,rotate .6s cubic-bezier(.34,1.56,.64,1)}
+.mm-gift__choice:hover .mm-symbol-mask{background-color:var(--mm-char);rotate:90deg}
+.mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
+.mm-gift__choice-image{width:44px;height:44px;border-radius:50%;object-fit:cover}
+.mm-gift__choice-label{font-size:16px;font-weight:700}
+.mm-gift__choice-note{font-size:13px;opacity:.65}
+.mm-gift__choices--budget{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+.mm-gift__choice--budget{place-items:center;padding:22px 14px}
+.mm-gift__back{align-self:flex-start;border:0;background:none;padding:0;color:inherit;font:inherit;font-size:13px;opacity:.7;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.mm-gift__results[hidden]{display:none}
+.mm-gift__products{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;margin:0;padding:0;list-style:none}
+.mm-gift__products li[hidden]{display:none}
+.mm-gift__product{display:grid;gap:6px;font-size:13px}
+.mm-gift__product-media{display:block;aspect-ratio:4/5;border-radius:12px;overflow:hidden;background:color-mix(in srgb,var(--mm-ink) 6%,transparent)}
+.mm-gift__product-media img{width:100%;height:100%;object-fit:cover;transition:scale 1s cubic-bezier(.22,1,.36,1)}
+.mm-gift__product:hover img{scale:1.05}
+.mm-gift__product-title{font-weight:700}
+.mm-gift__product-price{opacity:.65}
+.mm-gift__empty p{font-size:15px;line-height:1.5}
+.mm-gift__all{display:inline-block;margin-top:18px;font-size:13px;font-weight:700;border-bottom:1px solid;padding-bottom:4px}
+.mm-gift__end{display:flex;gap:24px}
+@media(max-width:749px){.mm-gift__box{grid-template-columns:1fr}.mm-gift__choices,.mm-gift__products{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.mm-gift__step{transition:none;translate:none}}
+{% endstylesheet %}
+
+{% javascript %}
+if (!customElements.get('mm-gift')) {
+  customElements.define(
+    'mm-gift',
+    class MMGift extends HTMLElement {
+      connectedCallback() {
+        this.addEventListener('click', (event) => {
+          const target = event.target instanceof Element ? event.target : null;
+          if (!target) return;
+          const recipient = target.closest('[data-gift-recipient]');
+          const budget = target.closest('[data-gift-budget]');
+          const back = target.closest('[data-gift-back]');
+          if (recipient instanceof HTMLElement) {
+            this.recipient = recipient.dataset.giftRecipient;
+            this.go(2);
+          } else if (budget instanceof HTMLElement) {
+            this.filter(Number(budget.dataset.min || 0), Number(budget.dataset.max || 0));
+            this.go(3);
+          } else if (back instanceof HTMLElement) {
+            this.go(Number(back.dataset.giftBack));
+          } else if (target.closest('[data-gift-restart]')) {
+            this.go(1);
+          }
+        });
+      }
+
+      go(step) {
+        for (const element of this.querySelectorAll('[data-gift-step]')) {
+          const active = element.getAttribute('data-gift-step') === String(step);
+          element.hidden = !active;
+          element.classList.remove('is-in');
+          if (active) requestAnimationFrame(() => requestAnimationFrame(() => element.classList.add('is-in')));
+        }
+        for (const dot of this.querySelectorAll('[data-gift-dot]')) {
+          const index = Number(dot.getAttribute('data-gift-dot'));
+          dot.classList.toggle('is-current', index === step);
+          dot.classList.toggle('is-done', index < step);
+        }
+        const focusTarget = this.querySelector(`[data-gift-step="${step}"] button, [data-gift-step="${step}"] a`);
+        if (focusTarget instanceof HTMLElement) focusTarget.focus({ preventScroll: true });
+      }
+
+      filter(min, max) {
+        for (const results of this.querySelectorAll('[data-gift-results]')) {
+          const active = results.getAttribute('data-gift-results') === this.recipient;
+          results.hidden = !active;
+          if (!active) continue;
+          let shown = 0;
+          for (const item of results.querySelectorAll('[data-gift-price]')) {
+            const price = Number(item.getAttribute('data-gift-price'));
+            const fits = price >= min && (max <= 0 || price <= max);
+            item.toggleAttribute('hidden', !fits);
+            if (fits) shown += 1;
+          }
+          const empty = results.querySelector('[data-gift-empty]');
+          if (empty instanceof HTMLElement) empty.hidden = shown > 0;
+        }
+      }
+    }
+  );
+}
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "MM · Gift finder",
+  "tag": "div",
+  "class": "mm-gift-section",
+  "max_blocks": 16,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Gift finder"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The right gift,\nin two taps."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Tell us who it's for and what you'd like to spend."
+    },
+    {
+      "type": "header",
+      "content": "Steps"
+    },
+    {
+      "type": "text",
+      "id": "step_1_short",
+      "label": "Step 1 short label",
+      "default": "Who"
+    },
+    {
+      "type": "text",
+      "id": "step_1_heading",
+      "label": "Step 1 question",
+      "default": "Who is it for?"
+    },
+    {
+      "type": "text",
+      "id": "step_2_short",
+      "label": "Step 2 short label",
+      "default": "Budget"
+    },
+    {
+      "type": "text",
+      "id": "step_2_heading",
+      "label": "Step 2 question",
+      "default": "What's your budget?"
+    },
+    {
+      "type": "text",
+      "id": "step_3_short",
+      "label": "Step 3 short label",
+      "default": "Ideas"
+    },
+    {
+      "type": "text",
+      "id": "step_3_heading",
+      "label": "Results heading",
+      "default": "They'll love these."
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "No results text",
+      "default": "Nothing in this budget yet, but the whole collection is worth a look."
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all link",
+      "default": "See all ideas"
+    },
+    {
+      "type": "text",
+      "id": "back_label",
+      "label": "Back label",
+      "default": "Back"
+    },
+    {
+      "type": "text",
+      "id": "restart_label",
+      "label": "Restart label",
+      "default": "Start over"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Products per recipient",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "blocks": [
+    {
+      "type": "recipient",
+      "name": "Recipient",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "My partner"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Small note"
+        },
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Symbol",
+          "default": "helper",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "showoff",
+              "label": "The Show-off"
+            },
+            {
+              "value": "player",
+              "label": "The Player"
+            },
+            {
+              "value": "trickster",
+              "label": "The Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "The Helper"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Replaces the symbol."
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Gift ideas from collection"
+        }
+      ]
+    },
+    {
+      "type": "budget",
+      "name": "Budget",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Under ₺1.000"
+        },
+        {
+          "type": "number",
+          "id": "min",
+          "label": "Minimum price",
+          "default": 0
+        },
+        {
+          "type": "number",
+          "id": "max",
+          "label": "Maximum price",
+          "info": "Leave 0 for no upper limit.",
+          "default": 1000
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Gift finder",
+      "blocks": [
+        {
+          "type": "recipient",
+          "settings": {
+            "label": "My partner",
+            "character": "showoff"
+          }
+        },
+        {
+          "type": "recipient",
+          "settings": {
+            "label": "A friend",
+            "character": "player"
+          }
+        },
+        {
+          "type": "recipient",
+          "settings": {
+            "label": "Someone who has everything",
+            "character": "trickster"
+          }
+        },
+        {
+          "type": "recipient",
+          "settings": {
+            "label": "Myself",
+            "character": "helper"
+          }
+        },
+        {
+          "type": "budget",
+          "settings": {
+            "label": "Under ₺1.000",
+            "min": 0,
+            "max": 1000
+          }
+        },
+        {
+          "type": "budget",
+          "settings": {
+            "label": "₺1.000 – ₺2.500",
+            "min": 1000,
+            "max": 2500
+          }
+        },
+        {
+          "type": "budget",
+          "settings": {
+            "label": "₺2.500+",
+            "min": 2500,
+            "max": 0
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

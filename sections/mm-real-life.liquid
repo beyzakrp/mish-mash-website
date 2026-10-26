@@ -1,0 +1,507 @@
+{%- assign stock_images = 'mm-reference-story.webp,mm-reference-hero.webp,mm-reference-mobile.webp' | split: ',' -%}
+<section class="mm-home mm-real" id="mm-{{ section.id }}">
+  <div class="mm-pad">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+      <div class="mm-section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+        </div>
+        {%- if section.settings.text != blank -%}<p class="mm-section-text">{{ section.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="mm-real__grid">
+      {%- for block in section.blocks -%}
+        {%- assign stock_index = forloop.index0 | modulo: 3 -%}
+        <figure class="mm-real__photo mm-real__photo--{{ block.settings.size }}" {{ block.shopify_attributes }}>
+          <div class="mm-real__media">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 1600 | image_tag: alt: block.settings.image.alt, loading: 'lazy', widths: '400,700,1000,1300,1600', sizes: '(min-width: 750px) 50vw, 100vw' }}
+            {%- else -%}
+              <img src="{{ stock_images[stock_index] | asset_url }}" alt="" loading="lazy" width="1000" height="1250">
+            {%- endif -%}
+
+            {%- for i in (1..3) -%}
+              {%- liquid
+                assign product_key = 'product_' | append: i
+                assign x_key = 'x_' | append: i
+                assign y_key = 'y_' | append: i
+                assign label_key = 'label_' | append: i
+                assign spot_product = block.settings[product_key]
+                assign spot_label = block.settings[label_key]
+                assign spot_x = block.settings[x_key]
+                assign spot_y = block.settings[y_key]
+              -%}
+              {%- if spot_product != blank or spot_label != blank -%}
+                <div class="mm-spot{% if spot_x > 55 %} mm-spot--left{% endif %}{% if spot_y > 55 %} mm-spot--up{% endif %}" style="left: {{ spot_x }}%; top: {{ spot_y }}%;">
+                  <button type="button" class="mm-spot__dot" aria-expanded="false" aria-label="{{ spot_label | default: spot_product.title | escape }}">
+                    <span aria-hidden="true">+</span>
+                  </button>
+                  <a class="mm-spot__card" href="{{ spot_product.url | default: '#' }}">
+                    {%- if spot_product.featured_image -%}
+                      {{ spot_product.featured_image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy', class: 'mm-spot__image' }}
+                    {%- endif -%}
+                    <span class="mm-spot__text">
+                      <span class="mm-spot__title">{{ spot_label | default: spot_product.title | escape }}</span>
+                      {%- if section.settings.show_price and spot_product != blank -%}<span class="mm-spot__price">{{ spot_product.price | money }}</span>{%- endif -%}
+                    </span>
+                    <span class="mm-spot__arrow" aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {%- if block.settings.caption != blank -%}
+            <figcaption class="mm-real__caption">{{ block.settings.caption | escape }}</figcaption>
+          {%- endif -%}
+        </figure>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{%- liquid
+  case section.settings.ratio
+    when '3 / 4'
+      assign wide_ratio = '8 / 3'
+      assign tall_ratio = '3 / 8'
+    when '1 / 1'
+      assign wide_ratio = '2 / 1'
+      assign tall_ratio = '1 / 2'
+    when '16 / 10'
+      assign wide_ratio = '32 / 10'
+      assign tall_ratio = '8 / 10'
+    else
+      assign wide_ratio = '8 / 5'
+      assign tall_ratio = '2 / 5'
+  endcase
+-%}
+{% style %}
+#mm-{{ section.id }} .mm-real__grid{--mm-real-wide-ratio:{{ wide_ratio }};--mm-real-tall-ratio:{{ tall_ratio }};--mm-real-columns:{{ section.settings.columns }};--mm-real-gap:{{ section.settings.gap }}px;--mm-real-radius:{{ section.settings.radius }}px;--mm-real-ratio:{{ section.settings.ratio }};--mm-spot:{{ section.settings.spot_colour }};--mm-spot-ink:{{ section.settings.spot_icon_colour }}}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-real__grid{display:grid;grid-template-columns:repeat(var(--mm-real-columns,3),minmax(0,1fr));gap:var(--mm-real-gap,16px);grid-auto-flow:dense}
+.mm-real__photo{position:relative;margin:0;min-width:0}
+.mm-real__photo--wide{grid-column:span 2}
+.mm-real__photo--tall{grid-row:span 2}
+.mm-real__media{position:relative;height:100%;aspect-ratio:var(--mm-real-ratio,4/5);border-radius:var(--mm-real-radius,12px)}
+.mm-real__photo--wide .mm-real__media{aspect-ratio:var(--mm-real-wide-ratio)}
+.mm-real__photo--tall .mm-real__media{aspect-ratio:var(--mm-real-tall-ratio)}
+.mm-real__media>img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
+.mm-real__caption{position:absolute;left:12px;bottom:12px;z-index:0;padding:6px 12px;border-radius:100px;background:rgb(255 255 255/.85);color:#171514;font-size:12px;pointer-events:none;backdrop-filter:blur(6px)}
+.mm-spot{position:absolute;z-index:1;translate:-50% -50%}
+.mm-spot:is(:hover,:focus-within,.is-open){z-index:3}
+.mm-spot__dot{position:relative;display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:var(--mm-spot);color:var(--mm-spot-ink);font-size:18px;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgb(0 0 0/.18);transition:rotate .4s cubic-bezier(.34,1.56,.64,1),scale .3s}
+.mm-spot__dot:before{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--mm-spot);animation:mm-spot-pulse 2.2s ease-out infinite}
+@keyframes mm-spot-pulse{0%{scale:.7;opacity:.9}100%{scale:1.6;opacity:0}}
+.mm-spot:is(:hover,:focus-within,.is-open) .mm-spot__dot{rotate:45deg;scale:1.1}
+.mm-spot__card{position:absolute;left:calc(100% + 10px);top:50%;display:flex;align-items:center;gap:12px;width:max-content;max-width:260px;padding:8px 14px 8px 8px;border-radius:14px;background:var(--mm-paper);color:var(--mm-ink);box-shadow:0 14px 34px rgb(0 0 0/.16);opacity:0;visibility:hidden;translate:-6px -50%;scale:.96;transition:opacity .25s,translate .45s cubic-bezier(.22,1,.36,1),scale .45s cubic-bezier(.22,1,.36,1),visibility 0s .25s}
+.mm-spot--left .mm-spot__card{left:auto;right:calc(100% + 10px);translate:6px -50%}
+.mm-spot:is(:hover,:focus-within,.is-open) .mm-spot__card{opacity:1;visibility:visible;translate:0 -50%;scale:1;transition-delay:0s}
+.mm-spot__image{width:52px;height:52px;border-radius:9px;object-fit:cover;flex:none}
+.mm-spot__text{display:grid;gap:2px;font-size:13px;line-height:1.3}
+.mm-spot__title{font-weight:700}
+.mm-spot__price{opacity:.65}
+.mm-spot__arrow{font-size:16px;transition:translate .3s}
+.mm-spot__card:hover .mm-spot__arrow{translate:2px -2px}
+@media(max-width:749px){.mm-real__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mm-real__photo--wide{grid-column:1/-1}.mm-real__photo--tall{grid-row:auto}.mm-real__photo--tall .mm-real__media{aspect-ratio:var(--mm-real-ratio,4/5)}.mm-spot__card{max-width:200px}}
+@media(prefers-reduced-motion:reduce){.mm-spot__dot:before{animation:none}}
+{% endstylesheet %}
+
+{% javascript %}
+if (!window.mmSpotsReady) {
+  window.mmSpotsReady = true;
+  document.addEventListener('click', (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const dot = target?.closest('.mm-spot__dot');
+    for (const open of document.querySelectorAll('.mm-spot.is-open')) {
+      if (!dot || open !== dot.parentElement) {
+        open.classList.remove('is-open');
+        open.querySelector('.mm-spot__dot')?.setAttribute('aria-expanded', 'false');
+      }
+    }
+    if (!dot) return;
+    const spot = dot.parentElement;
+    const isOpen = spot?.classList.toggle('is-open');
+    dot.setAttribute('aria-expanded', String(Boolean(isOpen)));
+  });
+}
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "MM · Objects in real life",
+  "tag": "div",
+  "class": "mm-real-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Objects in real life"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "At home with\nmish-mash."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Tap the dots to shop what you see."
+    },
+    {
+      "type": "header",
+      "content": "Grid"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space between photos",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Photo shape",
+      "default": "4 / 5",
+      "options": [
+        {
+          "value": "4 / 5",
+          "label": "Portrait"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Tall portrait"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Square"
+        },
+        {
+          "value": "16 / 10",
+          "label": "Landscape"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Hotspots"
+    },
+    {
+      "type": "color",
+      "id": "spot_colour",
+      "label": "Dot colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "spot_icon_colour",
+      "label": "Dot icon colour",
+      "default": "#171514"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show prices",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Tile size",
+          "default": "normal",
+          "options": [
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "wide",
+              "label": "Wide (2 columns)"
+            },
+            {
+              "value": "tall",
+              "label": "Tall (2 rows)"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Hotspot 1"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "label_1",
+          "label": "Label",
+          "info": "Defaults to the product title."
+        },
+        {
+          "type": "range",
+          "id": "x_1",
+          "label": "Horizontal position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 35
+        },
+        {
+          "type": "range",
+          "id": "y_1",
+          "label": "Vertical position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 55
+        },
+        {
+          "type": "header",
+          "content": "Hotspot 2"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "label_2",
+          "label": "Label",
+          "info": "Defaults to the product title."
+        },
+        {
+          "type": "range",
+          "id": "x_2",
+          "label": "Horizontal position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 65
+        },
+        {
+          "type": "range",
+          "id": "y_2",
+          "label": "Vertical position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 40
+        },
+        {
+          "type": "header",
+          "content": "Hotspot 3"
+        },
+        {
+          "type": "product",
+          "id": "product_3",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "label_3",
+          "label": "Label",
+          "info": "Defaults to the product title."
+        },
+        {
+          "type": "range",
+          "id": "x_3",
+          "label": "Horizontal position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "y_3",
+          "label": "Vertical position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 75
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Objects in real life",
+      "blocks": [
+        {
+          "type": "photo",
+          "settings": {
+            "label_1": "Vase",
+            "label_2": "Lamp",
+            "caption": "Living room, Istanbul"
+          }
+        },
+        {
+          "type": "photo",
+          "settings": {
+            "label_1": "Clock",
+            "caption": "Studio corner"
+          }
+        },
+        {
+          "type": "photo",
+          "settings": {
+            "label_1": "Candle",
+            "label_2": "Magnet Frame",
+            "caption": "Kitchen table"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

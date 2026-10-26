@@ -1,0 +1,401 @@
+{%- assign stock_images = 'mm-reference-story.webp,mm-reference-hero.webp,mm-reference-mobile.webp' | split: ',' -%}
+<section class="mm-home mm-details" id="mm-{{ section.id }}">
+  <div class="mm-pad">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+      <div class="mm-section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+        </div>
+        {%- if section.settings.text != blank -%}<p class="mm-section-text">{{ section.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <mm-details class="mm-details__layout mm-details__layout--{{ section.settings.image_side }}{% if section.settings.zoom %} mm-details__layout--zoom{% endif %}">
+      <div class="mm-details__media" aria-hidden="true">
+        {%- for block in section.blocks -%}
+          {%- assign stock_index = forloop.index0 | modulo: 3 -%}
+          <div class="mm-details__image{% if forloop.first %} is-active{% endif %}" data-details-image="{{ forloop.index0 }}">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 1600 | image_tag: alt: '', loading: 'lazy', widths: '600,900,1200,1600', sizes: '(min-width: 750px) 50vw, 100vw' }}
+            {%- else -%}
+              <img src="{{ stock_images[stock_index] | asset_url }}" alt="" loading="lazy" width="1000" height="1250">
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+        {%- if section.settings.show_counter -%}
+          <p class="mm-details__counter"><span data-details-current>01</span> / {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}</p>
+        {%- endif -%}
+      </div>
+
+      <ol class="mm-details__list" role="list">
+        {%- for block in section.blocks -%}
+          {%- assign stock_index = forloop.index0 | modulo: 3 -%}
+          <li class="mm-details__item{% if forloop.first %} is-active{% endif %}" data-details-item="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <div class="mm-details__item-image">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 900 | image_tag: alt: block.settings.image.alt, loading: 'lazy', widths: '400,600,900', sizes: '100vw' }}
+              {%- else -%}
+                <img src="{{ stock_images[stock_index] | asset_url }}" alt="" loading="lazy" width="1000" height="1250">
+              {%- endif -%}
+            </div>
+            {%- if block.settings.label == blank and section.settings.show_numbers -%}
+              <span class="mm-details__number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            {%- elsif block.settings.label != blank -%}
+              <span class="mm-details__number">{{ block.settings.label | escape }}</span>
+            {%- endif -%}
+            <h3 class="mm-display">{{ block.settings.title | escape }}</h3>
+            {%- if block.settings.text != blank -%}<div class="mm-details__text">{{ block.settings.text }}</div>{%- endif -%}
+            {%- if block.settings.link_label != blank -%}
+              <a class="mm-details__link" href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+    </mm-details>
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }} .mm-details__layout{--mm-details-ratio:{{ section.settings.ratio }};--mm-details-radius:{{ section.settings.radius }}px;--mm-details-step:{{ section.settings.step_height }}vh}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-details__layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,6vw,96px);align-items:start}
+.mm-details__layout--right .mm-details__media{order:2}
+.mm-details__media{position:sticky;top:max(90px,12vh);aspect-ratio:var(--mm-details-ratio,4/5);max-height:78vh;border-radius:var(--mm-details-radius,16px);overflow:hidden;background:color-mix(in srgb,var(--mm-ink) 6%,transparent)}
+.mm-details__image{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}
+.mm-details__image.is-active{opacity:1}
+.mm-details__image img{width:100%;height:100%;object-fit:cover;display:block;scale:1.12;transition:scale 2.2s cubic-bezier(.22,1,.36,1)}
+.mm-details__layout:not(.mm-details__layout--zoom) .mm-details__image img{scale:1}
+.mm-details__image.is-active img{scale:1}
+.mm-details__counter{position:absolute;right:16px;bottom:14px;padding:6px 12px;border-radius:100px;background:rgb(255 255 255/.85);color:#171514;font-size:12px;font-weight:700;letter-spacing:.1em;backdrop-filter:blur(6px)}
+.mm-details__list{margin:0;padding:0;list-style:none}
+.mm-details__item{min-height:var(--mm-details-step,60vh);display:flex;flex-direction:column;justify-content:center;gap:14px;opacity:.28;transition:opacity .5s ease}
+.mm-details__item.is-active{opacity:1}
+.mm-details__item-image{display:none}
+.mm-details__number{font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--mm-accent)}
+.mm-details__item h3{font-size:clamp(26px,3vw,44px);line-height:1.05;max-width:16ch}
+.mm-details__text{font-size:16px;line-height:1.6;max-width:42ch}
+.mm-details__text p{margin:0 0 .6em}
+.mm-details__link{align-self:flex-start;font-size:13px;font-weight:700;border-bottom:1px solid;padding-bottom:4px}
+@media(max-width:749px){
+  .mm-details__layout{grid-template-columns:1fr}
+  .mm-details__media{display:none}
+  .mm-details__item{min-height:0;opacity:1;padding-bottom:40px}
+  .mm-details__item-image{display:block;aspect-ratio:var(--mm-details-ratio,4/5);border-radius:var(--mm-details-radius,16px);overflow:hidden;margin-bottom:6px}
+  .mm-details__item-image img{width:100%;height:100%;object-fit:cover;display:block}
+}
+@media(prefers-reduced-motion:reduce){.mm-details__image img{scale:1;transition:none}}
+{% endstylesheet %}
+
+{% javascript %}
+if (!customElements.get('mm-details')) {
+  customElements.define(
+    'mm-details',
+    class MMDetails extends HTMLElement {
+      connectedCallback() {
+        const items = [...this.querySelectorAll('[data-details-item]')];
+        if (!('IntersectionObserver' in window) || items.length === 0) return;
+        this.observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) if (entry.isIntersecting) this.activate(entry.target.getAttribute('data-details-item'));
+          },
+          { rootMargin: '-45% 0px -45% 0px' }
+        );
+        for (const item of items) this.observer.observe(item);
+        document.addEventListener('shopify:block:select', (event) => {
+          const item = event.target instanceof Element ? event.target.closest('[data-details-item]') : null;
+          if (item && this.contains(item)) this.activate(item.getAttribute('data-details-item'));
+        });
+      }
+
+      disconnectedCallback() {
+        this.observer?.disconnect();
+      }
+
+      activate(index) {
+        for (const element of this.querySelectorAll('[data-details-item],[data-details-image]')) {
+          const own = element.getAttribute('data-details-item') ?? element.getAttribute('data-details-image');
+          element.classList.toggle('is-active', own === index);
+        }
+        const counter = this.querySelector('[data-details-current]');
+        if (counter) counter.textContent = String(Number(index) + 1).padStart(2, '0');
+      }
+    }
+  );
+}
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "MM · The little details",
+  "tag": "div",
+  "class": "mm-details-section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "The little details"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Made to be\nlooked at closely."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_side",
+      "label": "Image side",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Image shape",
+      "default": "4 / 5",
+      "options": [
+        {
+          "value": "4 / 5",
+          "label": "Portrait"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Square"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Tall portrait"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "step_height",
+      "label": "Scroll length per detail",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 60,
+      "info": "Of the screen height."
+    },
+    {
+      "type": "checkbox",
+      "id": "zoom",
+      "label": "Zoom images in slowly",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_numbers",
+      "label": "Show numbers",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_counter",
+      "label": "Show counter on the image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "blocks": [
+    {
+      "type": "detail",
+      "name": "Detail",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Small label",
+          "info": "Replaces the number, for example Glaze."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Hand-finished glaze"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Every piece is dipped and finished by hand, so no two are exactly alike.</p>"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · The little details",
+      "blocks": [
+        {
+          "type": "detail",
+          "settings": {
+            "title": "Hand-finished glaze",
+            "text": "<p>Every piece is dipped and finished by hand, so no two are exactly alike.</p>"
+          }
+        },
+        {
+          "type": "detail",
+          "settings": {
+            "title": "Soft, rounded edges",
+            "text": "<p>Shapes you want to touch. Safe around kids and clumsy elbows.</p>"
+          }
+        },
+        {
+          "type": "detail",
+          "settings": {
+            "title": "Colours that last",
+            "text": "<p>Pigments chosen to stay bright in sunny rooms for years.</p>"
+          }
+        },
+        {
+          "type": "detail",
+          "settings": {
+            "title": "Packed with care",
+            "text": "<p>Recycled boxes, no plastic, and a little note from us.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
