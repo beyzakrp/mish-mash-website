@@ -12,7 +12,7 @@
               {%- endif -%}
               <span class="mm-upsell__title">{{ product.title | escape }}</span>
               <span class="mm-upsell__price">{{ product.price | money }}</span>
-              <span class="mm-upsell__arrow" aria-hidden="true">↗</span>
+              <span class="mm-upsell__arrow" aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span>
             </a>
           </li>
         {%- endif -%}

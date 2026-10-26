@@ -49,7 +49,7 @@
           <div class="mm-member__meta">
             <h3 class="mm-display">{{ block.settings.name | escape }}</h3>
             {%- if block.settings.role != blank -%}<p>{{ block.settings.role | escape }}</p>{%- endif -%}
-            {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" target="_blank" rel="noopener" class="mm-member__link">{{ block.settings.link_label | default: 'Instagram' | escape }} <span aria-hidden="true">↗</span></a>{%- endif -%}
+            {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" target="_blank" rel="noopener" class="mm-member__link">{{ block.settings.link_label | default: 'Instagram' | escape }} <span aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span></a>{%- endif -%}
           </div>
         </article>
       {%- endfor -%}

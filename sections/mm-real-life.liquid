@@ -46,7 +46,7 @@
                       <span class="mm-spot__title">{{ spot_label | default: spot_product.title | escape }}</span>
                       {%- if section.settings.show_price and spot_product != blank -%}<span class="mm-spot__price">{{ spot_product.price | money }}</span>{%- endif -%}
                     </span>
-                    <span class="mm-spot__arrow" aria-hidden="true">↗</span>
+                    <span class="mm-spot__arrow" aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span>
                   </a>
                 </div>
               {%- endif -%}

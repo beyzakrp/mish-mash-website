@@ -52,7 +52,7 @@
                 <small>{{ block.settings.caption | escape }}</small>
               {%- endif -%}
             </span>
-            <span class="mm-object-arrow" aria-hidden="true">↗</span>
+            <span class="mm-object-arrow" aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span>
           </span>
         </a>
       {%- endfor -%}

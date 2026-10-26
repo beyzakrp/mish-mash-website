@@ -62,7 +62,7 @@
             <div class="mm-cat-detail">
               <div>
                 {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape }}</p>{%- endif -%}
-                <span class="mm-cat-cta" aria-hidden="true">{{ 'mishmash.discover' | t }} <span>↗</span></span>
+                <span class="mm-cat-cta" aria-hidden="true">{{ 'mishmash.discover' | t }} <span>{% render 'mm-icon', icon: 'arrow-up-right' %}</span></span>
               </div>
             </div>
           </div>

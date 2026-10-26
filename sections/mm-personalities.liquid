@@ -12,7 +12,7 @@
           </span>
           <span class="mm-persona__name">{{ block.settings.heading | escape }}</span>
           <span class="mm-persona__line">{{ block.settings.description | escape }}</span>
-          <span class="mm-persona__cta">{{ 'mishmash.discover' | t }} <span aria-hidden="true">↗</span></span>
+          <span class="mm-persona__cta">{{ 'mishmash.discover' | t }} <span aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span></span>
         </a>
       {% endfor %}
     </div>

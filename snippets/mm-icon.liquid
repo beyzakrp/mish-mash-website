@@ -1,0 +1,18 @@
+{%- doc -%}
+  Small inline SVG icons used instead of text symbols such as ↗ or ✳,
+  which some phones draw as colourful emoji.
+
+  @param {string} icon - arrow-up-right, arrow-down, asterisk, play or pause.
+{%- enddoc -%}
+{%- case icon -%}
+  {%- when 'arrow-up-right' -%}
+    <svg class="mm-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4.5 11.5l7-7M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  {%- when 'arrow-down' -%}
+    <svg class="mm-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 2.5v11M3.5 9L8 13.5 12.5 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  {%- when 'asterisk' -%}
+    <svg class="mm-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.5v13M1.5 8h13M3.4 3.4l9.2 9.2M12.6 3.4l-9.2 9.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  {%- when 'play' -%}
+    <svg class="mm-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4.5 2.8v10.4L13 8z" fill="currentColor"/></svg>
+  {%- when 'pause' -%}
+    <svg class="mm-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z" fill="currentColor"/></svg>
+{%- endcase -%}

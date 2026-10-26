@@ -4,7 +4,7 @@
     {% for i in (1..2) %}<div class="mm-ticker-group"{% if i == 2 %} aria-hidden="true"{% endif %}>{% for block in section.blocks %}{% if block.type == 'symbol' %}<span class="mm-ticker-symbol mm-ticker-symbol--{{ block.settings.colour }}"{% if i == 1 %} {{ block.shopify_attributes }}{% endif %}><img src="{{ 'mm-symbol-' | append: block.settings.character | append: '.svg' | asset_url }}" alt="" width="70" height="77" loading="lazy"></span>{% else %}<span{% if i == 1 %} {{ block.shopify_attributes }}{% endif %}>{{ block.settings.text | escape }}</span>{% endif %}{% endfor %}</div>{% endfor %}
   </div>
   <button type="button" class="mm-ticker-toggle" aria-pressed="false" aria-label="{{ 'mishmash.pause_motion' | t }}" data-mm-ticker-toggle>
-    <span class="mm-ticker-toggle__pause" aria-hidden="true">❚❚</span><span class="mm-ticker-toggle__play" aria-hidden="true">▶</span>
+    <span class="mm-ticker-toggle__pause" aria-hidden="true">{% render 'mm-icon', icon: 'pause' %}</span><span class="mm-ticker-toggle__play" aria-hidden="true">{% render 'mm-icon', icon: 'play' %}</span>
   </button>
 </div>
 </section>

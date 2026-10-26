@@ -24,7 +24,7 @@
         {%- assign amount = remaining | money -%}
         {{ 'mishmash.free_shipping_remaining' | t: amount: amount }}
       {%- else -%}
-        <span aria-hidden="true">✳</span> {{ 'mishmash.free_shipping_unlocked' | t }}
+        <span aria-hidden="true">{% render 'mm-icon', icon: 'asterisk' %}</span> {{ 'mishmash.free_shipping_unlocked' | t }}
       {%- endif -%}
     </p>
     <div class="mm-shipping__bar" aria-hidden="true"><span style="--mm-shipping-progress:{{ progress }}%"></span></div>

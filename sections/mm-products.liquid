@@ -1,18 +1,18 @@
 <section class="mm-home" id="mm-{{ section.id }}">
   <div class="mm-products mm-pad">
-    <div class="mm-section-head"><div><p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2></div>{% if section.settings.button_label != blank %}<a class="mm-text-link" href="{{ section.settings.collection.url | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">↗</span></a>{% endif %}</div>
+    <div class="mm-section-head"><div><p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2></div>{% if section.settings.button_label != blank %}<a class="mm-text-link" href="{{ section.settings.collection.url | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span></a>{% endif %}</div>
     {% assign selected_collection = section.settings.collection | default: collections.all %}
     {% if selected_collection.products.size > 0 %}
       <div class="mm-product-grid">
         {% for product in selected_collection.products limit: section.settings.product_limit %}
           <a class="mm-product" href="{{ product.url }}"><div class="mm-product-media">
             {% if product.featured_image %}{{ product.featured_image | image_url: width: 1000 | image_tag: widths: '300,500,750,1000', sizes: '(min-width: 750px) 25vw, 50vw', loading: 'lazy' }}{% assign alt_media = product.media | where: 'media_type', 'image' | slice: 1 | first %}{% if section.settings.second_image and alt_media %}{{ alt_media.preview_image | image_url: width: 1000 | image_tag: class: 'mm-product-alt', widths: '300,500,750,1000', sizes: '(min-width: 750px) 25vw, 50vw', loading: 'lazy', alt: '' }}{% endif %}{% else %}{{ 'product-1' | placeholder_svg_tag }}{% endif %}
-            <span class="mm-product-arrow" aria-hidden="true">↗</span>
+            <span class="mm-product-arrow" aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span>
           </div><div class="mm-product-meta"><div><h3>{{ product.title | escape }}</h3>{% if section.settings.show_personality %}{% render 'mm-personality-badge', product: product %}{% endif %}</div>{% if section.settings.show_price %}<span>{{ product.price | money }}</span>{% endif %}</div>{% unless product.available %}<small>{{ 'mishmash.sold_out' | t }}</small>{% endunless %}</a>
         {% endfor %}
       </div>
     {% else %}
-      <div class="mm-empty"><span aria-hidden="true">✳</span><h3>{{ section.settings.empty_heading | escape }}</h3><p>{{ section.settings.empty_text | escape }}</p></div>
+      <div class="mm-empty"><span aria-hidden="true">{% render 'mm-icon', icon: 'asterisk' %}</span><h3>{{ section.settings.empty_heading | escape }}</h3><p>{{ section.settings.empty_text | escape }}</p></div>
     {% endif %}
   </div>
 

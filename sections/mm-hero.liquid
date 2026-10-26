@@ -20,7 +20,7 @@
       <p class="mm-intro">{{ section.settings.intro | escape }}</p>
       {% if section.settings.button_label != blank %}<a class="mm-button mm-hero-button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }}</a>{% endif %}
     </div>
-    {% if section.settings.secondary_label != blank %}<a class="mm-hero-bottom" href="{{ section.settings.secondary_link | default: routes.all_products_collection_url }}">{{ section.settings.secondary_label | escape }} <span aria-hidden="true">↓</span></a>{% endif %}
+    {% if section.settings.secondary_label != blank %}<a class="mm-hero-bottom" href="{{ section.settings.secondary_link | default: routes.all_products_collection_url }}">{{ section.settings.secondary_label | escape }} <span aria-hidden="true">{% render 'mm-icon', icon: 'arrow-down' %}</span></a>{% endif %}
   </div>
 
 </section>
@@ -325,4 +325,4 @@
     }
   ]
 }
-{% endschema %}
+{% endschema %}
