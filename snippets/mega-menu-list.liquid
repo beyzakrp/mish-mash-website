@@ -10,7 +10,7 @@
   @param {number} [content_aspect_ratio] - Aspect ratio for content images.
   @param {number} [image_border_radius] - Border radius for content images.
   @param {object} [section] - The section object.
-  @param {object} [menu_settings] - The menu block settings, for the mm_mega_collection_N / mm_mega_image_N image overrides.
+  @param {object} [menu_settings] - The menu block settings, for the 'mm_images' content type (mm_mega_image_1/2).
 
   @example
   {% render 'mega-menu-list', parent_link: link, id: 'MegaMenuList-1', grid_columns_count: 6, menu_content_type: 'featured_products' %}
@@ -226,7 +226,17 @@
     assign max_menu_columns_tablet = max_menu_columns_tablet | minus: max_product_columns_tablet
   endif
 
-  if menu_content_type == 'featured_collections'
+  if menu_content_type == 'mm_images'
+    assign min_collections = 0
+    if menu_settings.mm_mega_image_1 != blank
+      assign min_collections = min_collections | plus: 1
+    endif
+    if menu_settings.mm_mega_image_2 != blank
+      assign min_collections = min_collections | plus: 1
+    endif
+  endif
+
+  if menu_content_type == 'featured_collections' or menu_content_type == 'mm_images'
     # desktop breakpoint
     assign min_featured_collection_columns = min_collections | times: 2
     assign temp_column_count = column_count | plus: min_featured_collection_columns
@@ -332,26 +342,76 @@
           {% else %}
             {% assign collection_object = collections[handle] %}
           {% endif %}
-          {% liquid
-            assign image_override = nil
-            for i in (1..6)
-              assign override_collection_key = 'mm_mega_collection_' | append: i
-              assign override_image_key = 'mm_mega_image_' | append: i
-              assign override_collection = menu_settings[override_collection_key]
-              if override_collection != blank and override_collection.handle == collection_object.handle and menu_settings[override_image_key] != blank
-                assign image_override = menu_settings[override_image_key]
-              endif
-            endfor
-          %}
           <li class="mega-menu__content-list-item{% if forloop.index > max_featured_collections_tablet %} mega-menu__content-list-item--hidden-tablet{% endif %}">
             {% render 'resource-card',
               resource: collection_object,
               resource_type: 'collection',
-              image_override: image_override,
               style: 'overlay',
               image_aspect_ratio: content_aspect_ratio,
               image_sizes: image_sizes
             %}
+          </li>
+        {% endfor %}
+      </ul>
+    </span>
+  {% when 'mm_images' %}
+    {%- capture image_sizes -%}
+      {%- render 'util-mega-menu-img-sizes-attr',
+        menu_content_type: 'featured_collections',
+        settings: settings
+      -%}
+    {%- endcapture -%}
+
+    {% liquid
+      assign max_featured_collections = max_featured_collections | at_most: min_collections
+      assign shown_cards = 0
+    %}
+
+    <span
+      class="mega-menu__content"
+      style="--menu-content-columns-desktop: {{ max_collection_columns }}; --menu-content-columns-tablet: {{ max_collection_columns_tablet }}; --resource-card-corner-radius: {{ image_border_radius }}px;"
+    >
+      <ul
+        class="mega-menu__content-list mega-menu__content-list--collections list-unstyled"
+        style="--menu-content-columns-desktop: {{ max_featured_collections }}; --menu-content-columns-tablet: {{ max_featured_collections_tablet }};"
+      >
+        {% for i in (1..2) %}
+          {% liquid
+            assign card_image_key = 'mm_mega_image_' | append: i
+            assign card_title_key = card_image_key | append: '_title'
+            assign card_link_key = card_image_key | append: '_link'
+            assign card_image = menu_settings[card_image_key]
+            if card_image == blank or shown_cards >= max_featured_collections
+              continue
+            endif
+            assign shown_cards = shown_cards | plus: 1
+            assign card_title = menu_settings[card_title_key]
+            assign card_link = menu_settings[card_link_key]
+            assign card_ratio = content_aspect_ratio
+            if card_ratio == blank or card_ratio == 'adapt'
+              assign card_ratio = card_image.aspect_ratio
+            endif
+          %}
+          <li class="mega-menu__content-list-item{% if shown_cards > max_featured_collections_tablet %} mega-menu__content-list-item--hidden-tablet{% endif %}">
+            <div class="resource-card resource-card--overlay mm-mega-card" data-resource-type="collection">
+              {%- if card_link != blank -%}
+                <a class="resource-card__link" href="{{ card_link }}">
+                  <span class="visually-hidden">{{ card_title | default: card_image.alt | escape }}</span>
+                </a>
+              {%- endif -%}
+              <div class="resource-card__media" style="--resource-card-aspect-ratio: {{ card_ratio }};">
+                {{
+                  card_image
+                  | image_url: width: 1200
+                  | image_tag: loading: 'lazy', class: 'resource-card__image', widths: '240, 352, 832, 1200', sizes: image_sizes, alt: card_title
+                }}
+              </div>
+              {%- if card_title != blank -%}
+                <div class="resource-card__content">
+                  <p class="resource-card__title h5">{{ card_title | escape }}</p>
+                </div>
+              {%- endif -%}
+            </div>
           </li>
         {% endfor %}
       </ul>

@@ -151,6 +151,23 @@
                     class="mega-menu__grid"
                     data-menu-grid-id="{{ list_id }}"
                   >
+                    {% liquid
+                      assign link_content_type = menu_content_type
+                      assign link_ratio = ratio
+                      if menu_content_type == 'text'
+                        if block_settings.mm_mega_image_1 != blank or block_settings.mm_mega_image_2 != blank
+                          assign link_content_type = 'mm_images'
+                          assign link_ratio = block_settings.mm_mega_images_ratio
+                          if block_settings.mm_mega_images_menu_item != blank
+                            assign wanted_title = block_settings.mm_mega_images_menu_item | strip | downcase
+                            assign current_title = link.title | strip | downcase
+                            if wanted_title != current_title
+                              assign link_content_type = 'text'
+                            endif
+                          endif
+                        endif
+                      endif
+                    %}
                     {% render 'mega-menu-list',
                       parent_link: link,
                       id: list_id,
@@ -158,9 +175,9 @@
                       grid_columns_count: 6,
                       grid_columns_count_tablet: 4,
                       grid_columns_count_collection_images: 8,
-                      menu_content_type: menu_content_type,
+                      menu_content_type: link_content_type,
                       menu_settings: block_settings,
-                      content_aspect_ratio: ratio,
+                      content_aspect_ratio: link_ratio,
                       image_border_radius: image_border_radius
                     %}
                   </div>
@@ -1071,6 +1088,70 @@
       "default": "collection_images"
     },
     {
+      "type": "paragraph",
+      "content": "Mega menu images: shown next to the links when Media type is None."
+    },
+    {
+      "type": "image_picker",
+      "id": "mm_mega_image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "text",
+      "id": "mm_mega_image_1_title",
+      "label": "Image 1 title"
+    },
+    {
+      "type": "url",
+      "id": "mm_mega_image_1_link",
+      "label": "Image 1 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "mm_mega_image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "text",
+      "id": "mm_mega_image_2_title",
+      "label": "Image 2 title"
+    },
+    {
+      "type": "url",
+      "id": "mm_mega_image_2_link",
+      "label": "Image 2 link"
+    },
+    {
+      "type": "select",
+      "id": "mm_mega_images_ratio",
+      "label": "Image shape",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Original"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Portrait"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Square"
+        },
+        {
+          "value": "16 / 9",
+          "label": "Landscape"
+        }
+      ],
+      "default": "16 / 9"
+    },
+    {
+      "type": "text",
+      "id": "mm_mega_images_menu_item",
+      "label": "Show only under menu item",
+      "info": "Write a menu item title, for example Products. Leave empty to show the images under every menu item with a dropdown."
+    },
+    {
       "type": "select",
       "id": "featured_products_aspect_ratio",
       "label": "t:settings.image_ratio",
@@ -1164,71 +1245,6 @@
       "id": "drawer_dividers",
       "label": "t:settings.dividers",
       "default": false
-    },
-    {
-      "type": "header",
-      "content": "Mega menu images",
-      "info": "Pick a collection from the menu and the image to show for it in the mega menu. Used with the featured collections style."
-    },
-    {
-      "type": "collection",
-      "id": "mm_mega_collection_1",
-      "label": "Collection 1"
-    },
-    {
-      "type": "image_picker",
-      "id": "mm_mega_image_1",
-      "label": "Image 1"
-    },
-    {
-      "type": "collection",
-      "id": "mm_mega_collection_2",
-      "label": "Collection 2"
-    },
-    {
-      "type": "image_picker",
-      "id": "mm_mega_image_2",
-      "label": "Image 2"
-    },
-    {
-      "type": "collection",
-      "id": "mm_mega_collection_3",
-      "label": "Collection 3"
-    },
-    {
-      "type": "image_picker",
-      "id": "mm_mega_image_3",
-      "label": "Image 3"
-    },
-    {
-      "type": "collection",
-      "id": "mm_mega_collection_4",
-      "label": "Collection 4"
-    },
-    {
-      "type": "image_picker",
-      "id": "mm_mega_image_4",
-      "label": "Image 4"
-    },
-    {
-      "type": "collection",
-      "id": "mm_mega_collection_5",
-      "label": "Collection 5"
-    },
-    {
-      "type": "image_picker",
-      "id": "mm_mega_image_5",
-      "label": "Image 5"
-    },
-    {
-      "type": "collection",
-      "id": "mm_mega_collection_6",
-      "label": "Collection 6"
-    },
-    {
-      "type": "image_picker",
-      "id": "mm_mega_image_6",
-      "label": "Image 6"
     }
   ]
 }
