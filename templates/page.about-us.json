@@ -11,7 +11,28 @@
   "sections": {
     "about_hero": {
       "type": "mm-about-hero",
-      "settings": {}
+      "settings": {
+        "eyebrow": "About mish-mash",
+        "heading": "<p>Serious about design. <strong>Playful</strong> by nature.</p>",
+        "text": "<p>We make everyday objects with a little more character. Colourful, a bit unexpected and made to make you smile every time you look at them.</p>",
+        "button_label": "Meet the objects",
+        "button_link": "",
+        "alignment": "left",
+        "show_symbols": true,
+        "symbol_size": 88,
+        "show_image": true,
+        "image_height": 520,
+        "image_radius": 24,
+        "heading_font": "cocogoose",
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "accent": "#ff6ea7",
+        "padding_top": 80,
+        "padding_bottom": 60,
+        "padding_mobile": 55,
+        "heading_size": 96,
+        "heading_mobile": 48
+      }
     },
     "about_ticker": {
       "type": "mm-ticker",
@@ -189,14 +210,14 @@
     },
     "about_values": {
       "type": "mm-about-values",
-      "settings": {},
       "blocks": {
         "value_1": {
           "type": "value",
           "settings": {
             "character": "showoff",
             "title": "Made to be noticed",
-            "text": "<p>Bold shapes and honest colours. Objects that hold their own in any room.</p>"
+            "text": "<p>Bold shapes and honest colours. Objects that hold their own in any room.</p>",
+            "card_colour": ""
           }
         },
         "value_2": {
@@ -204,7 +225,8 @@
           "settings": {
             "character": "player",
             "title": "Made to be played with",
-            "text": "<p>Swap, stack, combine. Your home should be allowed to change its mind.</p>"
+            "text": "<p>Swap, stack, combine. Your home should be allowed to change its mind.</p>",
+            "card_colour": ""
           }
         },
         "value_3": {
@@ -212,7 +234,8 @@
           "settings": {
             "character": "trickster",
             "title": "A little unexpected",
-            "text": "<p>A twist in every piece, so even the everyday feels new.</p>"
+            "text": "<p>A twist in every piece, so even the everyday feels new.</p>",
+            "card_colour": ""
           }
         },
         "value_4": {
@@ -220,7 +243,8 @@
           "settings": {
             "character": "helper",
             "title": "Useful, always",
-            "text": "<p>Good looks are nice. Good looks that work every day are better.</p>"
+            "text": "<p>Good looks are nice. Good looks that work every day are better.</p>",
+            "card_colour": ""
           }
         }
       },
@@ -229,16 +253,35 @@
         "value_2",
         "value_3",
         "value_4"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "What we believe",
+        "heading": "Small objects,\nbig ideas.",
+        "text": "The four things behind every piece we make.",
+        "columns": 4,
+        "card_style": "filled",
+        "card_background": "#ffffff",
+        "card_radius": 20,
+        "show_numbers": true,
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "accent": "#ff6ea7",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "padding_mobile": 55
+      }
     },
     "about_numbers": {
       "type": "mm-about-stats",
-      "settings": {},
       "blocks": {
         "stat_1": {
           "type": "stat",
           "settings": {
             "number": "4",
+            "prefix": "",
             "suffix": "",
             "label": "characters with very different personalities"
           }
@@ -247,6 +290,7 @@
           "type": "stat",
           "settings": {
             "number": "5",
+            "prefix": "",
             "suffix": "",
             "label": "everyday objects, reimagined"
           }
@@ -255,6 +299,7 @@
           "type": "stat",
           "settings": {
             "number": "100",
+            "prefix": "",
             "suffix": "%",
             "label": "designed in Istanbul"
           }
@@ -263,6 +308,7 @@
           "type": "stat",
           "settings": {
             "number": "1000",
+            "prefix": "",
             "suffix": "+",
             "label": "happy homes and counting"
           }
@@ -273,11 +319,25 @@
         "stat_2",
         "stat_3",
         "stat_4"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "mish-mash in numbers",
+        "heading": "A small studio\nwith big plans.",
+        "number_size": 88,
+        "dividers": true,
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "accent": "#ff6ea7",
+        "padding_top": 70,
+        "padding_bottom": 70,
+        "padding_mobile": 55
+      }
     },
     "about_timeline": {
       "type": "mm-about-timeline",
-      "settings": {},
       "blocks": {
         "step_1": {
           "type": "step",
@@ -321,7 +381,22 @@
         "step_2",
         "step_3",
         "step_4"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Our story",
+        "heading": "How it all\nmish-mashed.",
+        "line_colour": "#ff6ea7",
+        "card_background": "#ffffff",
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "accent": "#ff6ea7",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "padding_mobile": 55
+      }
     },
     "about_characters": {
       "type": "mm-personalities",
@@ -401,7 +476,6 @@
     },
     "about_team": {
       "type": "mm-about-team",
-      "settings": {},
       "blocks": {
         "member_1": {
           "type": "member",
@@ -409,7 +483,9 @@
             "name": "Beyza",
             "role": "Founder & designer",
             "fact": "Owns more vases than flowers.",
-            "character": "showoff"
+            "character": "showoff",
+            "link": "",
+            "link_label": "Instagram"
           }
         },
         "member_2": {
@@ -418,7 +494,9 @@
             "name": "Team member",
             "role": "Product & colour",
             "fact": "Can name every shade of pink.",
-            "character": "player"
+            "character": "player",
+            "link": "",
+            "link_label": "Instagram"
           }
         },
         "member_3": {
@@ -427,7 +505,9 @@
             "name": "Team member",
             "role": "Studio & packing",
             "fact": "Writes every thank-you note by hand.",
-            "character": "helper"
+            "character": "helper",
+            "link": "",
+            "link_label": "Instagram"
           }
         }
       },
@@ -435,18 +515,39 @@
         "member_1",
         "member_2",
         "member_3"
-      ]
+      ],
+      "disabled": true,
+      "settings": {
+        "eyebrow": "The people",
+        "heading": "The minds behind\nthe mish-mash.",
+        "text": "Hover to meet their inner character.",
+        "columns": 3,
+        "ratio": "4 / 5",
+        "radius": 18,
+        "fact_label": "Fun fact",
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "accent": "#ff6ea7",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "padding_mobile": 55
+      }
     },
     "about_reviews": {
       "type": "mm-reviews",
-      "settings": {},
       "blocks": {
         "review_1": {
           "type": "review",
           "settings": {
             "quote": "It makes me smile every single morning.",
             "author": "Elif K.",
+            "meta": "",
+            "rating": 5,
             "character": "showoff",
+            "product": "",
             "product_name": "Vase"
           }
         },
@@ -455,7 +556,10 @@
           "settings": {
             "quote": "Everyone who visits asks where the lamp is from.",
             "author": "Can D.",
+            "meta": "",
+            "rating": 5,
             "character": "helper",
+            "product": "",
             "product_name": "Lamp"
           }
         },
@@ -464,7 +568,10 @@
           "settings": {
             "quote": "Fun, colourful and beautifully packed. Perfect gift.",
             "author": "Zeynep A.",
+            "meta": "",
+            "rating": 5,
             "character": "player",
+            "product": "",
             "product_name": "Clock"
           }
         },
@@ -473,7 +580,10 @@
           "settings": {
             "quote": "Looks like a sculpture until you light it. Magic.",
             "author": "Mert Y.",
+            "meta": "",
+            "rating": 5,
             "character": "trickster",
+            "product": "",
             "product_name": "Candle"
           }
         }
@@ -483,11 +593,63 @@
         "review_2",
         "review_3",
         "review_4"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Happy homes",
+        "heading": "Little objects,\nbig smiles.",
+        "speed": 60,
+        "direction": "left",
+        "two_rows": false,
+        "pause_on_hover": true,
+        "edge_fade": true,
+        "card_width": 340,
+        "card_radius": 18,
+        "gap": 16,
+        "card_background": "#ffffff",
+        "card_text": "#171514",
+        "star_colour": "#f37400",
+        "show_stars": true,
+        "show_symbols": true,
+        "show_product_image": true,
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "accent": "#ff6ea7",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "padding_mobile": 55
+      }
     },
     "about_closing": {
       "type": "mm-about-cta",
-      "settings": {}
+      "settings": {
+        "eyebrow": "Your turn",
+        "heading": "Find the character\nthat feels like home.",
+        "text": "Four personalities, five objects and endless ways to mix them.",
+        "button_label": "Shop the collection",
+        "button_link": "",
+        "link_label": "Take the character quiz",
+        "link": "",
+        "box_colour": "#171514",
+        "box_text": "#faf9f5",
+        "button_colour": "#ff6ea7",
+        "button_text_colour": "#171514",
+        "radius": 32,
+        "show_symbols": true,
+        "symbol_size": 110,
+        "spin": true,
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "accent": "#ff6ea7",
+        "padding_top": 40,
+        "padding_bottom": 90,
+        "padding_mobile": 55
+      }
     },
     "main": {
       "type": "main-page",
@@ -498,25 +660,46 @@
           "settings": {
             "text": "<h1>{{ closest.page.title }}</h1>",
             "width": "100%",
-            "type_preset": "h2"
-          }
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         },
         "page-content": {
           "type": "page-content",
-          "settings": {}
+          "settings": {
+            "text_color": ""
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "heading",
         "page-content"
       ],
+      "disabled": true,
       "settings": {
+        "content_direction": "column",
         "gap": 32,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 40,
         "padding-block-end": 80
-      },
-      "disabled": true
+      }
     }
   },
   "order": [
