@@ -14,7 +14,7 @@
       "settings": {
         "image": "{{ collection.image }}",
         "height_mode": "image",
-        "image_fit": "contain",
+        "image_fit": "cover",
         "background_color": "#2a2725",
         "image_zoom": 100,
         "focus_x": 0,
