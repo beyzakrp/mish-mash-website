@@ -58,6 +58,11 @@ body:has(#header-component[transparent]) .mm-hero:before{content:"";position:abs
 .mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item):nth-child(n+4){transition-delay:120ms}
 .mm-menu-animate .mega-menu__link{transition:opacity .25s}
 .mm-menu-animate .mega-menu__list:has(.mega-menu__link:hover) .mega-menu__link:not(:hover){opacity:var(--opacity-subdued-text,.4)}
+
+/* Mega menu column headings (Menu block: Small column headings) */
+.mm-menu-labels .mega-menu__link--parent{font-family:var(--menu-child-font-family);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.55;padding-block-end:var(--padding-xs)}
+.mm-menu-labels .mega-menu__link--parent:hover{opacity:1}
+.mm-menu-animate.mm-menu-labels .mega-menu__list:has(.mega-menu__link:hover) .mega-menu__link--parent:not(:hover){opacity:.55}
 .mm-menu-animate .mega-menu__content-list-item img{transition:scale 1.2s var(--mm-menu-ease)}
 .mm-menu-animate .mega-menu__content-list-item:hover img{scale:1.03}
 

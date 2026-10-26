@@ -210,7 +210,7 @@
 
     <header-menu
       ref="headerMenu"
-      class="header-menu mm-menu-hover--{{ block_settings.mm_menu_hover_style | default: 'roll' }}{% if block_settings.mm_menu_animation %} mm-menu-animate{% endif %}"
+      class="header-menu mm-menu-hover--{{ block_settings.mm_menu_hover_style | default: 'roll' }}{% if block_settings.mm_menu_animation %} mm-menu-animate{% endif %}{% if block_settings.mm_menu_column_labels %} mm-menu-labels{% endif %}"
       {{ block.shopify_attributes }}
       data-hydration-key="header-menu"
       data-skip-node-update
@@ -1040,6 +1040,13 @@
       "id": "mm_menu_animation",
       "label": "Animate mega menu",
       "info": "Fades the mega menu content in when it opens.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mm_menu_column_labels",
+      "label": "Small column headings",
+      "info": "Shows mega menu column headings (e.g. Objects, Characters) as small grey labels.",
       "default": true
     },
     {
