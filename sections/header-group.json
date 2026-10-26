@@ -98,7 +98,17 @@
             "text_color_navigation_bar": "",
             "drawer_accordion": false,
             "drawer_accordion_expand_first": false,
-            "drawer_dividers": false
+            "drawer_dividers": false,
+            "mm_mega_collection_1": "clock",
+            "mm_mega_image_1": "{{ closest.collection.image }}",
+            "mm_mega_collection_2": "candelabra",
+            "mm_mega_image_2": "shopify://shop_images/henri-mood-2.webp",
+            "mm_mega_collection_3": "lamp",
+            "mm_mega_image_3": "{{ closest.collection.image }}",
+            "mm_mega_collection_4": "vase",
+            "mm_mega_image_4": "{{ closest.collection.image }}",
+            "mm_mega_collection_5": "",
+            "mm_mega_collection_6": ""
           },
           "blocks": {}
         }
