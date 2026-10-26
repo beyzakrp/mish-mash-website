@@ -38,20 +38,27 @@ body:has(#header-component[transparent]) .mm-hero:before{content:"";position:abs
 .header-menu .menu-list:not(.menu-list--mobile) .menu-list__list-item:not([slot='overflow']) .menu-list__link-title{padding-inline:calc(var(--mm-menu-item-gap,22px) / 2)}
 .header-menu .overflow-menu::part(list){margin-inline:calc(var(--mm-menu-item-gap,22px) / -2)}
 
-/* Mega menu hover animation (Menu block: Hover animation) */
-.mm-menu-animate{--mm-menu-ease:cubic-bezier(.22,1,.36,1)}
-.mm-menu-animate .menu-list__list-item:not([slot='overflow']) .menu-list__link-title{position:relative}
-.mm-menu-animate .menu-list__list-item:not([slot='overflow']) .menu-list__link-title:after{content:"";position:absolute;left:calc(var(--mm-menu-item-gap,22px) / 2);right:calc(var(--mm-menu-item-gap,22px) / 2);bottom:-5px;height:2px;border-radius:2px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .45s var(--mm-menu-ease)}
-.mm-menu-animate .menu-list__list-item:is(:hover,:focus-within) .menu-list__link-title:after,.mm-menu-animate .menu-list__list-item:has([aria-expanded='true']) .menu-list__link-title:after{transform:scaleX(1);transform-origin:left}
-.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item){opacity:0;translate:0 14px;transition:opacity .35s ease,translate .6s var(--mm-menu-ease)}
-.mm-menu-animate .menu-list__list-item:has([aria-expanded='true']) :is(.mega-menu__column,.mega-menu__content-list-item),.mm-menu-animate .menu-list__submenu:hover :is(.mega-menu__column,.mega-menu__content-list-item){opacity:1;translate:0 0}
-.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item):nth-child(2){transition-delay:50ms}
-.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item):nth-child(3){transition-delay:100ms}
-.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item):nth-child(4){transition-delay:150ms}
-.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item):nth-child(n+5){transition-delay:200ms}
-.mm-menu-animate .mega-menu__link{transition:translate .35s var(--mm-menu-ease),opacity .2s}
-.mm-menu-animate .mega-menu__link:hover{translate:4px 0}
-.mm-menu-animate .mega-menu__content-list-item{overflow:hidden}
-.mm-menu-animate .mega-menu__content-list-item img{transition:transform .8s var(--mm-menu-ease)}
-.mm-menu-animate .mega-menu__content-list-item:hover img{transform:scale(1.05)}
-@media(prefers-reduced-motion:reduce){.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item){opacity:1;translate:none;transition:none}.mm-menu-animate .mega-menu__link:hover{translate:none}.mm-menu-animate .mega-menu__content-list-item:hover img{transform:none}}
+/* Menu link hover style (Menu block: Link hover style) */
+.header-menu{--mm-menu-ease:cubic-bezier(.22,1,.36,1)}
+.header-menu .mm-roll{display:inline-block;position:relative}
+.mm-menu-hover--roll .menu-list__list-item:not([slot='overflow']) .menu-list__link-title{display:inline-flex;overflow:hidden;line-height:1.25}
+.mm-menu-hover--roll .mm-roll{transition:translate .55s var(--mm-menu-ease)}
+.mm-menu-hover--roll .mm-roll:after{content:attr(data-text);position:absolute;left:0;top:100%}
+.mm-menu-hover--roll .menu-list__list-item:is(:hover,:focus-within) .mm-roll,.mm-menu-hover--roll .menu-list__list-item:has([aria-expanded='true']) .mm-roll{translate:0 -100%}
+.mm-menu-hover--dot .mm-roll:after{content:"";position:absolute;left:50%;bottom:-9px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:currentColor;opacity:0;scale:0;transition:opacity .3s,scale .45s var(--mm-menu-ease)}
+.mm-menu-hover--dot .menu-list__list-item:is(:hover,:focus-within) .mm-roll:after,.mm-menu-hover--dot .menu-list__list-item:has([aria-expanded='true']) .mm-roll:after{opacity:1;scale:1}
+.mm-menu-hover--line .mm-roll:after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:currentColor;scale:0 1;transition:scale .5s var(--mm-menu-ease)}
+.mm-menu-hover--line .menu-list__list-item:is(:hover,:focus-within) .mm-roll:after,.mm-menu-hover--line .menu-list__list-item:has([aria-expanded='true']) .mm-roll:after{scale:1 1}
+
+/* Mega menu content (Menu block: Animate mega menu) */
+.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item){opacity:0;translate:0 6px;filter:blur(3px);transition:opacity .45s ease,translate .7s var(--mm-menu-ease),filter .45s ease}
+.mm-menu-animate .menu-list__list-item:has([aria-expanded='true']) :is(.mega-menu__column,.mega-menu__content-list-item),.mm-menu-animate .menu-list__submenu:hover :is(.mega-menu__column,.mega-menu__content-list-item){opacity:1;translate:0 0;filter:none}
+.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item):nth-child(2){transition-delay:40ms}
+.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item):nth-child(3){transition-delay:80ms}
+.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item):nth-child(n+4){transition-delay:120ms}
+.mm-menu-animate .mega-menu__link{transition:opacity .25s}
+.mm-menu-animate .mega-menu__list:has(.mega-menu__link:hover) .mega-menu__link:not(:hover){opacity:var(--opacity-subdued-text,.4)}
+.mm-menu-animate .mega-menu__content-list-item img{transition:scale 1.2s var(--mm-menu-ease)}
+.mm-menu-animate .mega-menu__content-list-item:hover img{scale:1.03}
+
+@media(prefers-reduced-motion:reduce){.header-menu .mm-roll,.header-menu .mm-roll:after{transition:none}.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item){opacity:1;translate:none;filter:none;transition:none}.mm-menu-animate .mega-menu__content-list-item:hover img{scale:none}}
