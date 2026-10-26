@@ -1,0 +1,444 @@
+{%- liquid
+  assign hero_collection = collection
+  assign character = section.settings.character
+  if character == 'auto'
+    assign character_source = hero_collection.handle | append: ' ' | append: hero_collection.title | downcase
+    if character_source contains 'player'
+      assign character = 'player'
+    elsif character_source contains 'trickster'
+      assign character = 'trickster'
+    elsif character_source contains 'helper'
+      assign character = 'helper'
+    else
+      assign character = 'showoff'
+    endif
+  endif
+  assign character_key = 'mishmash.' | append: character
+  assign character_name = section.settings.name
+  if character_name == blank
+    assign character_name = character_key | t | remove_first: 'The ' | strip
+  endif
+  assign pattern_text = section.settings.text
+  if section.settings.text_source == 'description' and hero_collection.description != blank
+    assign pattern_text = hero_collection.description
+  endif
+
+  case character
+    when 'showoff'
+      assign default_dark = '#6B1A2E'
+      assign default_light = '#E07A93'
+    when 'player'
+      assign default_dark = '#B34700'
+      assign default_light = '#FFB070'
+    when 'trickster'
+      assign default_dark = '#1F5FA8'
+      assign default_light = '#9CCBFF'
+    else
+      assign default_dark = '#B8306B'
+      assign default_light = '#FFB3CF'
+  endcase
+  assign colour_a = default_dark
+  assign colour_b = default_light
+  if section.settings.colour_mode == 'custom'
+    assign colour_a = section.settings.colour_a
+    assign colour_b = section.settings.colour_b
+  endif
+
+  if section.settings.symbol_image != blank
+    assign symbol_url = section.settings.symbol_image | image_url: width: 400
+  else
+    assign symbol_url = 'mm-symbol-' | append: character | append: '.svg' | asset_url
+  endif
+
+  assign tile = section.settings.tile_size
+  assign tile_mobile = section.settings.tile_size_mobile
+  assign smallest_tile = tile | at_most: tile_mobile
+  assign columns = 2600 | divided_by: smallest_tile | plus: 2 | at_most: 64
+  assign tallest = section.settings.height | at_least: section.settings.height_mobile
+  assign rows = tallest | divided_by: smallest_tile | plus: 2 | at_most: 22
+-%}
+<section class="mm-home mm-pattern{% if section.settings.drift %} mm-pattern--drift{% endif %}{% if section.settings.hover_spin %} mm-pattern--spin{% endif %}{% if section.settings.alternate_rotation %} mm-pattern--alt{% endif %}" id="mm-{{ section.id }}" style="--mm-pattern-url: url({{ symbol_url }});">
+  <div class="mm-pattern__tiles" aria-hidden="true">
+    {%- for row in (1..rows) -%}
+      <div class="mm-pattern__row">
+        {%- for column in (1..columns) -%}
+          {%- assign parity = row | plus: column | modulo: 2 -%}
+          <span class="mm-pattern__tile mm-pattern__tile--{% if parity == 0 %}a{% else %}b{% endif %}"></span>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+  {%- if section.settings.texture != blank -%}
+    {{ section.settings.texture | image_url: width: 2000 | image_tag: alt: '', class: 'mm-pattern__texture', loading: 'eager', widths: '800,1400,2000', sizes: '100vw' }}
+  {%- endif -%}
+
+  <div class="mm-pattern__content">
+    {%- if section.settings.show_name -%}
+      <h1 class="mm-pattern__name">
+        {%- if section.settings.small_word != blank -%}<span class="mm-pattern__the">{{ section.settings.small_word | escape }}</span>{%- endif -%}
+        <span class="mm-pattern__big">{{ character_name | escape }}</span>
+      </h1>
+    {%- endif -%}
+    {%- if pattern_text != blank -%}
+      <div class="mm-pattern__text">{{ pattern_text }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% style %}
+#mm-{{ section.id }}{
+  --mm-pattern-a:{{ colour_a }};
+  --mm-pattern-b:{{ colour_b }};
+  --mm-pattern-tile:{{ tile }}px;
+  --mm-pattern-tile-mobile:{{ tile_mobile }}px;
+  --mm-pattern-symbol:{{ section.settings.symbol_scale }}%;
+  --mm-pattern-height:{{ section.settings.height }}px;
+  --mm-pattern-height-mobile:{{ section.settings.height_mobile }}px;
+  --mm-pattern-text:{{ section.settings.text_color }};
+  --mm-pattern-name-size:{{ section.settings.name_size }}px;
+  --mm-pattern-text-size:{{ section.settings.text_size }}px;
+  --mm-pattern-texture-opacity:{{ section.settings.texture_opacity | divided_by: 100.0 }};
+  --mm-pattern-drift-speed:{{ section.settings.drift_speed }}s;
+  --mm-pattern-shadow:{% if section.settings.text_shadow %}0 2px 18px rgb(0 0 0 / .35){% else %}none{% endif %};
+  margin-bottom:{{ section.settings.margin_bottom }}px;
+}
+{%- if section.settings.text_lowercase -%}
+#mm-{{ section.id }} .mm-pattern__text{text-transform:lowercase}
+{%- endif -%}
+{%- case section.settings.name_font -%}
+  {%- when 'proxima' -%}
+    #mm-{{ section.id }} .mm-pattern__name{font-family:'MM Proxima Nova',Arial,sans-serif;font-weight:800}
+  {%- when 'theme' -%}
+    #mm-{{ section.id }} .mm-pattern__name{font-family:var(--font-heading--family)}
+{%- endcase -%}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-pattern{position:relative;display:grid;place-items:center;height:var(--mm-pattern-height,320px);overflow:hidden;isolation:isolate;background:var(--mm-pattern-a);color:var(--mm-pattern-text)}
+.mm-pattern__tiles{position:absolute;top:0;left:50%;z-index:-2;display:grid;translate:-50% 0}
+.mm-pattern--drift .mm-pattern__tiles{animation:mm-pattern-drift var(--mm-pattern-drift-speed,40s) linear infinite}
+@keyframes mm-pattern-drift{from{translate:-50% 0}to{translate:calc(-50% - var(--mm-pattern-tile) * 2) calc(var(--mm-pattern-tile) * -2)}}
+.mm-pattern__row{display:flex}
+.mm-pattern__tile{position:relative;flex:none;width:var(--mm-pattern-tile,96px);height:var(--mm-pattern-tile,96px)}
+.mm-pattern__tile--a{background:var(--mm-pattern-a)}
+.mm-pattern__tile--b{background:var(--mm-pattern-b)}
+.mm-pattern__tile:after{content:"";position:absolute;inset:calc((100% - var(--mm-pattern-symbol,82%)) / 2);-webkit-mask:var(--mm-pattern-url) center/contain no-repeat;mask:var(--mm-pattern-url) center/contain no-repeat;transition:rotate .9s cubic-bezier(.34,1.56,.64,1),scale .6s cubic-bezier(.34,1.56,.64,1)}
+.mm-pattern__tile--a:after{background:var(--mm-pattern-b)}
+.mm-pattern__tile--b:after{background:var(--mm-pattern-a)}
+.mm-pattern--alt .mm-pattern__tile--b:after{rotate:22deg}
+.mm-pattern--spin .mm-pattern__tile:hover:after{rotate:180deg;scale:1.08}
+.mm-pattern__texture{position:absolute;inset:0;z-index:-1;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;opacity:var(--mm-pattern-texture-opacity,.6);pointer-events:none}
+.mm-pattern__content{position:relative;display:grid;justify-items:center;gap:10px;padding:24px;text-align:center;pointer-events:none;text-shadow:var(--mm-pattern-shadow)}
+.mm-home .mm-pattern__name{display:grid;justify-items:center;margin:0;font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;line-height:.9;text-transform:uppercase;color:inherit}
+.mm-pattern__the{font-size:calc(var(--mm-pattern-name-size,56px) * .4)}
+.mm-pattern__big{font-size:var(--mm-pattern-name-size,56px);white-space:nowrap}
+.mm-pattern__text{max-width:70ch;font-size:var(--mm-pattern-text-size,15px);line-height:1.4}
+.mm-pattern__text p{margin:0}
+@media(max-width:749px){
+  .mm-pattern{height:var(--mm-pattern-height-mobile,260px)}
+  .mm-pattern__tile{width:var(--mm-pattern-tile-mobile,64px);height:var(--mm-pattern-tile-mobile,64px)}
+  .mm-pattern__big{font-size:calc(var(--mm-pattern-name-size,56px) * .65)}
+  .mm-pattern__the{font-size:calc(var(--mm-pattern-name-size,56px) * .3)}
+  .mm-pattern__text{font-size:calc(var(--mm-pattern-text-size,15px) * .9)}
+  @keyframes mm-pattern-drift{from{translate:-50% 0}to{translate:calc(-50% - var(--mm-pattern-tile-mobile) * 2) calc(var(--mm-pattern-tile-mobile) * -2)}}
+}
+@media(prefers-reduced-motion:reduce){.mm-pattern__tiles{animation:none!important}.mm-pattern__tile:after{transition:none}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · Character pattern",
+  "tag": "div",
+  "class": "mm-pattern-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Pattern"
+    },
+    {
+      "type": "select",
+      "id": "character",
+      "label": "Character",
+      "default": "auto",
+      "info": "Automatic reads the collection name, for example Show-off or The Player.",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Automatic"
+        },
+        {
+          "value": "showoff",
+          "label": "The Show-off"
+        },
+        {
+          "value": "player",
+          "label": "The Player"
+        },
+        {
+          "value": "trickster",
+          "label": "The Trickster"
+        },
+        {
+          "value": "helper",
+          "label": "The Helper"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "symbol_image",
+      "label": "Custom symbol",
+      "info": "PNG or SVG with a transparent background. It is coloured like the pattern."
+    },
+    {
+      "type": "select",
+      "id": "colour_mode",
+      "label": "Pattern colours",
+      "default": "character",
+      "options": [
+        {
+          "value": "character",
+          "label": "Character colours"
+        },
+        {
+          "value": "custom",
+          "label": "Colours below"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "colour_a",
+      "label": "Dark colour",
+      "default": "#6B1A2E"
+    },
+    {
+      "type": "color",
+      "id": "colour_b",
+      "label": "Light colour",
+      "default": "#E07A93"
+    },
+    {
+      "type": "range",
+      "id": "tile_size",
+      "label": "Tile size",
+      "min": 40,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 92
+    },
+    {
+      "type": "range",
+      "id": "tile_size_mobile",
+      "label": "Mobile tile size",
+      "min": 32,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "symbol_scale",
+      "label": "Symbol size in tile",
+      "min": 40,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "default": 86
+    },
+    {
+      "type": "checkbox",
+      "id": "alternate_rotation",
+      "label": "Rotate every other symbol",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_spin",
+      "label": "Spin symbols on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "drift",
+      "label": "Move the pattern slowly",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "drift_speed",
+      "label": "Movement duration",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "s",
+      "default": 40,
+      "info": "Lower is faster."
+    },
+    {
+      "type": "image_picker",
+      "id": "texture",
+      "label": "Texture image",
+      "info": "Optional paper or grain texture laid over the pattern."
+    },
+    {
+      "type": "range",
+      "id": "texture_opacity",
+      "label": "Texture strength",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Desktop height",
+      "min": 160,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 320
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Mobile height",
+      "min": 140,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 240
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_name",
+      "label": "Show character name",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "small_word",
+      "label": "Small word",
+      "default": "The"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Name",
+      "info": "Defaults to the character name."
+    },
+    {
+      "type": "select",
+      "id": "name_font",
+      "label": "Name font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "theme",
+          "label": "Theme default"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "name_size",
+      "label": "Name size",
+      "min": 24,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "select",
+      "id": "text_source",
+      "label": "Text",
+      "default": "description",
+      "options": [
+        {
+          "value": "description",
+          "label": "Collection description"
+        },
+        {
+          "value": "custom",
+          "label": "Text below"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Custom text",
+      "default": "<p>Designed to stand out. Statement pieces that bring personality, style, and visual impact to any space.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "text_lowercase",
+      "label": "Lowercase text",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 11,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "text_shadow",
+      "label": "Soft text shadow",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Space below",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Character pattern"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "collection"
+    ]
+  }
+}
+{% endschema %}

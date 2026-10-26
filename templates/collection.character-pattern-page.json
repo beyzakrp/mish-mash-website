@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "character_pattern": {
+      "type": "mm-collection-pattern",
+      "settings": {}
+    },
     "section": {
       "type": "section",
       "blocks": {
@@ -247,6 +251,7 @@
     }
   },
   "order": [
+    "character_pattern",
     "section",
     "main"
   ]
