@@ -18,7 +18,7 @@
       <p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>
       <h1>{{ section.settings.heading | escape | newline_to_br }}</h1>
       <p class="mm-intro">{{ section.settings.intro | escape }}</p>
-      {% if section.settings.button_label != blank %}<a class="mm-button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">↗</span></a>{% endif %}
+      {% if section.settings.button_label != blank %}<a class="mm-button mm-hero-button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }}</a>{% endif %}
     </div>
     {% if section.settings.secondary_label != blank %}<a class="mm-hero-bottom" href="{{ section.settings.secondary_link | default: routes.all_products_collection_url }}">{{ section.settings.secondary_label | escape }} <span aria-hidden="true">↓</span></a>{% endif %}
   </div>
@@ -27,7 +27,8 @@
 
 {% style %}
 #mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};background:var(--mm-paper);color:var(--mm-ink)}
-#mm-{{ section.id }} .mm-button{background:{{ section.settings.button_background }};color:{{ section.settings.button_text }}!important}
+#mm-{{ section.id }} .mm-hero-button{justify-content:center;gap:0;min-width:{{ section.settings.button_min_width }}px;padding:{{ section.settings.button_padding_y }}px {{ section.settings.button_padding_x }}px;min-height:0;border-radius:{{ section.settings.button_radius }}px;border:{{ section.settings.button_border_width }}px solid {{ section.settings.button_border | default: 'transparent' }};background:{{ section.settings.button_background | default: 'transparent' }};color:{{ section.settings.button_text }}!important;font-size:{{ section.settings.button_font_size }}px;letter-spacing:{{ section.settings.button_letter_spacing | divided_by: 100.0 }}em;text-transform:{% if section.settings.button_uppercase %}uppercase{% else %}none{% endif %};transition:background .3s,color .3s,border-color .3s,transform .35s var(--mm-ease-spring,ease)}
+#mm-{{ section.id }} .mm-hero-button:hover,#mm-{{ section.id }} .mm-hero-button:focus-visible{background:{{ section.settings.button_hover_background | default: 'transparent' }};color:{{ section.settings.button_hover_text }}!important;border-color:{{ section.settings.button_hover_border | default: section.settings.button_border | default: 'transparent' }}}
 {% endstyle %}
 {% style %}
 #mm-{{ section.id }} .mm-hero{height:{{ section.settings.height }}px;min-height:0;background:{{ section.settings.background }}}
@@ -179,6 +180,105 @@
       "default": "#171514"
     },
     {
+      "type": "color",
+      "id": "button_border",
+      "label": "Button border",
+      "info": "Leave empty for no border colour."
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button background on hover",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text",
+      "label": "Button text on hover",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border",
+      "label": "Button border on hover"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Button border thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "button_padding_y",
+      "label": "Button height padding",
+      "min": 6,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "button_padding_x",
+      "label": "Button side padding",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_min_width",
+      "label": "Button minimum width",
+      "min": 0,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button text size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "button_letter_spacing",
+      "label": "Button letter spacing",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "button_uppercase",
+      "label": "Uppercase button text",
+      "default": true
+    },
+    {
       "type": "select",
       "id": "heading_font",
       "label": "Heading font",
@@ -221,4 +321,4 @@
     }
   ]
 }
-{% endschema %}
+{% endschema %}
