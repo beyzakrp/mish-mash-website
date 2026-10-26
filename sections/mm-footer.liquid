@@ -62,7 +62,19 @@
   </div>
 
   <div class="mm-footer__mark">
-    <div class="mm-footer__brand">
+    {%- liquid
+      assign logo_ratio = 1.203
+      if section.settings.logo_image != blank
+        assign logo_ratio = section.settings.logo_image.aspect_ratio
+      endif
+      assign mark_units = logo_ratio
+      assign mark_gaps = 0
+      if section.settings.show_symbols
+        assign mark_units = logo_ratio | plus: 4
+        assign mark_gaps = 4
+      endif
+    -%}
+    <div class="mm-footer__brand" style="--mm-footer-logo-ratio: {{ logo_ratio }}; --mm-footer-units: {{ mark_units }}; --mm-footer-gaps: {{ mark_gaps }};">
       <a href="{{ routes.root_url }}" class="mm-footer__logo">
         {%- if section.settings.logo_image != blank -%}
           {{ section.settings.logo_image | image_url: width: 900 | image_tag: alt: shop.name, loading: 'lazy', widths: '300,600,900', sizes: '(min-width: 750px) 300px, 50vw' }}
@@ -113,7 +125,7 @@
 </footer>
 
 {% style %}
-#mm-{{ section.id }}{--mm-footer-logo:{{ section.settings.logo_width }}px;--mm-footer-symbol:{{ section.settings.symbol_size }}px;--mm-footer-symbol-gap:{{ section.settings.symbol_gap }}px;--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};--mm-accent:{{ section.settings.accent }};background:var(--mm-paper);color:var(--mm-ink)}
+#mm-{{ section.id }}{--mm-footer-mark-height:{{ section.settings.mark_height }}px;--mm-footer-symbol-gap:{{ section.settings.symbol_gap }}px;--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};--mm-accent:{{ section.settings.accent }};background:var(--mm-paper);color:var(--mm-ink)}
 {% endstyle %}
 
 {% schema %}
@@ -230,13 +242,14 @@
     },
     {
       "type": "range",
-      "id": "logo_width",
-      "label": "Logo width",
-      "min": 80,
-      "max": 500,
-      "step": 10,
+      "id": "mark_height",
+      "label": "Logo and symbol height",
+      "info": "Logo and symbols share this height and shrink together on smaller screens.",
+      "min": 40,
+      "max": 300,
+      "step": 5,
       "unit": "px",
-      "default": 300
+      "default": 150
     },
     {
       "type": "checkbox",
@@ -263,16 +276,6 @@
         }
       ],
       "default": "hover"
-    },
-    {
-      "type": "range",
-      "id": "symbol_size",
-      "label": "Symbol size",
-      "min": 40,
-      "max": 300,
-      "step": 5,
-      "unit": "px",
-      "default": 150
     },
     {
       "type": "range",
