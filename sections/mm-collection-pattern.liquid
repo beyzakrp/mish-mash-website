@@ -57,7 +57,7 @@
   assign tallest = section.settings.height | at_least: section.settings.height_mobile
   assign rows = tallest | divided_by: smallest_tile | plus: 2 | at_most: 22
 -%}
-<section class="mm-home mm-pattern{% if section.settings.drift %} mm-pattern--drift{% endif %}{% if section.settings.hover_spin %} mm-pattern--spin{% endif %}{% if section.settings.alternate_rotation %} mm-pattern--alt{% endif %}" id="mm-{{ section.id }}" style="--mm-pattern-url: url({{ symbol_url }});">
+<section class="mm-home mm-pattern{% if section.settings.drift %} mm-pattern--drift{% endif %}{% if section.settings.hover_spin %} mm-pattern--spin{% endif %}{% if section.settings.alternate_rotation %} mm-pattern--alt{% endif %}{% if section.settings.glow %} mm-pattern--glow{% endif %}" id="mm-{{ section.id }}" style="--mm-pattern-url: url({{ symbol_url }});">
   <div class="mm-pattern__tiles" aria-hidden="true">
     {%- for row in (1..rows) -%}
       <div class="mm-pattern__row">
@@ -100,6 +100,9 @@
   --mm-pattern-texture-opacity:{{ section.settings.texture_opacity | divided_by: 100.0 }};
   --mm-pattern-drift-speed:{{ section.settings.drift_speed }}s;
   --mm-pattern-shadow:{% if section.settings.text_shadow %}0 2px 18px rgb(0 0 0 / .35){% else %}none{% endif %};
+  --mm-pattern-glow:{{ section.settings.glow_color }};
+  --mm-pattern-glow-opacity:{{ section.settings.glow_opacity }}%;
+  --mm-pattern-glow-size:{{ section.settings.glow_size | divided_by: 100.0 }};
   margin-bottom:{{ section.settings.margin_bottom }}px;
 }
 {%- if section.settings.text_lowercase -%}
@@ -131,12 +134,13 @@
 .mm-pattern--alt .mm-pattern__tile--b:after{rotate:22deg}
 .mm-pattern--spin .mm-pattern__tile:hover:after{rotate:180deg;scale:1.08}
 .mm-pattern__texture{position:absolute;inset:0;z-index:-1;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;opacity:var(--mm-pattern-texture-opacity,.6);pointer-events:none}
-.mm-pattern__content{position:relative;display:grid;justify-items:center;gap:10px;padding:24px;text-align:center;pointer-events:none;text-shadow:var(--mm-pattern-shadow)}
+.mm-pattern__content{position:relative;z-index:1;display:grid;justify-items:center;gap:10px;padding:24px;text-align:center;pointer-events:none;text-shadow:var(--mm-pattern-shadow)}
 .mm-home .mm-pattern__name{display:grid;justify-items:start;text-align:left;margin:0;font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;line-height:.9;text-transform:uppercase;color:inherit}
 .mm-pattern__the{font-size:calc(var(--mm-pattern-name-size,56px) * .4)}
 .mm-pattern__big{font-size:var(--mm-pattern-name-size,56px);white-space:nowrap}
 .mm-pattern__text{max-width:70ch;font-size:var(--mm-pattern-text-size,15px);line-height:1.4}
 .mm-pattern__text p{margin:0}
+.mm-pattern--glow .mm-pattern__content:before{content:"";position:absolute;z-index:-1;left:50%;top:50%;width:calc(100% * var(--mm-pattern-glow-size,1.1) + 120px);height:calc(100% * var(--mm-pattern-glow-size,1.1) + 120px);translate:-50% -50%;border-radius:60%;background:radial-gradient(closest-side,color-mix(in srgb,var(--mm-pattern-glow,#000) var(--mm-pattern-glow-opacity,50%),transparent) 0%,color-mix(in srgb,var(--mm-pattern-glow,#000) calc(var(--mm-pattern-glow-opacity,35%) * .6),transparent) 45%,transparent 100%);pointer-events:none}
 @media(max-width:749px){
   .mm-pattern{height:var(--mm-pattern-height-mobile,260px)}
   .mm-pattern__tile{width:var(--mm-pattern-tile-mobile,64px);height:var(--mm-pattern-tile-mobile,64px)}
@@ -433,6 +437,42 @@
       "id": "text_shadow",
       "label": "Soft text shadow",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "glow",
+      "label": "Soft circle behind the text",
+      "info": "A blurred circle that makes the text easier to read.",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "glow_color",
+      "label": "Circle colour",
+      "default": "#000000",
+      "visible_if": "{{ section.settings.glow }}"
+    },
+    {
+      "type": "range",
+      "id": "glow_opacity",
+      "label": "Circle strength",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 45,
+      "visible_if": "{{ section.settings.glow }}"
+    },
+    {
+      "type": "range",
+      "id": "glow_size",
+      "label": "Circle size",
+      "min": 60,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 110,
+      "visible_if": "{{ section.settings.glow }}"
     },
     {
       "type": "header",

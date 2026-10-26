@@ -47,7 +47,7 @@
               <img src="{{ stock_images[stock_index] | asset_url }}" alt="" loading="lazy" width="1000" height="1250">
             {%- endif -%}
           </span>
-          <span class="mm-cat-index" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <span class="mm-cat-index" aria-hidden="true"></span>
           <img
             class="mm-cat-symbol"
             src="{{ 'mm-symbol-' | append: character | append: '.svg' | asset_url }}"
