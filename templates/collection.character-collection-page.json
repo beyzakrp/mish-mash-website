@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "character_hero": {
+      "type": "mm-collection-hero",
+      "settings": {}
+    },
     "section": {
       "type": "section",
       "blocks": {
@@ -247,6 +251,7 @@
     }
   },
   "order": [
+    "character_hero",
     "section",
     "main"
   ]

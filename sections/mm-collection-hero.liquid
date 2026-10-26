@@ -1,0 +1,593 @@
+{%- liquid
+  assign hero_collection = collection
+  assign hero_image = section.settings.image | default: hero_collection.image
+  assign character = section.settings.character
+  if character == 'auto'
+    assign character_source = hero_collection.handle | append: ' ' | append: hero_collection.title | downcase
+    if character_source contains 'player'
+      assign character = 'player'
+    elsif character_source contains 'trickster'
+      assign character = 'trickster'
+    elsif character_source contains 'helper'
+      assign character = 'helper'
+    else
+      assign character = 'showoff'
+    endif
+  endif
+  assign hero_heading = section.settings.heading
+  if section.settings.heading_source == 'description' and hero_collection.description != blank
+    assign hero_heading = hero_collection.description
+  endif
+  assign character_key = 'mishmash.' | append: character
+  assign character_name = section.settings.badge_name
+  if character_name == blank
+    assign character_name = character_key | t | remove_first: 'The ' | strip
+  endif
+-%}
+{%- liquid
+  case character
+    when 'showoff'
+      assign character_colour = '#1E6448'
+    when 'player'
+      assign character_colour = '#F37400'
+    when 'trickster'
+      assign character_colour = '#4CA7FF'
+    when 'helper'
+      assign character_colour = '#FF6EA7'
+    else
+      assign character_colour = 'currentColor'
+  endcase
+-%}
+<section class="mm-home mm-chero mm-chero--badge-{{ section.settings.badge_position }}" id="mm-{{ section.id }}">
+  <div class="mm-chero__media" aria-hidden="true">
+    {%- if hero_image != blank -%}
+      {{ hero_image | image_url: width: 2400 | image_tag: alt: '', widths: '750,1100,1500,2000,2400', sizes: '100vw', fetchpriority: 'high', class: 'mm-chero__image' }}
+    {%- else -%}
+      <img class="mm-chero__image" src="{{ 'mm-reference-hero.webp' | asset_url }}" alt="" width="1600" height="1000" fetchpriority="high">
+    {%- endif -%}
+  </div>
+
+  <div class="mm-chero__inner">
+    {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow mm-chero__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+    {%- if hero_heading != blank -%}
+      <h1 class="mm-chero__heading">{{ hero_heading | remove: '<p>' | replace: '</p>', '<br>' | remove_last: '<br>' }}</h1>
+    {%- elsif section.settings.show_title -%}
+      <h1 class="mm-chero__heading">{{ hero_collection.title | escape }}</h1>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}<div class="mm-chero__text">{{ section.settings.text }}</div>{%- endif -%}
+  </div>
+
+  {%- if section.settings.show_badge -%}
+    <div class="mm-chero__badge">
+      <p class="mm-chero__name">
+        {%- if section.settings.badge_small != blank -%}<span class="mm-chero__the">{{ section.settings.badge_small | escape }}</span>{%- endif -%}
+        <span class="mm-chero__big">{{ character_name | escape }}</span>
+      </p>
+      {%- if section.settings.show_symbol -%}
+        <span class="mm-chero__symbol{% if section.settings.symbol_spin %} mm-chero__symbol--spin{% endif %}" aria-hidden="true">
+          {%- if section.settings.symbol_image != blank -%}
+            {{ section.settings.symbol_image | image_url: width: 800 | image_tag: alt: '', loading: 'eager' }}
+          {%- else -%}
+            <span class="mm-chero__mask" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: character | append: '.svg' | asset_url }});"></span>
+          {%- endif -%}
+        </span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{%- liquid
+  assign symbol_colour = section.settings.symbol_colour
+  if section.settings.symbol_colour_mode == 'character'
+    assign symbol_colour = character_colour
+  endif
+-%}
+{% style %}
+#mm-{{ section.id }}{
+  --mm-chero-height:{{ section.settings.height }}px;
+  --mm-chero-height-mobile:{{ section.settings.height_mobile }}px;
+  --mm-chero-text:{{ section.settings.text_color }};
+  --mm-chero-highlight:{{ section.settings.highlight_color }};
+  --mm-chero-overlay:{{ section.settings.overlay_color }};
+  --mm-chero-overlay-opacity:{{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  --mm-chero-heading-size:{{ section.settings.heading_size }}px;
+  --mm-chero-heading-mobile:{{ section.settings.heading_mobile }}px;
+  --mm-chero-heading-weight:{{ section.settings.heading_weight }};
+  --mm-chero-heading-width:{{ section.settings.heading_width }}ch;
+  --mm-chero-line:{{ section.settings.line_height | divided_by: 100.0 }};
+  --mm-chero-badge-color:{{ section.settings.badge_color }};
+  --mm-chero-badge-size:{{ section.settings.badge_size }}px;
+  --mm-chero-symbol-size:{{ section.settings.symbol_size }}px;
+  --mm-chero-symbol-color:{{ symbol_colour }};
+  --mm-chero-symbol-drop:{{ section.settings.symbol_drop }}%;
+  --mm-chero-pad-x:{{ section.settings.padding_x }}px;
+  --mm-chero-pad-top:{{ section.settings.padding_top }}px;
+  --mm-chero-focal:{{ section.settings.image_position }};
+  margin-bottom:{{ section.settings.margin_bottom }}px;
+}
+{%- case section.settings.heading_font -%}
+  {%- when 'cocogoose' -%}
+    #mm-{{ section.id }} .mm-chero__heading{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400}
+  {%- when 'proxima' -%}
+    #mm-{{ section.id }} .mm-chero__heading{font-family:'MM Proxima Nova',Arial,sans-serif}
+{%- endcase -%}
+{%- case section.settings.badge_font -%}
+  {%- when 'cocogoose' -%}
+    #mm-{{ section.id }} .mm-chero__name{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400}
+  {%- when 'proxima' -%}
+    #mm-{{ section.id }} .mm-chero__name{font-family:'MM Proxima Nova',Arial,sans-serif;font-weight:800}
+{%- endcase -%}
+{%- unless section.settings.uppercase -%}
+  #mm-{{ section.id }} .mm-chero__heading{text-transform:none}
+{%- endunless -%}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-chero{position:relative;display:flex;flex-direction:column;justify-content:flex-start;min-height:var(--mm-chero-height,420px);overflow:hidden;isolation:isolate;color:var(--mm-chero-text);background:#2a2725}
+.mm-chero__media{position:absolute;inset:0;z-index:-2}
+.mm-chero__image{width:100%;height:100%;object-fit:cover;object-position:var(--mm-chero-focal,center);display:block}
+.mm-chero:before{content:"";position:absolute;inset:0;z-index:-1;background:var(--mm-chero-overlay);opacity:var(--mm-chero-overlay-opacity,0)}
+.mm-chero__inner{position:relative;padding:var(--mm-chero-pad-top,40px) var(--mm-chero-pad-x,40px) 40px}
+.mm-chero__eyebrow{margin-bottom:14px!important}
+.mm-home .mm-chero__heading{margin:0;font-family:'MM Proxima Nova',Arial,sans-serif;font-size:var(--mm-chero-heading-size,42px);font-weight:var(--mm-chero-heading-weight,800);line-height:var(--mm-chero-line,1.1);letter-spacing:.01em;text-transform:uppercase;color:var(--mm-chero-text);max-width:var(--mm-chero-heading-width,32ch);text-wrap:pretty}
+.mm-chero__heading :is(strong,b,em){font-weight:inherit;font-style:normal;color:var(--mm-chero-highlight)}
+.mm-chero__text{margin-top:16px;font-size:17px;line-height:1.5;max-width:46ch}
+.mm-chero__text p{margin:0}
+.mm-chero__badge{position:absolute;bottom:0;right:var(--mm-chero-pad-x,40px);display:flex;align-items:flex-end;gap:clamp(8px,1.4vw,18px);color:var(--mm-chero-badge-color)}
+.mm-chero--badge-left .mm-chero__badge{right:auto;left:var(--mm-chero-pad-x,40px)}
+.mm-chero--badge-center .mm-chero__badge{right:50%;translate:50% 0}
+.mm-home .mm-chero__name{display:grid;margin:0 0 clamp(6px,1vw,12px);font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;line-height:.9;text-transform:uppercase;color:inherit}
+.mm-chero__the{font-size:calc(var(--mm-chero-badge-size,44px) * .45);letter-spacing:.02em}
+.mm-chero__big{font-size:var(--mm-chero-badge-size,44px);letter-spacing:-.01em;white-space:nowrap}
+.mm-chero__symbol{display:block;width:var(--mm-chero-symbol-size,120px);aspect-ratio:1;margin-bottom:calc(var(--mm-chero-symbol-size,120px) * var(--mm-chero-symbol-drop,40%) / -100)}
+.mm-chero__symbol>*{display:block;width:100%;height:100%;object-fit:contain}
+.mm-chero__mask{background-color:var(--mm-chero-symbol-color,#fff);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
+.mm-chero__symbol--spin>*{animation:mm-chero-spin 40s linear infinite}
+@keyframes mm-chero-spin{to{rotate:360deg}}
+.mm-chero .mm-chero__symbol>*{scale:.4;rotate:-90deg;opacity:0;animation:mm-chero-in 1.2s cubic-bezier(.34,1.56,.64,1) .2s forwards}
+.mm-chero .mm-chero__symbol--spin>*{animation:mm-chero-in 1.2s cubic-bezier(.34,1.56,.64,1) .2s forwards,mm-chero-spin 40s linear 1.4s infinite}
+@keyframes mm-chero-in{to{scale:1;rotate:0deg;opacity:1}}
+@media(max-width:749px){
+  .mm-chero{min-height:var(--mm-chero-height-mobile,360px)}
+  .mm-chero__inner{padding:28px 20px 24px}
+  .mm-home .mm-chero__heading{font-size:var(--mm-chero-heading-mobile,26px)}
+  .mm-chero__badge{right:20px}
+  .mm-chero--badge-left .mm-chero__badge{left:20px}
+  .mm-chero__big{font-size:calc(var(--mm-chero-badge-size,44px) * .7)}
+  .mm-chero__symbol{width:calc(var(--mm-chero-symbol-size,120px) * .65);margin-bottom:calc(var(--mm-chero-symbol-size,120px) * .65 * var(--mm-chero-symbol-drop,40%) / -100)}
+}
+@media(prefers-reduced-motion:reduce){.mm-chero .mm-chero__symbol>*{animation:none;scale:1;rotate:0deg;opacity:1}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · Character hero",
+  "tag": "div",
+  "class": "mm-chero-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image",
+      "info": "Leave empty to use each collection's own image."
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image focus",
+      "default": "center",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay colour",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay strength",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Desktop height",
+      "min": 240,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 420
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Mobile height",
+      "min": 200,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 360
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_source",
+      "label": "Heading text",
+      "default": "description",
+      "options": [
+        {
+          "value": "description",
+          "label": "Collection description"
+        },
+        {
+          "value": "custom",
+          "label": "Heading below"
+        }
+      ],
+      "info": "With collection description, each character collection shows its own text. Bold words use the highlight colour."
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Used when the collection has no description, or when Heading text is set to this. Bold words use the highlight colour.",
+      "default": "<p>Designed to stand out. Statement pieces that bring <strong>personality, style, and visual impact</strong> to any space.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Use the collection title when the heading is empty",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text under the heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "proxima",
+      "options": [
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        },
+        {
+          "value": "theme",
+          "label": "Theme default"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "default": "800",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase heading",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 90,
+      "step": 1,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 80,
+      "max": 160,
+      "step": 5,
+      "unit": "%",
+      "default": 110
+    },
+    {
+      "type": "range",
+      "id": "heading_width",
+      "label": "Heading width",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "unit": "ch",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Highlight colour",
+      "default": "#171514"
+    },
+    {
+      "type": "header",
+      "content": "Character badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show character badge",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "character",
+      "label": "Character",
+      "default": "auto",
+      "info": "Automatic reads the collection name, for example Show-off or The Player.",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Automatic"
+        },
+        {
+          "value": "showoff",
+          "label": "The Show-off"
+        },
+        {
+          "value": "player",
+          "label": "The Player"
+        },
+        {
+          "value": "trickster",
+          "label": "The Trickster"
+        },
+        {
+          "value": "helper",
+          "label": "The Helper"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "badge_small",
+      "label": "Small word",
+      "default": "The"
+    },
+    {
+      "type": "text",
+      "id": "badge_name",
+      "label": "Name",
+      "info": "Defaults to the character name."
+    },
+    {
+      "type": "select",
+      "id": "badge_font",
+      "label": "Badge font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        },
+        {
+          "value": "theme",
+          "label": "Theme default"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "badge_size",
+      "label": "Name size",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Badge colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "select",
+      "id": "badge_position",
+      "label": "Badge position",
+      "default": "right",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_symbol",
+      "label": "Show symbol",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "symbol_image",
+      "label": "Custom symbol",
+      "info": "PNG or SVG. Replaces the character symbol."
+    },
+    {
+      "type": "select",
+      "id": "symbol_colour_mode",
+      "label": "Symbol colour",
+      "default": "custom",
+      "options": [
+        {
+          "value": "custom",
+          "label": "Colour below"
+        },
+        {
+          "value": "character",
+          "label": "Character colour"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "symbol_colour",
+      "label": "Custom symbol colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "symbol_size",
+      "label": "Symbol size",
+      "min": 40,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "symbol_drop",
+      "label": "Symbol hidden below the edge",
+      "min": 0,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "default": 45
+    },
+    {
+      "type": "checkbox",
+      "id": "symbol_spin",
+      "label": "Turn the symbol slowly",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_x",
+      "label": "Side spacing",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Space below",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Character hero"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "collection"
+    ]
+  }
+}
+{% endschema %}
