@@ -62,9 +62,34 @@
   </div>
 
   <div class="mm-footer__mark">
-    <a href="{{ routes.root_url }}" class="mm-footer__logo">
-      <img src="{{ 'mm-logo-white.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="314" height="261" loading="lazy">
-    </a>
+    <div class="mm-footer__brand">
+      <a href="{{ routes.root_url }}" class="mm-footer__logo">
+        {%- if section.settings.logo_image != blank -%}
+          {{ section.settings.logo_image | image_url: width: 900 | image_tag: alt: shop.name, loading: 'lazy', widths: '300,600,900', sizes: '(min-width: 750px) 300px, 50vw' }}
+        {%- else -%}
+          <img src="{{ 'mm-logo-white.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="314" height="261" loading="lazy">
+        {%- endif -%}
+      </a>
+      {%- if section.settings.show_symbols -%}
+        <ul class="mm-footer__symbols mm-footer__symbols--{{ section.settings.symbol_colour }}{% if section.settings.symbol_motion != 'none' %} mm-footer__symbols--{{ section.settings.symbol_motion }}{% endif %}" role="list" aria-hidden="true">
+          {%- assign footer_symbols = 'showoff:#1E6448,player:#F37400,trickster:#4CA7FF,helper:#FF6EA7' | split: ',' -%}
+          {%- for pair in footer_symbols -%}
+            {%- liquid
+              assign parts = pair | split: ':'
+              assign symbol_image_key = 'symbol_image_' | append: forloop.index
+              assign symbol_image = section.settings[symbol_image_key]
+            -%}
+            <li style="--mm-symbol-url: url({{ 'mm-symbol-' | append: parts[0] | append: '.svg' | asset_url }}); --mm-symbol-color: {{ parts[1] }}; --i: {{ forloop.index0 }};">
+              {%- if symbol_image != blank -%}
+                {{ symbol_image | image_url: width: 400 | image_tag: alt: '', loading: 'lazy', class: 'mm-footer__symbol-image' }}
+              {%- else -%}
+                <span class="mm-footer__symbol"></span>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
     {%- if section.settings.tagline != blank -%}<p class="mm-footer__tagline">{{ section.settings.tagline | escape | newline_to_br }}</p>{%- endif -%}
   </div>
 
@@ -88,7 +113,7 @@
 </footer>
 
 {% style %}
-#mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};--mm-accent:{{ section.settings.accent }};background:var(--mm-paper);color:var(--mm-ink)}
+#mm-{{ section.id }}{--mm-footer-logo:{{ section.settings.logo_width }}px;--mm-footer-symbol:{{ section.settings.symbol_size }}px;--mm-footer-symbol-gap:{{ section.settings.symbol_gap }}px;--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};--mm-accent:{{ section.settings.accent }};background:var(--mm-paper);color:var(--mm-ink)}
 {% endstyle %}
 
 {% schema %}
@@ -196,6 +221,108 @@
     {
       "type": "header",
       "content": "Bottom"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo",
+      "info": "PNG or SVG. Leave empty to use the white Mish Mash logo."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 80,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "checkbox",
+      "id": "show_symbols",
+      "label": "Show symbols next to the logo",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "symbol_colour",
+      "label": "Symbol colour",
+      "options": [
+        {
+          "value": "brand",
+          "label": "Character colours"
+        },
+        {
+          "value": "ink",
+          "label": "Text colour"
+        },
+        {
+          "value": "hover",
+          "label": "Text colour, character colour on hover"
+        }
+      ],
+      "default": "hover"
+    },
+    {
+      "type": "range",
+      "id": "symbol_size",
+      "label": "Symbol size",
+      "min": 40,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "symbol_gap",
+      "label": "Space between symbols",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "symbol_motion",
+      "label": "Symbol motion",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "spin",
+          "label": "Spin on hover"
+        },
+        {
+          "value": "float",
+          "label": "Gentle float"
+        }
+      ],
+      "default": "spin"
+    },
+    {
+      "type": "image_picker",
+      "id": "symbol_image_1",
+      "label": "Custom symbol 1 (Show-off)"
+    },
+    {
+      "type": "image_picker",
+      "id": "symbol_image_2",
+      "label": "Custom symbol 2 (Player)"
+    },
+    {
+      "type": "image_picker",
+      "id": "symbol_image_3",
+      "label": "Custom symbol 3 (Trickster)"
+    },
+    {
+      "type": "image_picker",
+      "id": "symbol_image_4",
+      "label": "Custom symbol 4 (Helper)"
     },
     {
       "type": "textarea",
