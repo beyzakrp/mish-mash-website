@@ -434,6 +434,397 @@
         "heading_mobile": 38
       }
     },
+    "mm_real_life_39dQg4": {
+      "type": "mm-real-life",
+      "blocks": {
+        "photo_znrgTb": {
+          "type": "photo",
+          "settings": {
+            "caption": "Living room, Istanbul",
+            "size": "normal",
+            "product_1": "",
+            "label_1": "Vase",
+            "x_1": 35,
+            "y_1": 55,
+            "product_2": "",
+            "label_2": "Lamp",
+            "x_2": 65,
+            "y_2": 40,
+            "product_3": "",
+            "label_3": "",
+            "x_3": 50,
+            "y_3": 75
+          }
+        },
+        "photo_gjYxg9": {
+          "type": "photo",
+          "settings": {
+            "caption": "Studio corner",
+            "size": "normal",
+            "product_1": "",
+            "label_1": "Clock",
+            "x_1": 35,
+            "y_1": 55,
+            "product_2": "",
+            "label_2": "",
+            "x_2": 65,
+            "y_2": 40,
+            "product_3": "",
+            "label_3": "",
+            "x_3": 50,
+            "y_3": 75
+          }
+        },
+        "photo_7xLnHc": {
+          "type": "photo",
+          "settings": {
+            "caption": "Kitchen table",
+            "size": "normal",
+            "product_1": "",
+            "label_1": "Candle",
+            "x_1": 35,
+            "y_1": 55,
+            "product_2": "",
+            "label_2": "Magnet Frame",
+            "x_2": 65,
+            "y_2": 40,
+            "product_3": "",
+            "label_3": "",
+            "x_3": 50,
+            "y_3": 75
+          }
+        }
+      },
+      "block_order": [
+        "photo_znrgTb",
+        "photo_gjYxg9",
+        "photo_7xLnHc"
+      ],
+      "name": "MM · Objects in real life",
+      "settings": {
+        "eyebrow": "Objects in real life",
+        "heading": "At home with\nmish-mash.",
+        "text": "Tap the dots to shop what you see.",
+        "columns": 3,
+        "gap": 16,
+        "ratio": "4 / 5",
+        "radius": 0,
+        "spot_colour": "#FFFFFF",
+        "spot_icon_colour": "#171514",
+        "show_price": true,
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#FAF9F5",
+        "text_color": "#171514",
+        "accent": "#FF6EA7",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "padding_mobile": 55
+      }
+    },
+    "mm_details_GFXjG6": {
+      "type": "mm-details",
+      "blocks": {
+        "detail_mwnnHU": {
+          "type": "detail",
+          "settings": {
+            "label": "",
+            "title": "Hand-finished glaze",
+            "text": "<p>Every piece is dipped and finished by hand, so no two are exactly alike.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "detail_aBcCrX": {
+          "type": "detail",
+          "settings": {
+            "label": "",
+            "title": "Soft, rounded edges",
+            "text": "<p>Shapes you want to touch. Safe around kids and clumsy elbows.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "detail_U6LLMr": {
+          "type": "detail",
+          "settings": {
+            "label": "",
+            "title": "Colours that last",
+            "text": "<p>Pigments chosen to stay bright in sunny rooms for years.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "detail_dGPnJx": {
+          "type": "detail",
+          "settings": {
+            "label": "",
+            "title": "Packed with care",
+            "text": "<p>Recycled boxes, no plastic, and a little note from us.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "detail_mwnnHU",
+        "detail_aBcCrX",
+        "detail_U6LLMr",
+        "detail_dGPnJx"
+      ],
+      "name": "MM · The little details",
+      "settings": {
+        "eyebrow": "The little details",
+        "heading": "Made to be\nlooked at closely.",
+        "image_side": "left",
+        "ratio": "4 / 5",
+        "radius": 0,
+        "step_height": 60,
+        "zoom": true,
+        "show_numbers": true,
+        "show_counter": true,
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#FAF9F5",
+        "text_color": "#171514",
+        "accent": "#FF6EA7",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "padding_mobile": 55
+      }
+    },
+    "mm_quiz_7QXY3G": {
+      "type": "mm-quiz",
+      "blocks": {
+        "question_g68y8Q": {
+          "type": "question",
+          "settings": {
+            "question": "Your perfect Sunday?",
+            "answer_1": "Hosting a long brunch",
+            "answer_1_character": "showoff",
+            "answer_2": "Board games, loud music",
+            "answer_2_character": "player",
+            "answer_3": "Something nobody expects",
+            "answer_3_character": "trickster",
+            "answer_4": "Getting things done, nicely",
+            "answer_4_character": "helper"
+          }
+        },
+        "question_9dXgim": {
+          "type": "question",
+          "settings": {
+            "question": "Pick a colour mood.",
+            "answer_1": "Deep green, a bit dramatic",
+            "answer_1_character": "showoff",
+            "answer_2": "Orange, loud and happy",
+            "answer_2_character": "player",
+            "answer_3": "Sky blue with a twist",
+            "answer_3_character": "trickster",
+            "answer_4": "Soft pink, always useful",
+            "answer_4_character": "helper"
+          }
+        },
+        "question_EkXi7L": {
+          "type": "question",
+          "settings": {
+            "question": "Your friends call you…",
+            "answer_1": "The one with taste",
+            "answer_1_character": "showoff",
+            "answer_2": "The fun one",
+            "answer_2_character": "player",
+            "answer_3": "The surprising one",
+            "answer_3_character": "trickster",
+            "answer_4": "The reliable one",
+            "answer_4_character": "helper"
+          }
+        },
+        "result_jcefde": {
+          "type": "result",
+          "settings": {
+            "character": "showoff",
+            "title": "",
+            "text": "You like things that make an entrance. Bold shapes, beautiful details and pieces worth looking at.",
+            "collection": "",
+            "product_count": 4,
+            "button_label": "Shop your match",
+            "button_link": ""
+          }
+        },
+        "result_epgcDH": {
+          "type": "result",
+          "settings": {
+            "character": "player",
+            "title": "",
+            "text": "Touch it, turn it, combine it. You want objects that join the fun.",
+            "collection": "",
+            "product_count": 4,
+            "button_label": "Shop your match",
+            "button_link": ""
+          }
+        },
+        "result_bxMWcD": {
+          "type": "result",
+          "settings": {
+            "character": "trickster",
+            "title": "",
+            "text": "Nothing is quite what it seems with you. You love a small surprise in everyday things.",
+            "collection": "",
+            "product_count": 4,
+            "button_label": "Shop your match",
+            "button_link": ""
+          }
+        },
+        "result_bb9Yed": {
+          "type": "result",
+          "settings": {
+            "character": "helper",
+            "title": "",
+            "text": "Good looks and good use. Your favourite things work as hard as they shine.",
+            "collection": "",
+            "product_count": 4,
+            "button_label": "Shop your match",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "question_g68y8Q",
+        "question_9dXgim",
+        "question_EkXi7L",
+        "result_jcefde",
+        "result_epgcDH",
+        "result_bxMWcD",
+        "result_bb9Yed"
+      ],
+      "name": "MM · Character quiz",
+      "settings": {
+        "eyebrow": "Which one are you?",
+        "heading": "Find your\ncharacter.",
+        "text": "Four quick questions. One very honest answer.",
+        "start_label": "Start the quiz",
+        "result_label": "You are",
+        "restart_label": "Try again",
+        "show_symbols": true,
+        "answer_symbols": false,
+        "show_price": true,
+        "card_background": "#FFFFFF",
+        "card_radius": 24,
+        "min_height": 520,
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#FAF9F5",
+        "text_color": "#171514",
+        "accent": "#FF6EA7",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "padding_mobile": 55
+      }
+    },
+    "mm_gift_finder_bxh7hb": {
+      "type": "mm-gift-finder",
+      "blocks": {
+        "recipient_6tUfJx": {
+          "type": "recipient",
+          "settings": {
+            "label": "My partner",
+            "note": "",
+            "character": "showoff",
+            "collection": ""
+          }
+        },
+        "recipient_zqNNyh": {
+          "type": "recipient",
+          "settings": {
+            "label": "A friend",
+            "note": "",
+            "character": "player",
+            "collection": ""
+          }
+        },
+        "recipient_AQATAW": {
+          "type": "recipient",
+          "settings": {
+            "label": "Someone who has everything",
+            "note": "",
+            "character": "trickster",
+            "collection": ""
+          }
+        },
+        "recipient_YBCG8P": {
+          "type": "recipient",
+          "settings": {
+            "label": "Myself",
+            "note": "",
+            "character": "helper",
+            "collection": ""
+          }
+        },
+        "budget_mN6mzN": {
+          "type": "budget",
+          "settings": {
+            "label": "Under ₺1.000",
+            "min": 0,
+            "max": 1000
+          }
+        },
+        "budget_Mx4tjg": {
+          "type": "budget",
+          "settings": {
+            "label": "₺1.000 – ₺2.500",
+            "min": 1000,
+            "max": 2500
+          }
+        },
+        "budget_c3pFjq": {
+          "type": "budget",
+          "settings": {
+            "label": "₺2.500+",
+            "min": 2500,
+            "max": 0
+          }
+        }
+      },
+      "block_order": [
+        "recipient_6tUfJx",
+        "recipient_zqNNyh",
+        "recipient_AQATAW",
+        "recipient_YBCG8P",
+        "budget_mN6mzN",
+        "budget_Mx4tjg",
+        "budget_c3pFjq"
+      ],
+      "name": "MM · Gift finder",
+      "settings": {
+        "eyebrow": "Gift finder",
+        "heading": "The right gift,\nin two taps.",
+        "text": "Tell us who it's for and what you'd like to spend.",
+        "step_1_short": "Who",
+        "step_1_heading": "Who is it for?",
+        "step_2_short": "Budget",
+        "step_2_heading": "What's your budget?",
+        "step_3_short": "Ideas",
+        "step_3_heading": "They'll love these.",
+        "empty_text": "Nothing in this budget yet, but the whole collection is worth a look.",
+        "view_all_label": "See all ideas",
+        "back_label": "Back",
+        "restart_label": "Start over",
+        "product_limit": 12,
+        "card_background": "#FFFFFF",
+        "card_radius": 24,
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 36,
+        "background": "#FAF9F5",
+        "text_color": "#171514",
+        "accent": "#FF6EA7",
+        "padding_top": 90,
+        "padding_bottom": 90,
+        "padding_mobile": 55
+      }
+    },
     "mishmash_story": {
       "type": "mm-story",
       "settings": {
@@ -479,6 +870,10 @@
     "mishmash_objects",
     "mishmash_products",
     "mishmash_personalities",
-    "mishmash_story"
+    "mm_real_life_39dQg4",
+    "mm_details_GFXjG6",
+    "mm_quiz_7QXY3G",
+    "mishmash_story",
+    "mm_gift_finder_bxh7hb"
   ]
 }
