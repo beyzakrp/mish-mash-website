@@ -62,16 +62,3 @@ body:has(#header-component[transparent]) .mm-hero:before{content:"";position:abs
 .mm-menu-animate .mega-menu__content-list-item:hover img{scale:1.03}
 
 @media(prefers-reduced-motion:reduce){.header-menu .mm-roll,.header-menu .mm-roll:after{transition:none}.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item){opacity:1;translate:none;filter:none;transition:none}.mm-menu-animate .mega-menu__content-list-item:hover img{scale:none}}
-
-/* Mega menu background symbol (Menu block: Background symbol) */
-.header-menu .mega-menu{position:relative}
-.header-menu .mega-menu__grid{position:relative;z-index:1}
-.mm-mega-symbol{position:absolute;top:50%;left:50%;z-index:0;height:min(var(--mm-mega-symbol-size),calc(100% - 24px));aspect-ratio:1;translate:-50% -50%;opacity:0;rotate:-50deg;scale:.8;pointer-events:none;transition:opacity .5s ease,rotate 1.4s var(--mm-menu-ease,cubic-bezier(.22,1,.36,1)),scale 1.4s var(--mm-menu-ease,cubic-bezier(.22,1,.36,1))}
-.mm-mega-symbol--left{left:max(24px,var(--page-margin,40px));translate:0 -50%}
-.mm-mega-symbol--right{left:auto;right:max(24px,var(--page-margin,40px));translate:0 -50%}
-.mm-mega-symbol img{display:block;width:100%;height:100%;object-fit:contain}
-.mm-mega-symbol--spin img{animation:mm-mega-spin 48s linear infinite;animation-play-state:paused}
-.menu-list__list-item:has([aria-expanded='true']) .mm-mega-symbol,.menu-list__submenu:hover .mm-mega-symbol{opacity:var(--mm-mega-symbol-opacity);rotate:0deg;scale:1}
-.menu-list__list-item:has([aria-expanded='true']) .mm-mega-symbol--spin img,.menu-list__submenu:hover .mm-mega-symbol--spin img{animation-play-state:running}
-@keyframes mm-mega-spin{to{rotate:360deg}}
-@media(prefers-reduced-motion:reduce){.mm-mega-symbol{transition:opacity .3s;rotate:0deg;scale:1}.mm-mega-symbol--spin img{animation:none}}

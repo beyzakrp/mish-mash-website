@@ -10,7 +10,6 @@
   @param {number} [content_aspect_ratio] - Aspect ratio for content images.
   @param {number} [image_border_radius] - Border radius for content images.
   @param {object} [section] - The section object.
-  @param {object} [menu_settings] - The menu block settings, for the mm_mega_collection_N / mm_mega_image_N image overrides.
 
   @example
   {% render 'mega-menu-list', parent_link: link, id: 'MegaMenuList-1', grid_columns_count: 6, menu_content_type: 'featured_products' %}
@@ -332,27 +331,10 @@
           {% else %}
             {% assign collection_object = collections[handle] %}
           {% endif %}
-          {% liquid
-            assign image_override = nil
-            assign position_key = 'mm_mega_collection_' | append: forloop.index
-            if menu_settings[position_key] == blank
-              assign position_image_key = 'mm_mega_image_' | append: forloop.index
-              assign image_override = menu_settings[position_image_key]
-            endif
-            for i in (1..6)
-              assign override_collection_key = 'mm_mega_collection_' | append: i
-              assign override_image_key = 'mm_mega_image_' | append: i
-              assign override_collection = menu_settings[override_collection_key]
-              if override_collection != blank and override_collection.handle == collection_object.handle and menu_settings[override_image_key] != blank
-                assign image_override = menu_settings[override_image_key]
-              endif
-            endfor
-          %}
           <li class="mega-menu__content-list-item{% if forloop.index > max_featured_collections_tablet %} mega-menu__content-list-item--hidden-tablet{% endif %}">
             {% render 'resource-card',
               resource: collection_object,
               resource_type: 'collection',
-              image_override: image_override,
               style: 'overlay',
               image_aspect_ratio: content_aspect_ratio,
               image_sizes: image_sizes
