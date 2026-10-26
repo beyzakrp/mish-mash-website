@@ -317,6 +317,7 @@
         "object_candle",
         "object_frame"
       ],
+      "disabled": true,
       "settings": {
         "eyebrow": "Meet the objects",
         "heading": "Five objects.\nEndless characters.",
