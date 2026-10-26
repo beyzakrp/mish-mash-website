@@ -7,7 +7,7 @@
  endif
 %}
 <section class="mm-home" id="mm-{{ section.id }}">
-  <div class="mm-hero">
+  <div class="mm-hero"{% if section.settings.height_mode == 'fill' %} data-mm-hero-fill{% endif %}>
     {% if section.settings.mobile_image != blank %}<style>@media(max-width:600px){#mm-{{ section.id }} .mm-desktop-image{display:none}#mm-{{ section.id }} .mm-mobile-image{display:block}}@media(min-width:601px){#mm-{{ section.id }} .mm-mobile-image{display:none}}</style>{{ section.settings.mobile_image | image_url: width: 1000 | image_tag: class: 'mm-hero-image mm-mobile-image', loading: image_loading, fetchpriority: image_priority }}{% endif %}
     {% if section.settings.hero_image != blank %}
       {{ section.settings.hero_image | image_url: width: 2400 | image_tag: class: 'mm-hero-image mm-desktop-image', widths: '600,900,1200,1800,2400', sizes: '100vw', loading: image_loading, fetchpriority: image_priority }}
@@ -38,6 +38,7 @@
 @media(max-width:749px){#mm-{{ section.id }} .mm-hero{height:{{ section.settings.mobile_height }}px}#mm-{{ section.id }} h1{font-size:{{ section.settings.heading_mobile }}px}}
 {% endstyle %}
 {% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} .mm-hero{max-height:none}{% endstyle %}
+{% style %}{% if section.settings.height_mode == 'fill' %}#mm-{{ section.id }} .mm-hero{height:calc(100svh - var(--mm-hero-offset,200px));min-height:480px;max-height:none}@media(max-width:749px){#mm-{{ section.id }} .mm-hero{min-height:420px}}{% endif %}{% endstyle %}
 {% style %}{% if section.settings.height_mode == 'responsive' %}#mm-{{ section.id }} .mm-hero{height:calc(100svh - 138px);min-height:680px;max-height:960px}@media(max-width:749px){#mm-{{ section.id }} .mm-hero{height:80svh;min-height:580px;max-height:800px}}{% endif %}{% endstyle %}
 {% schema %}
 {
@@ -311,6 +312,10 @@
         {
           "value": "fixed",
           "label": "Use height sliders"
+        },
+        {
+          "value": "fill",
+          "label": "Fill the screen with the text strip"
         }
       ]
     }

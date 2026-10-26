@@ -43,7 +43,7 @@
         "button_letter_spacing": 8,
         "button_uppercase": true,
         "heading_font": "theme",
-        "height_mode": "responsive"
+        "height_mode": "fill"
       }
     },
     "mishmash_ticker": {

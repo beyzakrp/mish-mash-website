@@ -85,6 +85,22 @@ if (announcementSection instanceof HTMLElement) {
   if ('ResizeObserver' in window) new ResizeObserver(setAnnouncementHeight).observe(announcementSection);
 }
 
+/* Full-screen hero: the hero and the text strip under it fill the first screen */
+
+const fillHero = document.querySelector('[data-mm-hero-fill]');
+if (fillHero instanceof HTMLElement) {
+  const strip = fillHero.closest('.shopify-section')?.nextElementSibling?.querySelector('.mm-ticker');
+  const setHeroOffset = () => {
+    const scroller = document.querySelector('.page-wrapper');
+    const top = fillHero.getBoundingClientRect().top + window.scrollY + (scroller ? scroller.scrollTop : 0);
+    const stripHeight = strip instanceof HTMLElement ? strip.offsetHeight : 0;
+    fillHero.style.setProperty('--mm-hero-offset', `${Math.max(0, Math.round(top + stripHeight))}px`);
+  };
+  setHeroOffset();
+  window.addEventListener('resize', setHeroOffset);
+  if ('ResizeObserver' in window && strip instanceof HTMLElement) new ResizeObserver(setHeroOffset).observe(strip);
+}
+
 /* Ticker pause control ---------------------------------------------------- */
 
 document.addEventListener('click', (event) => {
