@@ -177,8 +177,8 @@
         "category_vase": {
           "type": "category",
           "settings": {
-            "collection": "",
-            "title": "Vase",
+            "collection": "vase",
+            "title": "{{ block.settings.collection.title }}",
             "character": "showoff",
             "text": "Made to be looked at. A sculptural centrepiece that steals the room, with or without flowers."
           }
@@ -186,8 +186,8 @@
         "category_lamp": {
           "type": "category",
           "settings": {
-            "collection": "",
-            "title": "Lamp",
+            "collection": "candelabra",
+            "title": "{{ block.settings.collection.title }}",
             "character": "helper",
             "text": "Quietly useful, always there. Soft light for slow evenings and late-night reading."
           }
@@ -195,8 +195,8 @@
         "category_clock": {
           "type": "category",
           "settings": {
-            "collection": "",
-            "title": "Clock",
+            "collection": "clock",
+            "title": "{{ block.settings.collection.title }}",
             "character": "player",
             "text": "Time, but make it fun. Bold shapes and colours that turn every glance into a small game."
           }
@@ -204,8 +204,8 @@
         "category_candle": {
           "type": "category",
           "settings": {
-            "collection": "",
-            "title": "Candle",
+            "collection": "lamp",
+            "title": "{{ block.settings.collection.title }}",
             "character": "trickster",
             "text": "Not quite what it seems. Playful forms that change character once they are lit."
           }
