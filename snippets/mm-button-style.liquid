@@ -1,0 +1,8 @@
+{%- doc -%}
+  Outputs the CSS for an editor-styled mish-mash button.
+
+  @param {object} settings - Section settings with the button_* colour, border, size and text settings.
+  @param {string} selector - CSS selector of the button.
+{%- enddoc -%}
+{{ selector }}{justify-content:center;gap:0;min-width:{{ settings.button_min_width }}px;padding:{{ settings.button_padding_y }}px {{ settings.button_padding_x }}px;min-height:0;border-radius:{{ settings.button_radius }}px;border:{{ settings.button_border_width }}px solid {{ settings.button_border | default: 'transparent' }};background:{{ settings.button_background | default: 'transparent' }};color:{{ settings.button_text }}!important;font-size:{{ settings.button_font_size }}px;letter-spacing:{{ settings.button_letter_spacing | divided_by: 100.0 }}em;text-transform:{% if settings.button_uppercase %}uppercase{% else %}none{% endif %};transition:background .3s,color .3s,border-color .3s,transform .35s var(--mm-ease-spring,ease)}
+{{ selector }}:hover,{{ selector }}:focus-visible{background:{{ settings.button_hover_background | default: 'transparent' }};color:{{ settings.button_hover_text }}!important;border-color:{{ settings.button_hover_border | default: settings.button_border | default: 'transparent' }}}
