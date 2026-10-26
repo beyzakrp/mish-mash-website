@@ -38,7 +38,7 @@
       assign character_colour = 'currentColor'
   endcase
 -%}
-<section class="mm-home mm-chero mm-chero--badge-{{ section.settings.badge_position }}" id="mm-{{ section.id }}">
+<section class="mm-home mm-chero mm-chero--badge-{{ section.settings.badge_position }} mm-chero--height-{{ section.settings.height_mode }} mm-chero--fit-{{ section.settings.image_fit }}" id="mm-{{ section.id }}">
   <div class="mm-chero__media" aria-hidden="true">
     {%- if hero_image != blank -%}
       {{ hero_image | image_url: width: 2400 | image_tag: alt: '', widths: '750,1100,1500,2000,2400', sizes: '100vw', fetchpriority: 'high', class: 'mm-chero__image' }}
@@ -77,6 +77,10 @@
 </section>
 
 {%- liquid
+  assign hero_ratio = 2.4
+  if hero_image != blank and hero_image.aspect_ratio > 0
+    assign hero_ratio = hero_image.aspect_ratio
+  endif
   assign symbol_colour = section.settings.symbol_colour
   if section.settings.symbol_colour_mode == 'character'
     assign symbol_colour = character_colour
@@ -102,7 +106,10 @@
   --mm-chero-symbol-drop:{{ section.settings.symbol_drop }}%;
   --mm-chero-pad-x:{{ section.settings.padding_x }}px;
   --mm-chero-pad-top:{{ section.settings.padding_top }}px;
-  --mm-chero-focal:{{ section.settings.image_position }};
+  --mm-chero-focal:{{ section.settings.focus_x }}% {{ section.settings.focus_y }}%;
+  --mm-chero-zoom:{{ section.settings.image_zoom | divided_by: 100.0 }};
+  --mm-chero-ratio:{{ hero_ratio }};
+  background-color:{{ section.settings.background_color }};
   margin-bottom:{{ section.settings.margin_bottom }}px;
 }
 {%- case section.settings.heading_font -%}
@@ -123,9 +130,11 @@
 {% endstyle %}
 
 {% stylesheet %}
-.mm-chero{position:relative;display:flex;flex-direction:column;justify-content:flex-start;min-height:var(--mm-chero-height,420px);overflow:hidden;isolation:isolate;color:var(--mm-chero-text);background:#2a2725}
+.mm-chero{position:relative;display:flex;flex-direction:column;justify-content:flex-start;min-height:var(--mm-chero-height,420px);overflow:hidden;isolation:isolate;color:var(--mm-chero-text)}
 .mm-chero__media{position:absolute;inset:0;z-index:-2}
-.mm-chero__image{width:100%;height:100%;object-fit:cover;object-position:var(--mm-chero-focal,center);display:block}
+.mm-chero__image{width:100%;height:100%;object-fit:cover;object-position:var(--mm-chero-focal,50% 50%);display:block;scale:var(--mm-chero-zoom,1);transform-origin:var(--mm-chero-focal,50% 50%)}
+.mm-chero--height-image{min-height:0;height:min(var(--mm-chero-height,420px),calc(100vw / var(--mm-chero-ratio,2.4)))}
+.mm-chero--fit-contain .mm-chero__image{object-fit:contain}
 .mm-chero:before{content:"";position:absolute;inset:0;z-index:-1;background:var(--mm-chero-overlay);opacity:var(--mm-chero-overlay-opacity,0)}
 .mm-chero__inner{position:relative;padding:var(--mm-chero-pad-top,40px) var(--mm-chero-pad-x,40px) 40px}
 .mm-chero__eyebrow{margin-bottom:14px!important}
@@ -149,6 +158,7 @@
 @keyframes mm-chero-in{to{scale:1;rotate:0deg;opacity:1}}
 @media(max-width:749px){
   .mm-chero{min-height:var(--mm-chero-height-mobile,360px)}
+  .mm-chero--height-image{height:auto;min-height:var(--mm-chero-height-mobile,360px)}
   .mm-chero__inner{padding:28px 20px 24px}
   .mm-home .mm-chero__heading{font-size:var(--mm-chero-heading-mobile,26px)}
   .mm-chero__badge{right:20px}
@@ -177,23 +187,72 @@
     },
     {
       "type": "select",
-      "id": "image_position",
-      "label": "Image focus",
-      "default": "center",
+      "id": "height_mode",
+      "label": "Height",
+      "default": "image",
       "options": [
         {
-          "value": "top",
-          "label": "Top"
+          "value": "image",
+          "label": "Follow the image shape (up to the height below)"
         },
         {
-          "value": "center",
-          "label": "Centre"
-        },
-        {
-          "value": "bottom",
-          "label": "Bottom"
+          "value": "fixed",
+          "label": "Fixed height"
         }
       ]
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Fill the area (may crop)"
+        },
+        {
+          "value": "contain",
+          "label": "Show the whole image"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background colour",
+      "info": "Shown around the image when the whole image is shown.",
+      "default": "#2A2725"
+    },
+    {
+      "type": "range",
+      "id": "image_zoom",
+      "label": "Image zoom",
+      "min": 100,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "focus_x",
+      "label": "Image focus, horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "focus_y",
+      "label": "Image focus, vertical",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
     },
     {
       "type": "color",
@@ -216,7 +275,7 @@
       "id": "height",
       "label": "Desktop height",
       "min": 240,
-      "max": 800,
+      "max": 900,
       "step": 10,
       "unit": "px",
       "default": 420
