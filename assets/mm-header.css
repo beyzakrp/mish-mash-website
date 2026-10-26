@@ -63,6 +63,16 @@ body:has(#header-component[transparent]) .mm-hero:before{content:"";position:abs
 .mm-menu-labels .mega-menu__link--parent{font-family:var(--menu-child-font-family);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.55;padding-block-end:var(--padding-xs)}
 .mm-menu-labels .mega-menu__link--parent:hover{opacity:1}
 .mm-menu-animate.mm-menu-labels .mega-menu__list:has(.mega-menu__link:hover) .mega-menu__link--parent:not(:hover){opacity:.55}
+
+/* Mega menu link symbols (Menu block: Symbols on mega menu links) */
+.mega-menu__link:has(.mm-link-symbol){align-items:center;gap:.5em}
+.mm-link-symbol{display:inline-block;flex:none;width:1em;height:1em;background-color:currentColor;-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:background-color .35s ease}
+.mm-link-symbol--lead{width:.9em;height:.9em}
+.mega-menu__link:is(:hover,:focus-visible) .mm-link-symbol--lead{background-color:var(--mm-symbol-color);animation:mm-symbol-hop .6s var(--mm-menu-ease,cubic-bezier(.22,1,.36,1))}
+.mm-link-symbol--trail{background-color:var(--mm-symbol-color);opacity:0;rotate:-120deg;scale:.3;transition:opacity .3s ease,rotate .7s var(--mm-menu-ease,cubic-bezier(.22,1,.36,1)),scale .6s var(--mm-menu-ease,cubic-bezier(.22,1,.36,1))}
+.mega-menu__link:is(:hover,:focus-visible) .mm-link-symbol--trail{opacity:1;rotate:0deg;scale:1}
+@keyframes mm-symbol-hop{0%{translate:0 0;rotate:0deg}40%{translate:0 -5px;rotate:-20deg}100%{translate:0 0;rotate:0deg}}
+@media(prefers-reduced-motion:reduce){.mm-link-symbol{animation:none!important;transition:none}.mm-link-symbol--trail{rotate:none;scale:none}}
 /* Mega menu image cards: the zoom stays inside the frame, the overlay and title move with it */
 .mega-menu__content-list-item .resource-card__media{overflow:hidden;border-radius:var(--resource-card-corner-radius);isolation:isolate}
 .mega-menu__content-list-item .resource-card--overlay:before{transition:opacity .6s ease;opacity:.85}

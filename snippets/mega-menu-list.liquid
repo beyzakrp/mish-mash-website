@@ -132,9 +132,13 @@
 
           {% render 'link-featured-image', link: link, class: 'mega-menu__link-image', sizes: collection_image_sizes %}
         {% endif %}
-        <span class="wrap-text">
-          {{- link.title -}}
-        </span>
+        {%- if link.links == blank and menu_content_type != 'collection_images' -%}
+          {% render 'mm-mega-link-label', title: link.title, menu_settings: menu_settings %}
+        {%- else -%}
+          <span class="wrap-text">
+            {{- link.title -}}
+          </span>
+        {%- endif -%}
       </a>
       {% if link.links != blank %}
         <ul
@@ -154,7 +158,7 @@
                 href="{{ childLink.url }}"
                 class="mega-menu__link"
               >
-                <span class="wrap-text">{{- childLink.title -}}</span>
+                {% render 'mm-mega-link-label', title: childLink.title, menu_settings: menu_settings %}
               </a>
             </li>
           {% endfor %}

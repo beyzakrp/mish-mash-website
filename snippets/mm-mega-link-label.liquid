@@ -1,0 +1,60 @@
+{%- doc -%}
+  Mega menu link label with an optional Mish Mash symbol.
+  Character links (Show-off, Player, Trickster, Helper) get an ink symbol in front that takes its colour on hover.
+  Other links listed in the menu block's "Link symbols" map get a symbol that spins in after the title on hover.
+
+  @param {string} title - The link title.
+  @param {object} [menu_settings] - The menu block settings.
+{%- enddoc -%}
+{%- liquid
+  assign mm_symbol = ''
+  assign mm_lead = false
+  if menu_settings.mm_menu_link_symbols
+    assign mm_title = title | downcase | strip
+    if mm_title contains 'show-off' or mm_title contains 'show off' or mm_title contains 'showoff'
+      assign mm_symbol = 'showoff'
+      assign mm_lead = true
+    elsif mm_title contains 'player'
+      assign mm_symbol = 'player'
+      assign mm_lead = true
+    elsif mm_title contains 'trickster'
+      assign mm_symbol = 'trickster'
+      assign mm_lead = true
+    elsif mm_title contains 'helper'
+      assign mm_symbol = 'helper'
+      assign mm_lead = true
+    else
+      assign mm_pairs = menu_settings.mm_menu_symbol_map | downcase | split: ','
+      for mm_pair in mm_pairs
+        assign mm_parts = mm_pair | split: ':'
+        assign mm_key = mm_parts[0] | strip
+        if mm_key == mm_title
+          assign mm_symbol = mm_parts[1] | strip | remove: '-' | remove: ' '
+        endif
+      endfor
+    endif
+  endif
+
+  case mm_symbol
+    when 'showoff'
+      assign mm_color = '#1E6448'
+    when 'player'
+      assign mm_color = '#F37400'
+    when 'trickster'
+      assign mm_color = '#4CA7FF'
+    when 'helper'
+      assign mm_color = '#FF6EA7'
+    else
+      assign mm_symbol = ''
+  endcase
+-%}
+{%- if mm_symbol != blank -%}
+  {%- capture mm_symbol_style -%}--mm-symbol-url: url({{ 'mm-symbol-' | append: mm_symbol | append: '.svg' | asset_url }}); --mm-symbol-color: {{ mm_color }};{%- endcapture -%}
+{%- endif -%}
+{%- if mm_lead -%}
+  <span class="mm-link-symbol mm-link-symbol--lead" style="{{ mm_symbol_style }}" aria-hidden="true"></span>
+{%- endif -%}
+<span class="wrap-text">{{- title -}}</span>
+{%- if mm_symbol != blank and mm_lead == false -%}
+  <span class="mm-link-symbol mm-link-symbol--trail" style="{{ mm_symbol_style }}" aria-hidden="true"></span>
+{%- endif -%}
