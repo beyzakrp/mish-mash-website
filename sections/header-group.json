@@ -83,7 +83,7 @@
             "menu_font_style": "inverse",
             "type_font_primary_link": "subheading",
             "mm_menu_font": "proxima",
-            "mm_menu_weight": "400",
+            "mm_menu_weight": "600",
             "mm_menu_item_gap": 40,
             "mm_menu_hover_style": "roll",
             "mm_menu_dim": 40,
