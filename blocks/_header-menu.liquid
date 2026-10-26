@@ -147,6 +147,15 @@
               >
                 {% assign list_id = 'MegaMenuList-' | append: forloop.index %}
                 <div class="mega-menu section section--full-width-margin section--{{ section.settings.section_width }}">
+                  {%- if block_settings.mm_mega_symbol_image != blank or block_settings.mm_mega_symbol != 'none' -%}
+                    <span class="mm-mega-symbol{% if block_settings.mm_mega_symbol_spin %} mm-mega-symbol--spin{% endif %}" aria-hidden="true" style="--mm-mega-symbol-size: {{ block_settings.mm_mega_symbol_size }}px; --mm-mega-symbol-opacity: {{ block_settings.mm_mega_symbol_opacity | divided_by: 100.0 }};">
+                      {%- if block_settings.mm_mega_symbol_image != blank -%}
+                        {{ block_settings.mm_mega_symbol_image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: '' }}
+                      {%- else -%}
+                        <img src="{{ 'mm-symbol-' | append: block_settings.mm_mega_symbol | append: '.svg' | asset_url }}" alt="" width="64" height="64" loading="lazy">
+                      {%- endif -%}
+                    </span>
+                  {%- endif -%}
                   <div
                     class="mega-menu__grid"
                     data-menu-grid-id="{{ list_id }}"
@@ -1124,51 +1133,69 @@
       "visible_if": "{{ block.settings.menu_style != 'text' }}"
     },
     {
-      "type": "header",
-      "content": "t:content.mobile_layout"
+      "type": "select",
+      "id": "mm_mega_symbol",
+      "label": "Background symbol",
+      "info": "A large symbol that turns slowly in the corner while the mega menu is open.",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "showoff",
+          "label": "The Show-off"
+        },
+        {
+          "value": "player",
+          "label": "The Player"
+        },
+        {
+          "value": "trickster",
+          "label": "The Trickster"
+        },
+        {
+          "value": "helper",
+          "label": "The Helper"
+        }
+      ],
+      "default": "showoff"
+    },
+    {
+      "type": "image_picker",
+      "id": "mm_mega_symbol_image",
+      "label": "Custom background symbol",
+      "info": "PNG or SVG. Replaces the symbol above."
+    },
+    {
+      "type": "range",
+      "id": "mm_mega_symbol_size",
+      "label": "Background symbol size",
+      "min": 120,
+      "max": 520,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "mm_mega_symbol_opacity",
+      "label": "Background symbol visibility",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 15
     },
     {
       "type": "checkbox",
-      "id": "navigation_bar",
-      "label": "t:settings.navigation_bar"
+      "id": "mm_mega_symbol_spin",
+      "label": "Turn the background symbol slowly",
+      "default": true
     },
     {
-      "type": "color",
-      "id": "background_color_navigation_bar",
-      "label": "t:settings.navigation_bar_background_color",
-      "default": "{{ settings.color_palette.background }}",
-      "visible_if": "{{ block.settings.navigation_bar }}"
-    },
-    {
-      "type": "color",
-      "id": "text_color_navigation_bar",
-      "label": "t:settings.navigation_bar_text_color",
-      "placeholder": "t:settings.default",
-      "visible_if": "{{ block.settings.navigation_bar }}"
-    },
-    {
-      "type": "checkbox",
-      "id": "drawer_accordion",
-      "label": "t:settings.accordion",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "drawer_accordion_expand_first",
-      "label": "t:settings.expand_first_group",
-      "default": false,
-      "visible_if": "{{ block.settings.drawer_accordion == true }}"
-    },
-    {
-      "type": "checkbox",
-      "id": "drawer_dividers",
-      "label": "t:settings.dividers",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "Mega menu images",
-      "info": "Pick a collection from the menu and the image to show for it in the mega menu. Used with the featured collections style."
+      "type": "paragraph",
+      "content": "Collection images: pick a collection from the menu and the image to show on its card."
     },
     {
       "type": "collection",
@@ -1229,6 +1256,48 @@
       "type": "image_picker",
       "id": "mm_mega_image_6",
       "label": "Image 6"
+    },
+    {
+      "type": "header",
+      "content": "t:content.mobile_layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "navigation_bar",
+      "label": "t:settings.navigation_bar"
+    },
+    {
+      "type": "color",
+      "id": "background_color_navigation_bar",
+      "label": "t:settings.navigation_bar_background_color",
+      "default": "{{ settings.color_palette.background }}",
+      "visible_if": "{{ block.settings.navigation_bar }}"
+    },
+    {
+      "type": "color",
+      "id": "text_color_navigation_bar",
+      "label": "t:settings.navigation_bar_text_color",
+      "placeholder": "t:settings.default",
+      "visible_if": "{{ block.settings.navigation_bar }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "drawer_accordion",
+      "label": "t:settings.accordion",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "drawer_accordion_expand_first",
+      "label": "t:settings.expand_first_group",
+      "default": false,
+      "visible_if": "{{ block.settings.drawer_accordion == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "drawer_dividers",
+      "label": "t:settings.dividers",
+      "default": false
     }
   ]
 }
