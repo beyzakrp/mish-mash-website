@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "object_hero": {
+      "type": "mm-object-hero",
+      "settings": {}
+    },
     "section": {
       "type": "section",
       "blocks": {
@@ -66,7 +70,8 @@
         "gradient_direction": "to top",
         "padding-block-start": 40,
         "padding-block-end": 0
-      }
+      },
+      "disabled": true
     },
     "main": {
       "type": "main-collection",
@@ -244,10 +249,56 @@
         "padding-block-start": 32,
         "padding-block-end": 32
       }
+    },
+    "object_details": {
+      "type": "mm-object-details",
+      "settings": {},
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "character": "showoff",
+            "title": "Quiet by design",
+            "text": "A silent movement, so the only thing you hear is the compliments."
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "character": "player",
+            "title": "Colours that mix",
+            "text": "Pair them with any vase, lamp or candle in the collection."
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "character": "trickster",
+            "title": "A twist of shape",
+            "text": "Familiar enough to read at a glance, odd enough to make you smile."
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "character": "helper",
+            "title": "Ready to gift",
+            "text": "Wrapped with care and sent with a handwritten note."
+          }
+        }
+      },
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4"
+      ]
     }
   },
   "order": [
+    "object_hero",
     "section",
-    "main"
+    "main",
+    "object_details"
   ]
 }

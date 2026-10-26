@@ -1,0 +1,282 @@
+<section class="mm-home mm-ofeat" id="mm-{{ section.id }}">
+  <div class="mm-pad">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+      <div class="mm-section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+        </div>
+        {%- if section.settings.text != blank -%}<p class="mm-section-text">{{ section.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="mm-ofeat__list">
+      {%- for block in section.blocks -%}
+        {%- assign feature_symbol = block.settings.character -%}
+        {%- liquid
+  case feature_symbol
+    when 'showoff'
+      assign feature_colour = '#1E6448'
+    when 'player'
+      assign feature_colour = '#F37400'
+    when 'trickster'
+      assign feature_colour = '#4CA7FF'
+    when 'helper'
+      assign feature_colour = '#FF6EA7'
+    else
+      assign feature_colour = 'currentColor'
+  endcase
+-%}
+        <div class="mm-ofeat__item" style="--mm-char: {{ feature_colour }};" {{ block.shopify_attributes }}>
+          <div class="mm-ofeat__icon">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 160 | image_tag: alt: '', loading: 'lazy' }}
+            {%- elsif block.settings.big_text != blank -%}
+              <span class="mm-ofeat__big mm-display">{{ block.settings.big_text | escape }}</span>
+            {%- elsif feature_symbol != 'none' -%}
+              <span class="mm-symbol-mask" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: feature_symbol | append: '.svg' | asset_url }}); --mm-symbol-color: var(--mm-char);" aria-hidden="true"></span>
+            {%- endif -%}
+          </div>
+          <h3>{{ block.settings.title | escape }}</h3>
+          {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape }}</p>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% stylesheet %}
+.mm-ofeat__list{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:1px solid color-mix(in srgb,var(--mm-ink) 18%,transparent)}
+.mm-ofeat__item{display:grid;align-content:start;gap:10px;padding:28px 24px 8px 0}
+.mm-ofeat__item+.mm-ofeat__item{padding-left:24px;border-left:1px solid color-mix(in srgb,var(--mm-ink) 18%,transparent)}
+.mm-ofeat__icon{display:flex;align-items:center;height:56px;margin-bottom:6px}
+.mm-ofeat__icon img{height:100%;width:auto;object-fit:contain}
+.mm-ofeat__icon .mm-symbol-mask{width:44px;background-color:var(--mm-ink)!important;transition:background-color .35s,rotate .8s cubic-bezier(.34,1.56,.64,1)}
+.mm-ofeat__item:hover .mm-symbol-mask{background-color:var(--mm-char)!important;rotate:120deg}
+.mm-ofeat__big{font-size:44px;line-height:1;color:var(--mm-accent)}
+.mm-home .mm-ofeat__item h3{font-size:18px;line-height:1.2}
+.mm-ofeat__item p{font-size:14px;line-height:1.55;opacity:.75;max-width:32ch}
+.mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
+@media(max-width:749px){
+  .mm-ofeat__list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mm-ofeat__item,.mm-ofeat__item+.mm-ofeat__item{padding:22px 14px 14px 0;border-left:0}
+  .mm-ofeat__item:nth-child(even){padding-left:14px;border-left:1px solid color-mix(in srgb,var(--mm-ink) 18%,transparent)}
+  .mm-ofeat__item:nth-child(n+3){border-top:1px solid color-mix(in srgb,var(--mm-ink) 18%,transparent)}
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · Object details",
+  "tag": "div",
+  "class": "mm-ofeat-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Good to know"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why you will love\nthese clocks."
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Detail",
+      "settings": [
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Symbol",
+          "default": "showoff",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "showoff",
+              "label": "The Show-off"
+            },
+            {
+              "value": "player",
+              "label": "The Player"
+            },
+            {
+              "value": "trickster",
+              "label": "The Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "The Helper"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "big_text",
+          "label": "Big text instead of symbol",
+          "info": "For example 30 cm or 2 yrs."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Quiet by design"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "A short sentence about this detail."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Object details",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "character": "showoff",
+            "title": "Quiet by design",
+            "text": "A silent movement, so the only thing you hear is the compliments."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "character": "player",
+            "title": "Colours that mix",
+            "text": "Pair them with any vase, lamp or candle in the collection."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "character": "trickster",
+            "title": "A twist of shape",
+            "text": "Familiar enough to read at a glance, odd enough to make you smile."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "character": "helper",
+            "title": "Ready to gift",
+            "text": "Wrapped with care and sent with a handwritten note."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
