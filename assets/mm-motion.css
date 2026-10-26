@@ -134,7 +134,7 @@
 .mm-footer__menus{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:32px;align-content:start}
 .mm-footer__menu .mm-eyebrow{opacity:.5;margin-bottom:18px}
 .mm-footer__menu ul{display:grid;gap:10px;margin:0;padding:0;list-style:none;font-size:15px}
-.mm-footer__mark{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;padding:clamp(40px,6vw,80px) 0}
+.mm-footer__mark{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;padding:clamp(40px,6vw,40px) 0}
 .mm-footer__brand{display:flex;align-items:flex-end;flex-wrap:wrap;gap:clamp(20px,3vw,48px);min-width:0}
 .mm-footer__logo{display:block;flex:none;width:min(var(--mm-footer-logo,300px),40vw)}
 .mm-footer__symbols{display:flex;align-items:flex-end;flex-wrap:wrap;gap:var(--mm-footer-symbol-gap,16px);margin:0;padding:0;list-style:none}
