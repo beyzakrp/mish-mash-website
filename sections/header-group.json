@@ -90,6 +90,14 @@
             "mm_menu_animation": true,
             "type_case_primary_link": "uppercase",
             "menu_style": "text",
+            "mm_mega_image_1": "shopify://shop_images/roki-leif-mirela-q1-11.webp",
+            "mm_mega_image_1_title": "Clock",
+            "mm_mega_image_1_link": "shopify://collections/clock",
+            "mm_mega_image_2": "shopify://shop_images/henri-mood-2.webp",
+            "mm_mega_image_2_title": "Candelabra",
+            "mm_mega_image_2_link": "shopify://collections/candelabra",
+            "mm_mega_images_ratio": "16 / 9",
+            "mm_mega_images_menu_item": "",
             "featured_products_aspect_ratio": "4 / 5",
             "featured_collections_aspect_ratio": "16 / 9",
             "image_border_radius": 0,
@@ -98,17 +106,7 @@
             "text_color_navigation_bar": "",
             "drawer_accordion": false,
             "drawer_accordion_expand_first": false,
-            "drawer_dividers": false,
-            "mm_mega_collection_1": "clock",
-            "mm_mega_image_1": "{{ closest.collection.image }}",
-            "mm_mega_collection_2": "candelabra",
-            "mm_mega_image_2": "shopify://shop_images/henri-mood-2.webp",
-            "mm_mega_collection_3": "lamp",
-            "mm_mega_image_3": "{{ closest.collection.image }}",
-            "mm_mega_collection_4": "vase",
-            "mm_mega_image_4": "{{ closest.collection.image }}",
-            "mm_mega_collection_5": "",
-            "mm_mega_collection_6": ""
+            "drawer_dividers": false
           },
           "blocks": {}
         }
