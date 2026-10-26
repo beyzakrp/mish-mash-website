@@ -127,6 +127,9 @@
 {%- unless section.settings.uppercase -%}
   #mm-{{ section.id }} .mm-chero__heading{text-transform:none}
 {%- endunless -%}
+{%- if section.settings.small_font == 'proxima' -%}
+#mm-{{ section.id }} .mm-chero__the{font-family:'MM Proxima Nova',Arial,sans-serif;font-weight:400;letter-spacing:.04em}
+{%- endif -%}
 {% endstyle %}
 
 {% stylesheet %}
@@ -480,6 +483,22 @@
       "id": "badge_small",
       "label": "Small word",
       "default": "The"
+    },
+    {
+      "type": "select",
+      "id": "small_font",
+      "label": "Small word font",
+      "default": "proxima",
+      "options": [
+        {
+          "value": "proxima",
+          "label": "Proxima Nova Regular"
+        },
+        {
+          "value": "name",
+          "label": "Same as the name"
+        }
+      ]
     },
     {
       "type": "text",

@@ -111,6 +111,9 @@
   {%- when 'theme' -%}
     #mm-{{ section.id }} .mm-pattern__name{font-family:var(--font-heading--family)}
 {%- endcase -%}
+{%- if section.settings.small_font == 'proxima' -%}
+#mm-{{ section.id }} .mm-pattern__the{font-family:'MM Proxima Nova',Arial,sans-serif;font-weight:400;letter-spacing:.04em}
+{%- endif -%}
 {% endstyle %}
 
 {% stylesheet %}
@@ -328,6 +331,22 @@
       "id": "small_word",
       "label": "Small word",
       "default": "The"
+    },
+    {
+      "type": "select",
+      "id": "small_font",
+      "label": "Small word font",
+      "default": "proxima",
+      "options": [
+        {
+          "value": "proxima",
+          "label": "Proxima Nova Regular"
+        },
+        {
+          "value": "name",
+          "label": "Same as the name"
+        }
+      ]
     },
     {
       "type": "text",

@@ -59,6 +59,12 @@ body:has(#header-component[transparent]) .mm-hero:before{content:"";position:abs
 .mm-menu-animate .mega-menu__link{transition:opacity .25s}
 .mm-menu-animate .mega-menu__list:has(.mega-menu__link:hover) .mega-menu__link:not(:hover){opacity:var(--opacity-subdued-text,.4)}
 
+/* Submenu arrow next to top-level links (Menu block: Show arrow on links with a submenu) */
+.header-menu .menu-list__link-title:has(.mm-menu-caret){display:inline-flex;align-items:center;gap:.35em}
+.mm-menu-caret{flex:none;width:.6em;height:.36em;opacity:.7;transition:rotate .45s var(--mm-menu-ease,cubic-bezier(.22,1,.36,1)),opacity .25s}
+.menu-list__list-item:has([aria-expanded='true']) .mm-menu-caret,.menu-list__list-item:hover .mm-menu-caret{rotate:180deg;opacity:1}
+@media(prefers-reduced-motion:reduce){.mm-menu-caret{transition:none}}
+
 /* Mega menu column headings (Menu block: Small column headings) */
 .mm-menu-labels .mega-menu__link--parent{font-family:var(--menu-child-font-family);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.55;padding-block-end:var(--padding-xs)}
 .mm-menu-labels .mega-menu__link--parent:hover{opacity:1}
