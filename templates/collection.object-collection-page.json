@@ -11,7 +11,41 @@
   "sections": {
     "object_hero": {
       "type": "mm-object-hero",
-      "settings": {}
+      "settings": {
+        "eyebrow": "The objects",
+        "name": "",
+        "text_source": "description",
+        "text": "<p>Time flies when you are having fun. Our clocks make sure it looks good doing it.</p>",
+        "show_count": true,
+        "count_label": "pieces to choose from",
+        "button_label": "See them all",
+        "button_link": "",
+        "show_characters": false,
+        "link_showoff": "",
+        "link_player": "",
+        "link_trickster": "",
+        "link_helper": "",
+        "media_side": "right",
+        "ratio": "4 / 5",
+        "radius": 28,
+        "frame_colour": "#eeece6",
+        "image_detail": "symbol",
+        "symbol": "player",
+        "accent_size": 150,
+        "show_badge": true,
+        "badge_text": "",
+        "show_outline": true,
+        "outline_opacity": 14,
+        "name_size": 140,
+        "name_mobile": 64,
+        "heading_font": "cocogoose",
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "accent": "#ff6ea7",
+        "padding_top": 70,
+        "padding_bottom": 80,
+        "padding_mobile": 55
+      }
     },
     "section": {
       "type": "section",
@@ -26,10 +60,12 @@
             "alignment": "left",
             "type_preset": "h2",
             "font": "var(--font-body--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -44,6 +80,7 @@
       "block_order": [
         "text_tqQTNE"
       ],
+      "disabled": true,
       "name": "t:names.heading",
       "settings": {
         "content_direction": "row",
@@ -55,23 +92,24 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 12,
         "section_width": "page-width",
+        "section_height": "",
         "section_height_custom": 50,
         "background_media": "none",
         "background_color": "{{ settings.color_palette.background }}",
         "video_position": "cover",
         "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
         "toggle_overlay": false,
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
         "padding-block-start": 40,
         "padding-block-end": 0
-      },
-      "disabled": true
+      }
     },
     "main": {
       "type": "main-collection",
@@ -88,6 +126,8 @@
             "show_filter_label": false,
             "enable_sorting": true,
             "enable_grid_density": true,
+            "background_color": "",
+            "text_color": "",
             "padding-block-start": 8,
             "padding-block-end": 8,
             "padding-inline-start": 0,
@@ -102,9 +142,11 @@
           "static": true,
           "settings": {
             "product_card_gap": 8,
+            "background_color": "",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
+            "border_color": "",
             "border_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -119,6 +161,7 @@
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
+                "border_color": "",
                 "border_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -145,16 +188,19 @@
                 "height": "fit",
                 "custom_height": 100,
                 "background_media": "none",
+                "background_color": "",
                 "video_position": "cover",
                 "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
                 "toggle_overlay": false,
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "link": "",
                 "open_in_new_tab": false,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -176,6 +222,7 @@
                     "letter_spacing": "normal",
                     "case": "none",
                     "wrap": "pretty",
+                    "text_color": "",
                     "background": false,
                     "background_color": "#00000026",
                     "corner_radius": 0,
@@ -200,6 +247,7 @@
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
+                    "text_color": "",
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
@@ -239,6 +287,8 @@
         "layout_type": "grid",
         "product_card_size": "medium",
         "mobile_product_card_size": "small",
+        "enable_infinite_scroll": true,
+        "products_per_page": 24,
         "product_grid_width": "centered",
         "full_width_on_mobile": true,
         "columns_gap_horizontal": 16,
@@ -252,12 +302,12 @@
     },
     "object_details": {
       "type": "mm-object-details",
-      "settings": {},
       "blocks": {
         "feature_1": {
           "type": "feature",
           "settings": {
             "character": "showoff",
+            "big_text": "",
             "title": "Quiet by design",
             "text": "A silent movement, so the only thing you hear is the compliments."
           }
@@ -266,6 +316,7 @@
           "type": "feature",
           "settings": {
             "character": "player",
+            "big_text": "",
             "title": "Colours that mix",
             "text": "Pair them with any vase, lamp or candle in the collection."
           }
@@ -274,6 +325,7 @@
           "type": "feature",
           "settings": {
             "character": "trickster",
+            "big_text": "",
             "title": "A twist of shape",
             "text": "Familiar enough to read at a glance, odd enough to make you smile."
           }
@@ -282,6 +334,7 @@
           "type": "feature",
           "settings": {
             "character": "helper",
+            "big_text": "",
             "title": "Ready to gift",
             "text": "Wrapped with care and sent with a handwritten note."
           }
@@ -292,7 +345,20 @@
         "feature_2",
         "feature_3",
         "feature_4"
-      ]
+      ],
+      "settings": {
+        "eyebrow": "Good to know",
+        "heading": "Why you will love\nthese clocks.",
+        "heading_font": "cocogoose",
+        "heading_size": 44,
+        "heading_mobile": 36,
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "accent": "#ff6ea7",
+        "padding_top": 60,
+        "padding_bottom": 70,
+        "padding_mobile": 55
+      }
     }
   },
   "order": [
