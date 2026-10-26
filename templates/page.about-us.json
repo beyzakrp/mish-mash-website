@@ -9,6 +9,486 @@
  */
 {
   "sections": {
+    "about_hero": {
+      "type": "mm-about-hero",
+      "settings": {}
+    },
+    "about_ticker": {
+      "type": "mm-ticker",
+      "blocks": {
+        "word_0": {
+          "type": "word",
+          "settings": {
+            "text": "mish"
+          }
+        },
+        "symbol_0": {
+          "type": "symbol",
+          "settings": {
+            "character": "showoff",
+            "colour": "ink"
+          }
+        },
+        "word_1": {
+          "type": "word",
+          "settings": {
+            "text": "mash"
+          }
+        },
+        "symbol_1": {
+          "type": "symbol",
+          "settings": {
+            "character": "player",
+            "colour": "ink"
+          }
+        },
+        "word_2": {
+          "type": "word",
+          "settings": {
+            "text": "mish"
+          }
+        },
+        "symbol_2": {
+          "type": "symbol",
+          "settings": {
+            "character": "trickster",
+            "colour": "ink"
+          }
+        },
+        "word_3": {
+          "type": "word",
+          "settings": {
+            "text": "mash"
+          }
+        },
+        "symbol_3": {
+          "type": "symbol",
+          "settings": {
+            "character": "helper",
+            "colour": "ink"
+          }
+        },
+        "word_4": {
+          "type": "word",
+          "settings": {
+            "text": "mish"
+          }
+        },
+        "symbol_4": {
+          "type": "symbol",
+          "settings": {
+            "character": "showoff",
+            "colour": "ink"
+          }
+        },
+        "word_5": {
+          "type": "word",
+          "settings": {
+            "text": "mash"
+          }
+        },
+        "symbol_5": {
+          "type": "symbol",
+          "settings": {
+            "character": "player",
+            "colour": "ink"
+          }
+        },
+        "word_6": {
+          "type": "word",
+          "settings": {
+            "text": "mish"
+          }
+        },
+        "symbol_6": {
+          "type": "symbol",
+          "settings": {
+            "character": "trickster",
+            "colour": "ink"
+          }
+        },
+        "word_7": {
+          "type": "word",
+          "settings": {
+            "text": "mash"
+          }
+        },
+        "symbol_7": {
+          "type": "symbol",
+          "settings": {
+            "character": "helper",
+            "colour": "ink"
+          }
+        }
+      },
+      "block_order": [
+        "word_0",
+        "symbol_0",
+        "word_1",
+        "symbol_1",
+        "word_2",
+        "symbol_2",
+        "word_3",
+        "symbol_3",
+        "word_4",
+        "symbol_4",
+        "word_5",
+        "symbol_5",
+        "word_6",
+        "symbol_6",
+        "word_7",
+        "symbol_7"
+      ],
+      "settings": {
+        "edge_fade": true,
+        "edge_fade_width": 15,
+        "background": "{{ settings.color_palette.background }}",
+        "text_color": "{{ settings.color_palette.foreground }}",
+        "height": 66,
+        "font_size": 24,
+        "duration": 50,
+        "direction": "left"
+      }
+    },
+    "about_story": {
+      "type": "mm-story",
+      "settings": {
+        "eyebrow": "How it started",
+        "heading": "Why are everyday\nobjects so serious?",
+        "description": "We asked ourselves that question one afternoon and could not stop thinking about it. mish-mash is our answer: objects with a personality, a sense of humour and a job to do.",
+        "story_image": "shopify://shop_images/77B0CD5B-CF45-4AF0-BC20-60271A3B9D5D.webp",
+        "image_alt": "A colourful object styled in a living space",
+        "button_label": "Meet the characters",
+        "button_link": "",
+        "reference_images": true,
+        "image_side": "right",
+        "show_symbol": true,
+        "symbol": "showoff",
+        "symbol_size": 140,
+        "symbol_color": "#4ca7ff",
+        "background": "#f2fffa",
+        "text_color": "#171514",
+        "button_background": "{{ settings.color_palette.background }}",
+        "button_text": "{{ settings.color_palette.color1 }}",
+        "button_border": "#1e6448",
+        "button_hover_background": "#1e6448",
+        "button_hover_text": "#ffffff",
+        "button_hover_border": "",
+        "button_border_width": 3,
+        "button_radius": 40,
+        "button_padding_y": 17,
+        "button_padding_x": 32,
+        "button_min_width": 0,
+        "button_font_size": 13,
+        "button_letter_spacing": 4,
+        "button_uppercase": true,
+        "heading_font": "theme",
+        "heading_size": 54,
+        "heading_mobile": 38
+      }
+    },
+    "about_values": {
+      "type": "mm-about-values",
+      "settings": {},
+      "blocks": {
+        "value_1": {
+          "type": "value",
+          "settings": {
+            "character": "showoff",
+            "title": "Made to be noticed",
+            "text": "<p>Bold shapes and honest colours. Objects that hold their own in any room.</p>"
+          }
+        },
+        "value_2": {
+          "type": "value",
+          "settings": {
+            "character": "player",
+            "title": "Made to be played with",
+            "text": "<p>Swap, stack, combine. Your home should be allowed to change its mind.</p>"
+          }
+        },
+        "value_3": {
+          "type": "value",
+          "settings": {
+            "character": "trickster",
+            "title": "A little unexpected",
+            "text": "<p>A twist in every piece, so even the everyday feels new.</p>"
+          }
+        },
+        "value_4": {
+          "type": "value",
+          "settings": {
+            "character": "helper",
+            "title": "Useful, always",
+            "text": "<p>Good looks are nice. Good looks that work every day are better.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "value_1",
+        "value_2",
+        "value_3",
+        "value_4"
+      ]
+    },
+    "about_numbers": {
+      "type": "mm-about-stats",
+      "settings": {},
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "number": "4",
+            "suffix": "",
+            "label": "characters with very different personalities"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "number": "5",
+            "suffix": "",
+            "label": "everyday objects, reimagined"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "number": "100",
+            "suffix": "%",
+            "label": "designed in Istanbul"
+          }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": {
+            "number": "1000",
+            "suffix": "+",
+            "label": "happy homes and counting"
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3",
+        "stat_4"
+      ]
+    },
+    "about_timeline": {
+      "type": "mm-about-timeline",
+      "settings": {},
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "label": "The idea",
+            "title": "A vase with an attitude",
+            "text": "<p>It started with one question: why do everyday objects have to be so serious?</p>",
+            "character": "showoff"
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "label": "The characters",
+            "title": "Four personalities are born",
+            "text": "<p>The Show-off, the Player, the Trickster and the Helper. Every object found its own.</p>",
+            "character": "player"
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "label": "The studio",
+            "title": "Prototypes everywhere",
+            "text": "<p>Hundreds of sketches, many colour tests and a few happy accidents.</p>",
+            "character": "trickster"
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "label": "Today",
+            "title": "Hello, your home",
+            "text": "<p>mish-mash objects are finding their way into happy homes.</p>",
+            "character": "helper"
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ]
+    },
+    "about_characters": {
+      "type": "mm-personalities",
+      "blocks": {
+        "showoff": {
+          "type": "personality",
+          "settings": {
+            "heading": "The Show-off",
+            "description": "Just looks good.",
+            "character": "showoff",
+            "symbol_filter": "brightness(0) invert(1)",
+            "background": "#1e6448",
+            "text_color": "#ffffff",
+            "link": "",
+            "collection": ""
+          }
+        },
+        "player": {
+          "type": "personality",
+          "settings": {
+            "heading": "The Player",
+            "description": "Touch. Play. Combine.",
+            "character": "player",
+            "symbol_filter": "brightness(0)",
+            "background": "#f37400",
+            "text_color": "#171514",
+            "link": "",
+            "collection": ""
+          }
+        },
+        "trickster": {
+          "type": "personality",
+          "settings": {
+            "heading": "The Trickster",
+            "description": "Small surprise. Big joy.",
+            "character": "trickster",
+            "symbol_filter": "brightness(0)",
+            "background": "#4ca7ff",
+            "text_color": "#171514",
+            "link": "",
+            "collection": ""
+          }
+        },
+        "helper": {
+          "type": "personality",
+          "settings": {
+            "heading": "The Helper",
+            "description": "Looks good. Works too.",
+            "character": "helper",
+            "symbol_filter": "brightness(0)",
+            "background": "#ff6ea7",
+            "text_color": "#171514",
+            "link": "",
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "showoff",
+        "player",
+        "trickster",
+        "helper"
+      ],
+      "settings": {
+        "heading": "Four personalities.\nOne happy home.",
+        "intro": "Which one feels like you?",
+        "anchor": "personalities",
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "padding_top": 20,
+        "padding_bottom": 90,
+        "padding_mobile": 55,
+        "heading_font": "theme",
+        "heading_size": 54,
+        "heading_mobile": 38
+      }
+    },
+    "about_team": {
+      "type": "mm-about-team",
+      "settings": {},
+      "blocks": {
+        "member_1": {
+          "type": "member",
+          "settings": {
+            "name": "Beyza",
+            "role": "Founder & designer",
+            "fact": "Owns more vases than flowers.",
+            "character": "showoff"
+          }
+        },
+        "member_2": {
+          "type": "member",
+          "settings": {
+            "name": "Team member",
+            "role": "Product & colour",
+            "fact": "Can name every shade of pink.",
+            "character": "player"
+          }
+        },
+        "member_3": {
+          "type": "member",
+          "settings": {
+            "name": "Team member",
+            "role": "Studio & packing",
+            "fact": "Writes every thank-you note by hand.",
+            "character": "helper"
+          }
+        }
+      },
+      "block_order": [
+        "member_1",
+        "member_2",
+        "member_3"
+      ]
+    },
+    "about_reviews": {
+      "type": "mm-reviews",
+      "settings": {},
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "quote": "It makes me smile every single morning.",
+            "author": "Elif K.",
+            "character": "showoff",
+            "product_name": "Vase"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "quote": "Everyone who visits asks where the lamp is from.",
+            "author": "Can D.",
+            "character": "helper",
+            "product_name": "Lamp"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "quote": "Fun, colourful and beautifully packed. Perfect gift.",
+            "author": "Zeynep A.",
+            "character": "player",
+            "product_name": "Clock"
+          }
+        },
+        "review_4": {
+          "type": "review",
+          "settings": {
+            "quote": "Looks like a sculpture until you light it. Magic.",
+            "author": "Mert Y.",
+            "character": "trickster",
+            "product_name": "Candle"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3",
+        "review_4"
+      ]
+    },
+    "about_closing": {
+      "type": "mm-about-cta",
+      "settings": {}
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -35,10 +515,21 @@
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 40,
         "padding-block-end": 80
-      }
+      },
+      "disabled": true
     }
   },
   "order": [
+    "about_hero",
+    "about_ticker",
+    "about_story",
+    "about_values",
+    "about_numbers",
+    "about_timeline",
+    "about_characters",
+    "about_team",
+    "about_reviews",
+    "about_closing",
     "main"
   ]
 }

@@ -1,0 +1,296 @@
+<section class="mm-home mm-ahero mm-ahero--{{ section.settings.alignment }}" id="mm-{{ section.id }}">
+  <div class="mm-pad mm-ahero__inner">
+    <div class="mm-ahero__top">
+    {%- if section.settings.show_symbols -%}
+      <div class="mm-ahero__symbols" aria-hidden="true">
+        {%- assign hero_symbols = 'showoff,player,trickster,helper' | split: ',' -%}
+        {%- for symbol in hero_symbols -%}
+          {%- liquid
+  case symbol
+    when 'showoff'
+      assign symbol_colour = '#1E6448'
+    when 'player'
+      assign symbol_colour = '#F37400'
+    when 'trickster'
+      assign symbol_colour = '#4CA7FF'
+    when 'helper'
+      assign symbol_colour = '#FF6EA7'
+    else
+      assign symbol_colour = 'currentColor'
+  endcase
+-%}
+          <span class="mm-ahero__symbol mm-ahero__symbol--{{ forloop.index }}"><span class="mm-symbol-mask " style="--mm-symbol-url: url({{ 'mm-symbol-' | append: symbol | append: '.svg' | asset_url }}); --mm-symbol-color: {{ symbol_colour }};" aria-hidden="true"></span></span>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <div class="mm-ahero__copy">
+      {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h1 class="mm-ahero__heading mm-display">{{ section.settings.heading | remove: '<p>' | replace: '</p>', '<br>' | remove_last: '<br>' }}</h1>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}<div class="mm-ahero__text">{{ section.settings.text }}</div>{%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a class="mm-ahero__button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">→</span></a>
+      {%- endif -%}
+    </div>
+    </div>
+    {%- if section.settings.show_image -%}
+      <div class="mm-ahero__media">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 2400 | image_tag: alt: section.settings.image.alt, widths: '800,1200,1600,2000,2400', sizes: '100vw', fetchpriority: 'high' }}
+        {%- else -%}
+          <img src="{{ 'mm-reference-hero.webp' | asset_url }}" alt="" width="1600" height="1000">
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }}{--mm-ahero-size:{{ section.settings.heading_size }}px;--mm-ahero-mobile:{{ section.settings.heading_mobile }}px;--mm-ahero-symbol:{{ section.settings.symbol_size }}px;--mm-ahero-image-height:{{ section.settings.image_height }}px;--mm-ahero-radius:{{ section.settings.image_radius }}px}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-ahero__inner{position:relative;display:grid;gap:clamp(36px,5vw,72px)}
+.mm-ahero__copy{position:relative;z-index:1;display:grid;gap:22px;max-width:1100px}
+.mm-ahero--center .mm-ahero__copy{justify-items:center;text-align:center;margin-inline:auto}
+.mm-home .mm-ahero__heading{font-size:var(--mm-ahero-size,96px);line-height:.98;letter-spacing:-.04em;text-wrap:balance}
+.mm-ahero__heading :is(strong,b){font-weight:inherit;color:var(--mm-accent)}
+.mm-ahero__heading em{font-style:normal;-webkit-text-stroke:1.5px currentColor;color:transparent}
+.mm-ahero__text{font-size:clamp(16px,1.4vw,20px);line-height:1.55;max-width:56ch}
+.mm-ahero__text p{margin:0 0 .6em}
+.mm-home .mm-ahero__button{display:inline-flex;align-items:center;gap:18px;border-radius:100px;padding:17px 28px;background:var(--mm-ink);color:var(--mm-paper);font-size:14px;font-weight:700;justify-self:start;transition:background .25s,color .25s,translate .3s}
+.mm-ahero--center .mm-ahero__button{justify-self:center}
+.mm-home .mm-ahero__button:hover{background:var(--mm-accent);color:var(--mm-ink);translate:0 -2px}
+.mm-ahero__symbols{position:absolute;inset:0;pointer-events:none}
+.mm-ahero__symbol{position:absolute;width:var(--mm-ahero-symbol,88px);animation:mm-ahero-float 6s ease-in-out infinite}
+.mm-ahero__symbol .mm-symbol-mask{width:100%;animation:mm-ahero-in 1.2s cubic-bezier(.34,1.56,.64,1) both}
+.mm-ahero__top{position:relative}
+.mm-ahero__symbol--1{top:0;right:4%}
+.mm-ahero__symbol--2{top:58%;right:14%}
+.mm-ahero__symbol--3{top:18%;right:22%}
+.mm-ahero__symbol--4{top:70%;right:0}
+.mm-ahero--center .mm-ahero__symbol--1{top:0;left:2%;right:auto}
+.mm-ahero--center .mm-ahero__symbol--2{top:62%;right:6%}
+.mm-ahero--center .mm-ahero__symbol--3{top:4%;right:4%}
+.mm-ahero--center .mm-ahero__symbol--4{top:66%;left:6%;right:auto}
+.mm-ahero__symbol--2 .mm-symbol-mask{animation-delay:.12s}.mm-ahero__symbol--3 .mm-symbol-mask{animation-delay:.24s}.mm-ahero__symbol--4 .mm-symbol-mask{animation-delay:.36s}
+@keyframes mm-ahero-float{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -14px;rotate:8deg}}
+@keyframes mm-ahero-in{from{scale:0;rotate:-120deg}to{scale:1;rotate:0deg}}
+.mm-ahero__media{position:relative;z-index:1;height:var(--mm-ahero-image-height,520px);border-radius:var(--mm-ahero-radius,24px);overflow:hidden}
+.mm-ahero__media img{width:100%;height:100%;object-fit:cover;display:block}
+.mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
+@media(max-width:749px){.mm-home .mm-ahero__heading{font-size:var(--mm-ahero-mobile,48px)}.mm-ahero__symbol{width:calc(var(--mm-ahero-symbol,88px) * .5);opacity:.9}.mm-ahero__symbol--2,.mm-ahero__symbol--3,.mm-ahero__symbol--4{display:none}.mm-ahero__media{height:calc(var(--mm-ahero-image-height,520px) * .6)}}
+@media(prefers-reduced-motion:reduce){.mm-ahero__symbol,.mm-ahero__symbol .mm-symbol-mask{animation:none}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · About hero",
+  "tag": "div",
+  "class": "mm-ahero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "About mish-mash"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Bold words use the accent colour. Italic words are drawn as outline.",
+      "default": "<p>Serious about design. <strong>Playful</strong> by nature.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>We make everyday objects with a little more character. Colourful, a bit unexpected and made to make you smile every time you look at them.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Meet the objects"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Symbols"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_symbols",
+      "label": "Show floating symbols",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "symbol_size",
+      "label": "Symbol size",
+      "min": 40,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height",
+      "min": 240,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 28,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · About hero"
+    }
+  ]
+}
+{% endschema %}

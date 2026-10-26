@@ -1,0 +1,359 @@
+{%- assign stock_images = 'mm-reference-story.webp,mm-reference-hero.webp,mm-reference-mobile.webp' | split: ',' -%}
+<section class="mm-home mm-team" id="mm-{{ section.id }}">
+  <div class="mm-pad">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+      <div class="mm-section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+        </div>
+        {%- if section.settings.text != blank -%}<p class="mm-section-text">{{ section.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="mm-team__grid">
+      {%- for block in section.blocks -%}
+        {%- assign member_symbol = block.settings.character -%}
+        {%- assign stock_index = forloop.index0 | modulo: 3 -%}
+        {%- liquid
+  case member_symbol
+    when 'showoff'
+      assign member_colour = '#1E6448'
+    when 'player'
+      assign member_colour = '#F37400'
+    when 'trickster'
+      assign member_colour = '#4CA7FF'
+    when 'helper'
+      assign member_colour = '#FF6EA7'
+    else
+      assign member_colour = 'currentColor'
+  endcase
+-%}
+        <article class="mm-member" style="--mm-char: {{ member_colour }};" {{ block.shopify_attributes }}>
+          <div class="mm-member__media">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 900 | image_tag: alt: block.settings.name, loading: 'lazy', widths: '300,500,700,900', sizes: '(min-width: 750px) 25vw, 50vw' }}
+            {%- else -%}
+              <img src="{{ stock_images[stock_index] | asset_url }}" alt="" loading="lazy" width="1000" height="1250">
+            {%- endif -%}
+            {%- if block.settings.fact != blank -%}
+              <div class="mm-member__fact">
+                {%- if section.settings.fact_label != blank -%}<p class="mm-eyebrow">{{ section.settings.fact_label | escape }}</p>{%- endif -%}
+                <p>{{ block.settings.fact | escape }}</p>
+              </div>
+            {%- endif -%}
+            {%- if member_symbol != 'none' -%}
+              <span class="mm-member__badge"><span class="mm-symbol-mask " style="--mm-symbol-url: url({{ 'mm-symbol-' | append: member_symbol | append: '.svg' | asset_url }}); --mm-symbol-color: var(--mm-char);" aria-hidden="true"></span></span>
+            {%- endif -%}
+          </div>
+          <div class="mm-member__meta">
+            <h3 class="mm-display">{{ block.settings.name | escape }}</h3>
+            {%- if block.settings.role != blank -%}<p>{{ block.settings.role | escape }}</p>{%- endif -%}
+            {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" target="_blank" rel="noopener" class="mm-member__link">{{ block.settings.link_label | default: 'Instagram' | escape }} <span aria-hidden="true">↗</span></a>{%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }} .mm-team__grid{--mm-team-columns:{{ section.settings.columns }};--mm-team-ratio:{{ section.settings.ratio }};--mm-team-radius:{{ section.settings.radius }}px}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-team__grid{display:grid;grid-template-columns:repeat(var(--mm-team-columns,3),minmax(0,1fr));gap:clamp(14px,2vw,24px)}
+.mm-member{display:grid;gap:14px}
+.mm-member__media{position:relative;aspect-ratio:var(--mm-team-ratio,4/5);border-radius:var(--mm-team-radius,18px);overflow:hidden;isolation:isolate}
+.mm-member__media>img{width:100%;height:100%;object-fit:cover;display:block;transition:scale 1.2s cubic-bezier(.22,1,.36,1),filter .5s}
+.mm-member:hover .mm-member__media>img{scale:1.05;filter:saturate(.7) brightness(.85)}
+.mm-member__fact{position:absolute;inset:auto 12px 12px;display:grid;gap:6px;padding:16px;border-radius:14px;background:var(--mm-char);color:#fff;opacity:0;translate:0 16px;transition:opacity .35s,translate .55s cubic-bezier(.22,1,.36,1)}
+.mm-member__fact p:not(.mm-eyebrow){font-size:15px;line-height:1.4}
+.mm-member:hover .mm-member__fact,.mm-member:focus-within .mm-member__fact{opacity:1;translate:0 0}
+.mm-member__badge{position:absolute;top:12px;right:12px;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--mm-paper);transition:rotate .8s cubic-bezier(.34,1.56,.64,1)}
+.mm-member__badge .mm-symbol-mask{width:26px}
+.mm-member:hover .mm-member__badge{rotate:180deg}
+.mm-member__meta{display:grid;gap:4px}
+.mm-member__meta h3{font-size:clamp(20px,1.8vw,26px);line-height:1.1}
+.mm-member__meta p{font-size:14px;opacity:.7}
+.mm-member__link{font-size:13px;font-weight:700;justify-self:start;border-bottom:1px solid;padding-bottom:2px;margin-top:4px}
+.mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
+@media(max-width:749px){.mm-team__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mm-member__fact{inset:auto 8px 8px;padding:12px}.mm-member__fact p:not(.mm-eyebrow){font-size:13px}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · Team",
+  "tag": "div",
+  "class": "mm-team-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "The people"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The minds behind\nthe mish-mash."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Hover to meet their inner character."
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Photo shape",
+      "default": "4 / 5",
+      "options": [
+        {
+          "value": "4 / 5",
+          "label": "Portrait"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Square"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Tall portrait"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "text",
+      "id": "fact_label",
+      "label": "Fun fact small heading",
+      "default": "Fun fact"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "blocks": [
+    {
+      "type": "member",
+      "name": "Team member",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Beyza"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Role",
+          "default": "Founder & designer"
+        },
+        {
+          "type": "textarea",
+          "id": "fact",
+          "label": "Fun fact",
+          "info": "Shown on the photo on hover."
+        },
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Their character",
+          "default": "showoff",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "showoff",
+              "label": "The Show-off"
+            },
+            {
+              "value": "player",
+              "label": "The Player"
+            },
+            {
+              "value": "trickster",
+              "label": "The Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "The Helper"
+            }
+          ]
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "Instagram"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Team",
+      "blocks": [
+        {
+          "type": "member",
+          "settings": {
+            "name": "Beyza",
+            "role": "Founder & designer",
+            "fact": "Owns more vases than flowers.",
+            "character": "showoff"
+          }
+        },
+        {
+          "type": "member",
+          "settings": {
+            "name": "Team member",
+            "role": "Product & colour",
+            "fact": "Can name every shade of pink.",
+            "character": "player"
+          }
+        },
+        {
+          "type": "member",
+          "settings": {
+            "name": "Team member",
+            "role": "Studio & packing",
+            "fact": "Writes every thank-you note by hand.",
+            "character": "helper"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

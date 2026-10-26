@@ -1,0 +1,288 @@
+<section class="mm-home mm-stats" id="mm-{{ section.id }}">
+  <div class="mm-pad">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+      <div class="mm-section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+        </div>
+        {%- if section.settings.text != blank -%}<p class="mm-section-text">{{ section.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <mm-stats class="mm-stats__grid{% if section.settings.dividers %} mm-stats__grid--lines{% endif %}">
+      {%- for block in section.blocks -%}
+        <div class="mm-stat" {{ block.shopify_attributes }}>
+          <p class="mm-stat__value mm-display">
+            {%- if block.settings.prefix != blank -%}<span>{{ block.settings.prefix | escape }}</span>{%- endif -%}
+            <span data-count="{{ block.settings.number | escape }}">{{ block.settings.number | escape }}</span>
+            {%- if block.settings.suffix != blank -%}<span class="mm-stat__suffix">{{ block.settings.suffix | escape }}</span>{%- endif -%}
+          </p>
+          <p class="mm-stat__label">{{ block.settings.label | escape }}</p>
+        </div>
+      {%- endfor -%}
+    </mm-stats>
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }} .mm-stats__grid{--mm-stats-columns:{{ section.blocks.size | at_least: 1 | at_most: 6 }};--mm-stat-size:{{ section.settings.number_size }}px}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-stats__grid{display:grid;grid-template-columns:repeat(var(--mm-stats-columns,4),minmax(0,1fr));gap:24px}
+.mm-stats__grid--lines .mm-stat{padding-left:24px;border-left:1px solid color-mix(in srgb,var(--mm-ink) 20%,transparent)}
+.mm-stat{display:grid;gap:10px;align-content:start}
+.mm-home .mm-stat__value{display:flex;align-items:baseline;font-size:var(--mm-stat-size,88px);line-height:.95;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.mm-stat__suffix{color:var(--mm-accent)}
+.mm-stat__label{font-size:15px;line-height:1.4;max-width:24ch;opacity:.75}
+@media(max-width:749px){.mm-stats__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 16px}.mm-home .mm-stat__value{font-size:calc(var(--mm-stat-size,88px) * .55)}.mm-stats__grid--lines .mm-stat{padding-left:14px}}
+{% endstylesheet %}
+
+{% javascript %}
+if (!customElements.get('mm-stats')) {
+  customElements.define(
+    'mm-stats',
+    class MMStats extends HTMLElement {
+      connectedCallback() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+        const counters = [...this.querySelectorAll('[data-count]')].filter((el) => /^\d+([.,]\d+)?$/.test(el.dataset.count || ''));
+        if (!counters.length) return;
+        for (const el of counters) el.textContent = '0';
+        const observer = new IntersectionObserver((entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          observer.disconnect();
+          for (const el of counters) this.count(el);
+        }, { threshold: 0.4 });
+        observer.observe(this);
+      }
+
+      count(el) {
+        const raw = el.dataset.count || '0';
+        const separator = raw.includes(',') ? ',' : '.';
+        const target = Number(raw.replace(',', '.'));
+        const decimals = (raw.split(/[.,]/)[1] || '').length;
+        const start = performance.now();
+        const duration = 1600;
+        const step = (now) => {
+          const progress = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = (target * eased).toFixed(decimals).replace('.', separator);
+          if (progress < 1) requestAnimationFrame(step);
+          else el.textContent = raw;
+        };
+        requestAnimationFrame(step);
+      }
+    }
+  );
+}
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "MM · Numbers",
+  "tag": "div",
+  "class": "mm-stats-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "mish-mash in numbers"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A small studio\nwith big plans."
+    },
+    {
+      "type": "header",
+      "content": "Numbers"
+    },
+    {
+      "type": "range",
+      "id": "number_size",
+      "label": "Number size",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "checkbox",
+      "id": "dividers",
+      "label": "Show dividing lines",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Number",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "4",
+          "info": "Whole numbers count up when they come into view."
+        },
+        {
+          "type": "text",
+          "id": "prefix",
+          "label": "Before the number"
+        },
+        {
+          "type": "text",
+          "id": "suffix",
+          "label": "After the number",
+          "default": "+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "characters"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Numbers",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "number": "4",
+            "suffix": "",
+            "label": "characters with very different personalities"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "5",
+            "suffix": "",
+            "label": "everyday objects, reimagined"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "100",
+            "suffix": "%",
+            "label": "designed in Istanbul"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "1000",
+            "suffix": "+",
+            "label": "happy homes and counting"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

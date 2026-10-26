@@ -1,0 +1,279 @@
+<section class="mm-home mm-acta" id="mm-{{ section.id }}">
+  <div class="mm-pad">
+    <div class="mm-acta__box">
+      {%- if section.settings.show_symbols -%}
+        <div class="mm-acta__orbit{% if section.settings.spin %} mm-acta__orbit--spin{% endif %}" aria-hidden="true">
+          {%- assign cta_symbols = 'showoff,player,trickster,helper' | split: ',' -%}
+          {%- for symbol in cta_symbols -%}
+            {%- liquid
+  case symbol
+    when 'showoff'
+      assign symbol_colour = '#1E6448'
+    when 'player'
+      assign symbol_colour = '#F37400'
+    when 'trickster'
+      assign symbol_colour = '#4CA7FF'
+    when 'helper'
+      assign symbol_colour = '#FF6EA7'
+    else
+      assign symbol_colour = 'currentColor'
+  endcase
+-%}
+            <span class="mm-acta__symbol" style="--i: {{ forloop.index0 }};"><span class="mm-symbol-mask " style="--mm-symbol-url: url({{ 'mm-symbol-' | append: symbol | append: '.svg' | asset_url }}); --mm-symbol-color: {{ symbol_colour }};" aria-hidden="true"></span></span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      <div class="mm-acta__copy">
+        {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+        {%- if section.settings.text != blank -%}<p class="mm-acta__text">{{ section.settings.text | escape }}</p>{%- endif -%}
+        <div class="mm-acta__buttons">
+          {%- if section.settings.button_label != blank -%}
+            <a class="mm-acta__button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">→</span></a>
+          {%- endif -%}
+          {%- if section.settings.link_label != blank -%}
+            <a class="mm-acta__link" href="{{ section.settings.link | default: routes.root_url }}">{{ section.settings.link_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }} .mm-acta__box{--mm-acta-box:{{ section.settings.box_colour }};--mm-acta-ink:{{ section.settings.box_text }};--mm-acta-radius:{{ section.settings.radius }}px;--mm-acta-symbol:{{ section.settings.symbol_size }}px;--mm-acta-button:{{ section.settings.button_colour }};--mm-acta-button-text:{{ section.settings.button_text_colour }}}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-acta__box{position:relative;display:grid;place-items:center;min-height:440px;padding:clamp(40px,7vw,96px) clamp(20px,5vw,64px);border-radius:var(--mm-acta-radius,32px);background:var(--mm-acta-box);color:var(--mm-acta-ink);overflow:hidden;isolation:isolate;text-align:center}
+.mm-acta__copy{position:relative;z-index:1;display:grid;justify-items:center;gap:18px;max-width:760px}
+.mm-acta__copy h2{line-height:1}
+.mm-acta__text{font-size:17px;line-height:1.5;max-width:48ch;opacity:.85}
+.mm-acta__buttons{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:22px;margin-top:8px}
+.mm-home .mm-acta__button{display:inline-flex;align-items:center;gap:18px;border-radius:100px;padding:17px 28px;background:var(--mm-acta-button);color:var(--mm-acta-button-text);font-size:14px;font-weight:700;transition:translate .3s,scale .3s}
+.mm-home .mm-acta__button:hover{translate:0 -2px;scale:1.03}
+.mm-home .mm-acta__link{font-size:14px;font-weight:700;border-bottom:1px solid;padding-bottom:3px}
+.mm-acta__orbit{position:absolute;inset:0;z-index:0;pointer-events:none}
+.mm-acta__symbol{position:absolute;width:var(--mm-acta-symbol,110px);animation:mm-acta-bob 5s ease-in-out infinite;animation-delay:calc(var(--i) * -1.2s)}
+.mm-acta__symbol:nth-child(1){top:-4%;left:-2%}
+.mm-acta__symbol:nth-child(2){top:8%;right:4%}
+.mm-acta__symbol:nth-child(3){bottom:-6%;left:10%}
+.mm-acta__symbol:nth-child(4){bottom:4%;right:-2%}
+.mm-acta__symbol .mm-symbol-mask{width:100%}
+.mm-acta__orbit--spin .mm-acta__symbol .mm-symbol-mask{animation:mm-acta-spin 30s linear infinite}
+@keyframes mm-acta-bob{0%,100%{translate:0 0}50%{translate:0 -16px}}
+@keyframes mm-acta-spin{to{rotate:360deg}}
+.mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
+@media(max-width:749px){.mm-acta__box{min-height:380px}.mm-acta__symbol{width:calc(var(--mm-acta-symbol,110px) * .55)}}
+@media(prefers-reduced-motion:reduce){.mm-acta__symbol,.mm-acta__symbol .mm-symbol-mask{animation:none}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · Closing call",
+  "tag": "div",
+  "class": "mm-acta-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Your turn"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find the character\nthat feels like home."
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Four personalities, five objects and endless ways to mix them."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop the collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Second link label",
+      "default": "Take the character quiz"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Second link"
+    },
+    {
+      "type": "header",
+      "content": "Box"
+    },
+    {
+      "type": "color",
+      "id": "box_colour",
+      "label": "Box colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "box_text",
+      "label": "Box text colour",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "button_colour",
+      "label": "Button colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "color",
+      "id": "button_text_colour",
+      "label": "Button text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "checkbox",
+      "id": "show_symbols",
+      "label": "Show symbols",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "symbol_size",
+      "label": "Symbol size",
+      "min": 40,
+      "max": 240,
+      "step": 5,
+      "unit": "px",
+      "default": 110
+    },
+    {
+      "type": "checkbox",
+      "id": "spin",
+      "label": "Turn the symbols slowly",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Closing call"
+    }
+  ]
+}
+{% endschema %}

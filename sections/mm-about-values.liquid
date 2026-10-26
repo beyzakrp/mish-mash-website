@@ -1,0 +1,347 @@
+<section class="mm-home mm-values" id="mm-{{ section.id }}">
+  <div class="mm-pad">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+      <div class="mm-section-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+          {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+        </div>
+        {%- if section.settings.text != blank -%}<p class="mm-section-text">{{ section.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="mm-values__grid mm-values__grid--{{ section.settings.card_style }}">
+      {%- for block in section.blocks -%}
+        {%- assign value_symbol = block.settings.character -%}
+        {%- liquid
+  case value_symbol
+    when 'showoff'
+      assign value_colour = '#1E6448'
+    when 'player'
+      assign value_colour = '#F37400'
+    when 'trickster'
+      assign value_colour = '#4CA7FF'
+    when 'helper'
+      assign value_colour = '#FF6EA7'
+    else
+      assign value_colour = 'currentColor'
+  endcase
+-%}
+        <article class="mm-value" style="--mm-char: {{ value_colour }};{% if block.settings.card_colour != blank %} --mm-value-card: {{ block.settings.card_colour }};{% endif %}" {{ block.shopify_attributes }}>
+          <div class="mm-value__top">
+            {%- if section.settings.show_numbers -%}<span class="mm-value__number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>{%- endif -%}
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 200 | image_tag: alt: '', loading: 'lazy', class: 'mm-value__icon' }}
+            {%- elsif value_symbol != 'none' -%}
+              <span class="mm-symbol-mask mm-value__symbol" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: value_symbol | append: '.svg' | asset_url }}); --mm-symbol-color: var(--mm-char);" aria-hidden="true"></span>
+            {%- endif -%}
+          </div>
+          <h3 class="mm-display">{{ block.settings.title | escape }}</h3>
+          {%- if block.settings.text != blank -%}<div class="mm-value__text">{{ block.settings.text }}</div>{%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }} .mm-values__grid{--mm-values-columns:{{ section.settings.columns }};--mm-value-card:{{ section.settings.card_background }};--mm-value-radius:{{ section.settings.card_radius }}px}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-values__grid{display:grid;grid-template-columns:repeat(var(--mm-values-columns,4),minmax(0,1fr));gap:16px}
+.mm-value{display:flex;flex-direction:column;gap:14px;padding:clamp(22px,2.4vw,32px);border-radius:var(--mm-value-radius,20px);transition:translate .45s cubic-bezier(.22,1,.36,1),background .35s,border-color .35s}
+.mm-values__grid--filled .mm-value{background:var(--mm-value-card)}
+.mm-values__grid--outline .mm-value{border:1px solid color-mix(in srgb,var(--mm-ink) 16%,transparent)}
+.mm-values__grid--plain .mm-value{padding-inline:0;border-top:1px solid color-mix(in srgb,var(--mm-ink) 20%,transparent);border-radius:0}
+.mm-value:hover{translate:0 -6px}
+.mm-values__grid--outline .mm-value:hover{border-color:var(--mm-char)}
+.mm-value__top{display:flex;align-items:center;justify-content:space-between;min-height:56px}
+.mm-value__number{font-size:12px;font-weight:700;letter-spacing:.16em;opacity:.55}
+.mm-value__symbol{width:52px;background-color:var(--mm-ink)!important;transition:background-color .35s,rotate .8s cubic-bezier(.34,1.56,.64,1)}
+.mm-value:hover .mm-value__symbol{background-color:var(--mm-char)!important;rotate:120deg}
+.mm-value__icon{width:52px;height:52px;object-fit:contain}
+.mm-value h3{font-size:clamp(20px,1.8vw,28px);line-height:1.1;margin-top:auto!important}
+.mm-value__text{font-size:15px;line-height:1.55;opacity:.8}
+.mm-value__text p{margin:0}
+.mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
+@media(max-width:989px){.mm-values__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.mm-values__grid{grid-template-columns:1fr}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · Values",
+  "tag": "div",
+  "class": "mm-values-section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "What we believe"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Small objects,\nbig ideas."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "The four things behind every piece we make."
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card style",
+      "default": "filled",
+      "options": [
+        {
+          "value": "filled",
+          "label": "Filled"
+        },
+        {
+          "value": "outline",
+          "label": "Outline"
+        },
+        {
+          "value": "plain",
+          "label": "Plain with line"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "show_numbers",
+      "label": "Show numbers",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FF6EA7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 55
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Symbol",
+          "default": "showoff",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "showoff",
+              "label": "The Show-off"
+            },
+            {
+              "value": "player",
+              "label": "The Player"
+            },
+            {
+              "value": "trickster",
+              "label": "The Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "The Helper"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Design that smiles back"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Every object should make an ordinary moment a little brighter.</p>"
+        },
+        {
+          "type": "color",
+          "id": "card_colour",
+          "label": "Card colour",
+          "info": "Overrides the section card colour."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Values",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "character": "showoff",
+            "title": "Made to be noticed",
+            "text": "<p>Bold shapes and honest colours. Objects that hold their own in any room.</p>"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "character": "player",
+            "title": "Made to be played with",
+            "text": "<p>Swap, stack, combine. Your home should be allowed to change its mind.</p>"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "character": "trickster",
+            "title": "A little unexpected",
+            "text": "<p>A twist in every piece, so even the everyday feels new.</p>"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "character": "helper",
+            "title": "Useful, always",
+            "text": "<p>Good looks are nice. Good looks that work every day are better.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
