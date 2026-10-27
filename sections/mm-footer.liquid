@@ -1,344 +1,325 @@
-<footer class="mm-home mm-footer" id="mm-{{ section.id }}">
-  <div class="mm-footer__top">
-    <div class="mm-footer__signup">
-      {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
-      <h2>{{ section.settings.heading | escape | newline_to_br }}</h2>
-      {%- if section.settings.text != blank -%}<p class="mm-footer__text">{{ section.settings.text | escape }}</p>{%- endif -%}
-      {%- form 'customer', id: 'mm-footer-signup', class: 'mm-footer__form' -%}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <label for="MMFooterEmail-{{ section.id }}" class="visually-hidden">{{ 'blocks.email_signup.label' | t }}</label>
-        <input
-          id="MMFooterEmail-{{ section.id }}"
-          type="email"
-          name="contact[email]"
-          autocomplete="email"
-          autocorrect="off"
-          autocapitalize="off"
-          placeholder="{{ section.settings.placeholder | escape }}"
-          required
-          {% if form.errors %}aria-invalid="true" aria-describedby="MMFooterMessage-{{ section.id }}"{% endif %}
-        >
-        <button type="submit" aria-label="{{ 'actions.sign_up' | t }}"><span aria-hidden="true">→</span></button>
-        {%- if form.posted_successfully? -%}
-          <p class="mm-footer__message" id="MMFooterMessage-{{ section.id }}" role="status">{{ section.settings.success | escape }}</p>
-        {%- elsif form.errors -%}
-          <p class="mm-footer__message" id="MMFooterMessage-{{ section.id }}" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
-        {%- endif -%}
-      {%- endform -%}
-    </div>
+{%- liquid
+  assign column_count = 0
+  for block in section.blocks
+    if block.type == 'menu' or block.type == 'social'
+      assign column_count = column_count | plus: 1
+    endif
+  endfor
+  assign desktop_columns = section.settings.columns
+  if desktop_columns == 0
+    assign desktop_columns = column_count | at_least: 1 | at_most: 6
+  endif
+  assign in_columns = false
+-%}
+<footer class="mm-home mm-footer{% if section.settings.dividers %} mm-footer--lines{% endif %}" id="mm-{{ section.id }}">
+  {%- for block in section.blocks -%}
+    {%- assign is_column = false -%}
+    {%- if block.type == 'menu' or block.type == 'social' -%}{%- assign is_column = true -%}{%- endif -%}
 
-    <nav class="mm-footer__menus" aria-label="Footer">
-      {%- for i in (1..3) -%}
-        {%- liquid
-          assign menu_key = 'menu_' | append: i
-          assign heading_key = 'menu_heading_' | append: i
-          assign menu = section.settings[menu_key]
-          assign menu_heading = section.settings[heading_key] | default: menu.title
-        -%}
-        {%- if menu != blank and menu.links.size > 0 -%}
-          <div class="mm-footer__menu">
-            <p class="mm-eyebrow">{{ menu_heading | escape }}</p>
-            <ul role="list">
-              {%- for link in menu.links -%}
-                <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
-              {%- endfor -%}
-            </ul>
+    {%- if is_column and in_columns == false -%}
+      {%- assign in_columns = true -%}
+      <mm-footer-columns class="mm-footer__cols" data-accordion="{{ section.settings.mobile_accordion }}">
+        <nav class="mm-footer__cols-grid" aria-label="{{ section.settings.nav_label | escape }}">
+    {%- elsif is_column == false and in_columns -%}
+      {%- assign in_columns = false -%}
+        </nav>
+      </mm-footer-columns>
+    {%- endif -%}
+
+    {%- case block.type -%}
+      {%- when 'newsletter' -%}
+        <div class="mm-footer__news mm-footer__news--{{ block.settings.layout }}" {{ block.shopify_attributes }}>
+          <div class="mm-footer__news-copy">
+            {%- if block.settings.eyebrow != blank -%}<p class="mm-footer__eyebrow">{{ block.settings.eyebrow | escape }}</p>{%- endif -%}
+            {%- if block.settings.heading != blank -%}<h2 class="mm-footer__news-heading">{{ block.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+            {%- if block.settings.text != blank -%}<p class="mm-footer__news-text">{{ block.settings.text | escape }}</p>{%- endif -%}
           </div>
-        {%- endif -%}
-      {%- endfor -%}
-
-      {%- capture social_links -%}
-        {%- if section.settings.instagram != blank -%}<li><a href="{{ section.settings.instagram }}" target="_blank" rel="noopener">Instagram</a></li>{%- endif -%}
-        {%- if section.settings.tiktok != blank -%}<li><a href="{{ section.settings.tiktok }}" target="_blank" rel="noopener">TikTok</a></li>{%- endif -%}
-        {%- if section.settings.pinterest != blank -%}<li><a href="{{ section.settings.pinterest }}" target="_blank" rel="noopener">Pinterest</a></li>{%- endif -%}
-      {%- endcapture -%}
-      {%- if social_links != blank -%}
-        <div class="mm-footer__menu">
-          <p class="mm-eyebrow">{{ section.settings.social_heading | escape }}</p>
-          <ul role="list">{{ social_links }}</ul>
+          {%- form 'customer', id: 'mm-footer-signup', class: 'mm-footer__news-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <label for="MMFooterEmail-{{ section.id }}" class="mm-footer__sr">{{ 'blocks.email_signup.label' | t }}</label>
+            <input
+              id="MMFooterEmail-{{ section.id }}"
+              type="email"
+              name="contact[email]"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              placeholder="{{ block.settings.placeholder | escape }}"
+              required
+              {% if form.errors %}aria-invalid="true" aria-describedby="MMFooterMessage-{{ section.id }}"{% endif %}
+            >
+            <button type="submit" class="mm-footer__news-button">{{ block.settings.button_label | escape }}</button>
+            {%- if form.posted_successfully? -%}
+              <p class="mm-footer__message" id="MMFooterMessage-{{ section.id }}" role="status">{{ block.settings.success | escape }}</p>
+            {%- elsif form.errors -%}
+              <p class="mm-footer__message" id="MMFooterMessage-{{ section.id }}" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+            {%- endif -%}
+          {%- endform -%}
         </div>
-      {%- endif -%}
-    </nav>
-  </div>
+        {% style %}
+          #mm-{{ section.id }} .mm-footer__news-button{--mm-fb-bg:{{ block.settings.button_background }};--mm-fb-text:{{ block.settings.button_text }};--mm-fb-border:{{ block.settings.button_border | default: 'transparent' }};--mm-fb-hover-bg:{{ block.settings.button_hover_background }};--mm-fb-hover-text:{{ block.settings.button_hover_text }};--mm-fb-border-width:{{ block.settings.button_border_width }}px}
+        {% endstyle %}
 
-  <div class="mm-footer__mark">
-    {%- liquid
-      assign logo_ratio = 1.203
-      if section.settings.logo_image != blank
-        assign logo_ratio = section.settings.logo_image.aspect_ratio
-      endif
-      assign mark_units = logo_ratio
-      assign mark_gaps = 0
-      if section.settings.show_symbols
-        assign mark_units = logo_ratio | plus: 4
-        assign mark_gaps = 4
-      endif
-    -%}
-    <div class="mm-footer__brand" style="--mm-footer-logo-ratio: {{ logo_ratio }}; --mm-footer-units: {{ mark_units }}; --mm-footer-gaps: {{ mark_gaps }};">
-      <a href="{{ routes.root_url }}" class="mm-footer__logo">
-        {%- if section.settings.logo_image != blank -%}
-          {{ section.settings.logo_image | image_url: width: 900 | image_tag: alt: shop.name, loading: 'lazy', widths: '300,600,900', sizes: '(min-width: 750px) 300px, 50vw' }}
-        {%- else -%}
-          <img src="{{ 'mm-logo-white.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="314" height="261" loading="lazy">
+      {%- when 'menu' -%}
+        {%- assign menu = block.settings.menu -%}
+        {%- assign column_heading = block.settings.heading | default: menu.title -%}
+        {%- if menu.links.size > 0 or request.design_mode -%}
+          <details class="mm-footer__col" data-open-mobile="{{ block.settings.open_on_mobile }}" open {{ block.shopify_attributes }}>
+            <summary class="mm-footer__col-heading">
+              <span>{{ column_heading | default: 'Menu' | escape }}</span>
+              <svg class="mm-footer__chevron" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </summary>
+            {%- if menu.links.size > 0 -%}
+              <ul class="mm-footer__links" role="list">
+                {%- for link in menu.links -%}
+                  {%- liquid
+                    assign link_title = link.title | downcase
+                    assign link_symbol = ''
+                    if block.settings.link_symbols
+                      if link_title contains 'show-off' or link_title contains 'showoff'
+                        assign link_symbol = 'showoff'
+                      elsif link_title contains 'player'
+                        assign link_symbol = 'player'
+                      elsif link_title contains 'trickster'
+                        assign link_symbol = 'trickster'
+                      elsif link_title contains 'helper'
+                        assign link_symbol = 'helper'
+                      endif
+                    endif
+                    assign badge_match = block.settings.badge_link | downcase | strip
+                  -%}
+                  <li>
+                    <a href="{{ link.url }}"{% if link.url contains '://' %}{% unless link.url contains shop.domain %} target="_blank" rel="noopener"{% endunless %}{% endif %}>
+                      {%- if link_symbol != blank -%}
+                        {%- liquid
+                          case link_symbol
+                            when 'showoff'
+                              assign link_colour = '#970C38'
+                            when 'player'
+                              assign link_colour = '#CCDB65'
+                            when 'trickster'
+                              assign link_colour = '#192FDA'
+                            else
+                              assign link_colour = '#FB7FB0'
+                          endcase
+                        -%}
+                        <span class="mm-footer__link-symbol" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: link_symbol | append: '.svg' | asset_url }}); --mm-symbol-color: {{ link_colour }};" aria-hidden="true"></span>
+                      {%- endif -%}
+                      <span>{{ link.title | escape }}</span>
+                      {%- if badge_match != blank and link_title == badge_match and block.settings.badge_text != blank -%}
+                        <span class="mm-footer__badge" style="--mm-badge-bg: {{ block.settings.badge_background }}; --mm-badge-text: {{ block.settings.badge_text_colour }};">{{ block.settings.badge_text | escape }}</span>
+                      {%- endif -%}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              <p class="mm-footer__empty">Choose a menu for this column in the theme editor.</p>
+            {%- endif -%}
+          </details>
         {%- endif -%}
-      </a>
-      {%- if section.settings.show_symbols -%}
-        <ul class="mm-footer__symbols mm-footer__symbols--{{ section.settings.symbol_colour }}{% if section.settings.symbol_motion != 'none' %} mm-footer__symbols--{{ section.settings.symbol_motion }}{% endif %}" role="list" aria-hidden="true">
-          {%- assign footer_symbols = 'showoff:#970C38,player:#CCDB65,trickster:#192FDA,helper:#FB7FB0' | split: ',' -%}
-          {%- for pair in footer_symbols -%}
-            {%- liquid
-              assign parts = pair | split: ':'
-              assign symbol_image_key = 'symbol_image_' | append: forloop.index
-              assign symbol_image = section.settings[symbol_image_key]
-            -%}
-            <li style="--mm-symbol-url: url({{ 'mm-symbol-' | append: parts[0] | append: '.svg' | asset_url }}); --mm-symbol-color: {{ parts[1] }}; --i: {{ forloop.index0 }};">
-              {%- if symbol_image != blank -%}
-                {{ symbol_image | image_url: width: 400 | image_tag: alt: '', loading: 'lazy', class: 'mm-footer__symbol-image' }}
-              {%- else -%}
-                <span class="mm-footer__symbol"></span>
-              {%- endif -%}
-            </li>
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
-    </div>
-    {%- if section.settings.tagline != blank -%}<p class="mm-footer__tagline">{{ section.settings.tagline | escape | newline_to_br }}</p>{%- endif -%}
-  </div>
 
-  <div class="mm-footer__bottom">
-    <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</p>
-    {%- if shop.policies.size > 0 -%}
-      <ul class="mm-footer__policies" role="list">
-        {%- for policy in shop.policies -%}
-          <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
-        {%- endfor -%}
-      </ul>
+      {%- when 'social' -%}
+        {%- capture social_links -%}
+          {%- if block.settings.instagram != blank -%}<li><a href="{{ block.settings.instagram }}" target="_blank" rel="noopener">Instagram</a></li>{%- endif -%}
+          {%- if block.settings.pinterest != blank -%}<li><a href="{{ block.settings.pinterest }}" target="_blank" rel="noopener">Pinterest</a></li>{%- endif -%}
+          {%- if block.settings.tiktok != blank -%}<li><a href="{{ block.settings.tiktok }}" target="_blank" rel="noopener">TikTok</a></li>{%- endif -%}
+          {%- if block.settings.youtube != blank -%}<li><a href="{{ block.settings.youtube }}" target="_blank" rel="noopener">YouTube</a></li>{%- endif -%}
+          {%- if block.settings.facebook != blank -%}<li><a href="{{ block.settings.facebook }}" target="_blank" rel="noopener">Facebook</a></li>{%- endif -%}
+          {%- if block.settings.email != blank -%}<li><a href="mailto:{{ block.settings.email | escape }}">{{ block.settings.email_label | default: 'Email us' | escape }}</a></li>{%- endif -%}
+        {%- endcapture -%}
+        {%- if social_links != blank or request.design_mode -%}
+          <details class="mm-footer__col" data-open-mobile="{{ block.settings.open_on_mobile }}" open {{ block.shopify_attributes }}>
+            <summary class="mm-footer__col-heading">
+              <span>{{ block.settings.heading | escape }}</span>
+              <svg class="mm-footer__chevron" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </summary>
+            {%- if social_links != blank -%}
+              <ul class="mm-footer__links" role="list">{{ social_links }}</ul>
+            {%- else -%}
+              <p class="mm-footer__empty">Add your social links in the theme editor.</p>
+            {%- endif -%}
+          </details>
+        {%- endif -%}
+
+      {%- when 'brand' -%}
+        <div class="mm-footer__mark" {{ block.shopify_attributes }}>
+          {%- liquid
+            assign logo_ratio = 1.203
+            if block.settings.logo_image != blank
+              assign logo_ratio = block.settings.logo_image.aspect_ratio
+            endif
+            assign mark_units = logo_ratio
+            assign mark_gaps = 0
+            if block.settings.show_symbols
+              assign mark_units = logo_ratio | plus: 4
+              assign mark_gaps = 4
+            endif
+          -%}
+          <div class="mm-footer__brand" style="--mm-footer-logo-ratio: {{ logo_ratio }}; --mm-footer-units: {{ mark_units }}; --mm-footer-gaps: {{ mark_gaps }}; --mm-footer-mark-height: {{ block.settings.mark_height }}px; --mm-footer-symbol-gap: {{ block.settings.symbol_gap }}px;">
+            <a href="{{ routes.root_url }}" class="mm-footer__logo">
+              {%- if block.settings.logo_image != blank -%}
+                {{ block.settings.logo_image | image_url: width: 900 | image_tag: alt: shop.name, loading: 'lazy', widths: '300,600,900', sizes: '(min-width: 750px) 300px, 50vw' }}
+              {%- else -%}
+                <img src="{{ 'mm-logo-white.svg' | asset_url }}" alt="{{ shop.name | escape }}" width="314" height="261" loading="lazy">
+              {%- endif -%}
+            </a>
+            {%- if block.settings.show_symbols -%}
+              <ul class="mm-footer__symbols mm-footer__symbols--{{ block.settings.symbol_colour }}{% if block.settings.symbol_motion != 'none' %} mm-footer__symbols--{{ block.settings.symbol_motion }}{% endif %}" role="list" aria-hidden="true">
+                {%- assign footer_symbols = 'showoff:#970C38,player:#CCDB65,trickster:#192FDA,helper:#FB7FB0' | split: ',' -%}
+                {%- for pair in footer_symbols -%}
+                  {%- liquid
+                    assign parts = pair | split: ':'
+                    assign symbol_image_key = 'symbol_image_' | append: forloop.index
+                    assign symbol_image = block.settings[symbol_image_key]
+                  -%}
+                  <li style="--mm-symbol-url: url({{ 'mm-symbol-' | append: parts[0] | append: '.svg' | asset_url }}); --mm-symbol-color: {{ parts[1] }}; --i: {{ forloop.index0 }};">
+                    {%- if symbol_image != blank -%}
+                      {{ symbol_image | image_url: width: 400 | image_tag: alt: '', loading: 'lazy', class: 'mm-footer__symbol-image' }}
+                    {%- else -%}
+                      <span class="mm-footer__symbol"></span>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+          {%- if block.settings.tagline != blank -%}<p class="mm-footer__tagline" style="--mm-footer-tagline: {{ block.settings.tagline_size }}px;">{{ block.settings.tagline | escape | newline_to_br }}</p>{%- endif -%}
+        </div>
+
+      {%- when 'legal' -%}
+        <div class="mm-footer__legal" {{ block.shopify_attributes }}>
+          {%- assign current_year = 'now' | date: '%Y' -%}
+          <p class="mm-footer__copyright">{{ block.settings.copyright | default: shop.name | replace: '[year]', current_year | escape }}</p>
+          {%- assign legal_menu = block.settings.menu -%}
+          {%- if legal_menu.links.size > 0 -%}
+            <ul class="mm-footer__policies" role="list">
+              {%- for link in legal_menu.links -%}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{%- endfor -%}
+            </ul>
+          {%- elsif block.settings.show_policies and shop.policies.size > 0 -%}
+            <ul class="mm-footer__policies" role="list">
+              {%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- endfor -%}
+            </ul>
+          {%- endif -%}
+          {%- if block.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+            <ul class="mm-footer__payments" role="list">
+              {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag }}</li>{%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+    {%- endcase -%}
+
+    {%- if forloop.last and in_columns -%}
+        </nav>
+      </mm-footer-columns>
     {%- endif -%}
-    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
-      <ul class="mm-footer__payments" role="list">
-        {%- for type in shop.enabled_payment_types -%}
-          <li>{{ type | payment_type_svg_tag }}</li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
-  </div>
+  {%- endfor -%}
 </footer>
 
 {% style %}
-#mm-{{ section.id }}{--mm-footer-mark-height:{{ section.settings.mark_height }}px;--mm-footer-symbol-gap:{{ section.settings.symbol_gap }}px;--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};--mm-accent:{{ section.settings.accent }};background:var(--mm-paper);color:var(--mm-ink)}
+#mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};--mm-accent:{{ section.settings.accent }};--mm-footer-heading:{{ section.settings.heading_colour }};--mm-footer-heading-size:{{ section.settings.heading_size }}px;--mm-footer-link-size:{{ section.settings.link_size }}px;--mm-footer-link-gap:{{ section.settings.link_gap }}px;--mm-footer-col-gap:{{ section.settings.column_gap }}px;--mm-footer-columns:{{ desktop_columns }};--mm-footer-block-gap:{{ section.settings.block_gap }}px;--mm-footer-news-size:{{ section.settings.newsletter_heading_size }}px;background:var(--mm-paper);color:var(--mm-ink);padding:{{ section.settings.padding_top }}px {{ section.settings.padding_side }}% {{ section.settings.padding_bottom }}px}
+@media(max-width:749px){#mm-{{ section.id }}{--mm-footer-block-gap:{{ section.settings.block_gap | times: 0.7 | round }}px;padding:{{ section.settings.padding_mobile }}px 20px {{ section.settings.padding_bottom | at_most: 40 }}px}}
 {% endstyle %}
+
+{% stylesheet %}
+.mm-footer{display:flex;flex-direction:column;gap:var(--mm-footer-block-gap,48px)}
+.mm-footer--lines>:not(:last-child):not(.mm-footer__mark){padding-bottom:var(--mm-footer-block-gap,48px);border-bottom:1px solid color-mix(in srgb,var(--mm-ink) 16%,transparent)}
+.mm-footer__eyebrow{margin:0!important;font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--mm-footer-heading)}
+.mm-footer__news{display:flex;align-items:center;justify-content:space-between;gap:clamp(24px,4vw,64px)}
+.mm-footer__news--stacked{flex-direction:column;align-items:flex-start}
+.mm-footer__news-copy{display:grid;gap:10px;min-width:0}
+.mm-home .mm-footer__news-heading{margin:0;font-size:var(--mm-footer-news-size,40px);line-height:1.05}
+.mm-footer__news-text{font-size:15px;line-height:1.55;opacity:.75;max-width:52ch}
+.mm-footer__sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:is(.mm-footer__news-form,.mm-footer__news form){display:flex;flex-wrap:wrap;gap:10px;flex:0 1 520px;min-width:min(100%,320px)}
+.mm-footer__news--stacked .mm-footer__sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:is(.mm-footer__news-form,.mm-footer__news form){flex-basis:auto;width:min(100%,520px)}
+.mm-footer__news input[type=email]{flex:1 1 220px;min-width:0;min-height:56px;padding:0 22px;border:2px solid color-mix(in srgb,var(--mm-ink) 40%,transparent);border-radius:40px;background:transparent;color:inherit;font:inherit;font-size:15px;outline:none;transition:border-color .25s}
+.mm-footer__news input[type=email]::placeholder{color:inherit;opacity:.55}
+.mm-footer__news input[type=email]:focus{border-color:var(--mm-ink)}
+.mm-footer__news-button{min-height:56px;padding:0 30px;border-radius:40px;border:var(--mm-fb-border-width,3px) solid var(--mm-fb-border);background:var(--mm-fb-bg);color:var(--mm-fb-text);font:inherit;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .25s,color .25s,translate .3s}
+.mm-footer__news-button:hover{background:var(--mm-fb-hover-bg);color:var(--mm-fb-hover-text);translate:0 -2px}
+.mm-footer__message{flex-basis:100%;margin:4px 0 0!important;font-size:13px}
+.mm-footer__cols-grid{display:grid;grid-template-columns:repeat(var(--mm-footer-columns,4),minmax(0,1fr));gap:var(--mm-footer-col-gap,40px)}
+.mm-footer__col summary{list-style:none}
+.mm-footer__col summary::-webkit-details-marker{display:none}
+.mm-footer__col-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;font-size:var(--mm-footer-heading-size,13px);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mm-footer-heading);cursor:default;pointer-events:none}
+.mm-footer__chevron{display:none;width:14px;height:14px;flex:none;transition:rotate .3s}
+.mm-footer__links{display:grid;gap:var(--mm-footer-link-gap,11px);margin:0;padding:0;list-style:none;font-size:var(--mm-footer-link-size,15px)}
+.mm-footer__links a{display:inline-flex;align-items:center;gap:10px;color:inherit;text-decoration:none;transition:color .25s}
+.mm-footer__links a:hover{color:var(--mm-accent)}
+.mm-footer__link-symbol{flex:none;width:1.05em;height:1.05em;background-color:currentColor;-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:background-color .3s,rotate .6s cubic-bezier(.34,1.56,.64,1)}
+.mm-footer__links a:hover .mm-footer__link-symbol{background-color:var(--mm-symbol-color);rotate:90deg}
+.mm-footer__badge{padding:3px 8px;border-radius:100px;background:var(--mm-badge-bg,#CCDB65);color:var(--mm-badge-text,#171514);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.3}
+.mm-footer__empty{font-size:13px;opacity:.6}
+.mm-footer .mm-footer__mark{padding:0}
+.mm-footer__tagline{font-size:var(--mm-footer-tagline,30px)!important}
+.mm-footer__legal{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;padding-top:22px;border-top:1px solid color-mix(in srgb,var(--mm-ink) 16%,transparent);font-size:12px}
+.mm-footer__legal>p,.mm-footer__legal a{opacity:.75}
+.mm-footer__legal a{color:inherit;text-decoration:none}
+.mm-footer__legal a:hover{opacity:1;color:var(--mm-accent)}
+.mm-footer__policies{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0;padding:0;list-style:none}
+.mm-footer__payments{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 0 auto;padding:0;list-style:none}
+.mm-footer__payments svg{display:block;width:38px;height:24px}
+@media(max-width:989px){.mm-footer__news{flex-direction:column;align-items:stretch}.mm-footer__news :is(.mm-footer__news-form,form){flex-basis:auto}.mm-footer__cols-grid{grid-template-columns:repeat(min(var(--mm-footer-columns,4),2),minmax(0,1fr));row-gap:36px}}
+@media(max-width:749px){
+  .mm-footer__news{flex-direction:column;align-items:stretch}
+  .mm-home .mm-footer__news-heading{font-size:calc(var(--mm-footer-news-size,40px) * .75)}
+  .mm-footer__sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:is(.mm-footer__news-form,.mm-footer__news form){flex-basis:auto;min-width:0}
+  .mm-footer__news-button{flex:1 1 100%}
+  .mm-footer__tagline{font-size:calc(var(--mm-footer-tagline,30px) * .75)!important}
+  .mm-footer__payments{margin-left:0}
+  .mm-footer--lines>.mm-footer__cols[data-accordion="true"]{padding-bottom:0;border-bottom:0}
+  .mm-footer__cols[data-accordion="true"] .mm-footer__cols-grid{display:block}
+  .mm-footer:not(.mm-footer--lines) .mm-footer__cols[data-accordion="true"] .mm-footer__cols-grid{border-top:1px solid color-mix(in srgb,var(--mm-ink) 16%,transparent)}
+  .mm-footer__cols[data-accordion="true"] .mm-footer__col{border-bottom:1px solid color-mix(in srgb,var(--mm-ink) 16%,transparent)}
+  .mm-footer__cols[data-accordion="true"] .mm-footer__col-heading{min-height:56px;margin:0;pointer-events:auto;cursor:pointer}
+  .mm-footer__cols[data-accordion="true"] .mm-footer__chevron{display:block}
+  .mm-footer__cols[data-accordion="true"] .mm-footer__col[open] .mm-footer__chevron{rotate:180deg}
+  .mm-footer__cols[data-accordion="true"] .mm-footer__links{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px;padding-bottom:22px}
+}
+{% endstylesheet %}
+
+{% javascript %}
+if (!customElements.get('mm-footer-columns')) {
+  customElements.define(
+    'mm-footer-columns',
+    class MMFooterColumns extends HTMLElement {
+      connectedCallback() {
+        this.query = window.matchMedia('(max-width: 749px)');
+        this.onChange = () => this.update();
+        this.query.addEventListener('change', this.onChange);
+        this.addEventListener('click', (event) => {
+          const summary = event.target instanceof Element ? event.target.closest('summary') : null;
+          if (summary && !this.isAccordion()) event.preventDefault();
+        });
+        this.update();
+      }
+
+      disconnectedCallback() {
+        this.query?.removeEventListener('change', this.onChange);
+      }
+
+      isAccordion() {
+        return this.dataset.accordion === 'true' && this.query.matches;
+      }
+
+      update() {
+        for (const column of this.querySelectorAll('details')) {
+          column.open = this.isAccordion() ? column.dataset.openMobile === 'true' : true;
+        }
+      }
+    }
+  );
+}
+{% endjavascript %}
 
 {% schema %}
 {
   "name": "MM · Footer",
   "class": "mm-footer-section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Newsletter"
-    },
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Small heading",
-      "default": "The mish-mash letter"
-    },
-    {
-      "type": "textarea",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Small joys,\nstraight to your inbox."
-    },
-    {
-      "type": "text",
-      "id": "text",
-      "label": "Description",
-      "default": "New objects, early access and the odd surprise. No spam, just good company."
-    },
-    {
-      "type": "text",
-      "id": "placeholder",
-      "label": "Email placeholder",
-      "default": "Your email"
-    },
-    {
-      "type": "text",
-      "id": "success",
-      "label": "Success message",
-      "default": "You're in. Welcome to the club."
-    },
-    {
-      "type": "header",
-      "content": "Menus"
-    },
-    {
-      "type": "link_list",
-      "id": "menu_1",
-      "label": "Menu 1",
-      "default": "footer"
-    },
-    {
-      "type": "text",
-      "id": "menu_heading_1",
-      "label": "Menu 1 heading",
-      "default": "Shop"
-    },
-    {
-      "type": "link_list",
-      "id": "menu_2",
-      "label": "Menu 2"
-    },
-    {
-      "type": "text",
-      "id": "menu_heading_2",
-      "label": "Menu 2 heading",
-      "default": "Help"
-    },
-    {
-      "type": "link_list",
-      "id": "menu_3",
-      "label": "Menu 3"
-    },
-    {
-      "type": "text",
-      "id": "menu_heading_3",
-      "label": "Menu 3 heading",
-      "default": "About"
-    },
-    {
-      "type": "header",
-      "content": "Social"
-    },
-    {
-      "type": "text",
-      "id": "social_heading",
-      "label": "Heading",
-      "default": "Follow"
-    },
-    {
-      "type": "url",
-      "id": "instagram",
-      "label": "Instagram"
-    },
-    {
-      "type": "url",
-      "id": "tiktok",
-      "label": "TikTok"
-    },
-    {
-      "type": "url",
-      "id": "pinterest",
-      "label": "Pinterest"
-    },
-    {
-      "type": "header",
-      "content": "Bottom"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo_image",
-      "label": "Logo",
-      "info": "PNG or SVG. Leave empty to use the white Mish Mash logo."
-    },
-    {
-      "type": "range",
-      "id": "mark_height",
-      "label": "Logo and symbol height",
-      "info": "Logo and symbols share this height and shrink together on smaller screens.",
-      "min": 40,
-      "max": 300,
-      "step": 5,
-      "unit": "px",
-      "default": 150
-    },
-    {
-      "type": "checkbox",
-      "id": "show_symbols",
-      "label": "Show symbols next to the logo",
-      "default": true
-    },
-    {
-      "type": "select",
-      "id": "symbol_colour",
-      "label": "Symbol colour",
-      "options": [
-        {
-          "value": "brand",
-          "label": "Character colours"
-        },
-        {
-          "value": "ink",
-          "label": "Text colour"
-        },
-        {
-          "value": "hover",
-          "label": "Text colour, character colour on hover"
-        }
-      ],
-      "default": "hover"
-    },
-    {
-      "type": "range",
-      "id": "symbol_gap",
-      "label": "Space between symbols",
-      "min": 0,
-      "max": 80,
-      "step": 2,
-      "unit": "px",
-      "default": 16
-    },
-    {
-      "type": "select",
-      "id": "symbol_motion",
-      "label": "Symbol motion",
-      "options": [
-        {
-          "value": "none",
-          "label": "None"
-        },
-        {
-          "value": "spin",
-          "label": "Spin on hover"
-        },
-        {
-          "value": "float",
-          "label": "Gentle float"
-        }
-      ],
-      "default": "spin"
-    },
-    {
-      "type": "image_picker",
-      "id": "symbol_image_1",
-      "label": "Custom symbol 1 (Show-off)"
-    },
-    {
-      "type": "image_picker",
-      "id": "symbol_image_2",
-      "label": "Custom symbol 2 (Player)"
-    },
-    {
-      "type": "image_picker",
-      "id": "symbol_image_3",
-      "label": "Custom symbol 3 (Trickster)"
-    },
-    {
-      "type": "image_picker",
-      "id": "symbol_image_4",
-      "label": "Custom symbol 4 (Helper)"
-    },
-    {
-      "type": "textarea",
-      "id": "tagline",
-      "label": "Tagline",
-      "default": "Serious about design.\nPlayful by nature."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "Show payment icons",
-      "default": true
-    },
     {
       "type": "header",
       "content": "Colours"
@@ -357,14 +338,560 @@
     },
     {
       "type": "color",
-      "id": "accent",
-      "label": "Accent colour",
+      "id": "heading_colour",
+      "label": "Column heading colour",
       "default": "#FB7FB0"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Link hover colour",
+      "default": "#FB7FB0"
+    },
+    {
+      "type": "header",
+      "content": "Columns"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns on desktop",
+      "info": "0 fits all menu and social columns in one row.",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Space between columns",
+      "min": 16,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Column heading size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "link_size",
+      "label": "Link size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "link_gap",
+      "label": "Space between links",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_accordion",
+      "label": "Open and close columns on mobile",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "nav_label",
+      "label": "Menu name for screen readers",
+      "default": "Footer"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter heading"
+    },
+    {
+      "type": "range",
+      "id": "newsletter_heading_size",
+      "label": "Newsletter heading size",
+      "min": 20,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "dividers",
+      "label": "Lines between parts",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "block_gap",
+      "label": "Space between parts",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_side",
+      "label": "Side spacing",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "unit": "%",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Top spacing on mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Small heading",
+          "default": "Join the mix"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "New objects, new stories\nand the odd surprise."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Email placeholder",
+          "default": "Your email address"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Sign up"
+        },
+        {
+          "type": "text",
+          "id": "success",
+          "label": "Thank-you message",
+          "default": "You're in. Welcome to the mix."
+        },
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout",
+          "default": "side",
+          "options": [
+            {
+              "value": "side",
+              "label": "Text and form side by side"
+            },
+            {
+              "value": "stacked",
+              "label": "Form under the text"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "color",
+          "id": "button_background",
+          "label": "Button background",
+          "default": "#FB7FB0"
+        },
+        {
+          "type": "color",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "#171514"
+        },
+        {
+          "type": "color",
+          "id": "button_border",
+          "label": "Button border",
+          "default": "#FAF9F5"
+        },
+        {
+          "type": "range",
+          "id": "button_border_width",
+          "label": "Button border thickness",
+          "min": 0,
+          "max": 4,
+          "step": 1,
+          "unit": "px",
+          "default": 3
+        },
+        {
+          "type": "color",
+          "id": "button_hover_background",
+          "label": "Button background on hover",
+          "default": "#FAF9F5"
+        },
+        {
+          "type": "color",
+          "id": "button_hover_text",
+          "label": "Button text on hover",
+          "default": "#171514"
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu column",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "Create menus in Online Store > Navigation."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "info": "Leave empty to use the menu name."
+        },
+        {
+          "type": "checkbox",
+          "id": "link_symbols",
+          "label": "Show character symbols",
+          "info": "Links named after a character get its symbol.",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "badge_link",
+          "label": "Badge on link",
+          "info": "Type a link name exactly, for example Blog."
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text",
+          "default": "New"
+        },
+        {
+          "type": "color",
+          "id": "badge_background",
+          "label": "Badge background",
+          "default": "#CCDB65"
+        },
+        {
+          "type": "color",
+          "id": "badge_text_colour",
+          "label": "Badge text colour",
+          "default": "#171514"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_on_mobile",
+          "label": "Open on mobile",
+          "info": "Only when mobile accordion is on.",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Social column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Follow"
+        },
+        {
+          "type": "url",
+          "id": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "type": "url",
+          "id": "pinterest",
+          "label": "Pinterest"
+        },
+        {
+          "type": "url",
+          "id": "tiktok",
+          "label": "TikTok"
+        },
+        {
+          "type": "url",
+          "id": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "type": "url",
+          "id": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email address"
+        },
+        {
+          "type": "text",
+          "id": "email_label",
+          "label": "Email link label",
+          "default": "Email us"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_on_mobile",
+          "label": "Open on mobile",
+          "info": "Only when mobile accordion is on.",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "brand",
+      "name": "Logo and symbols",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo",
+          "info": "PNG or SVG. Leave empty to use the white Mish Mash logo."
+        },
+        {
+          "type": "range",
+          "id": "mark_height",
+          "label": "Logo and symbol height",
+          "info": "Logo and symbols share this height and shrink together on smaller screens.",
+          "min": 40,
+          "max": 300,
+          "step": 5,
+          "unit": "px",
+          "default": 120
+        },
+        {
+          "type": "checkbox",
+          "id": "show_symbols",
+          "label": "Show symbols next to the logo",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "symbol_colour",
+          "label": "Symbol colour",
+          "default": "hover",
+          "options": [
+            {
+              "value": "brand",
+              "label": "Character colours"
+            },
+            {
+              "value": "ink",
+              "label": "Text colour"
+            },
+            {
+              "value": "hover",
+              "label": "Text colour, character colour on hover"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "symbol_gap",
+          "label": "Space between symbols",
+          "min": 0,
+          "max": 80,
+          "step": 2,
+          "unit": "px",
+          "default": 40
+        },
+        {
+          "type": "select",
+          "id": "symbol_motion",
+          "label": "Symbol motion",
+          "default": "spin",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "spin",
+              "label": "Spin on hover"
+            },
+            {
+              "value": "float",
+              "label": "Gentle float"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "symbol_image_1",
+          "label": "The Show-off image"
+        },
+        {
+          "type": "image_picker",
+          "id": "symbol_image_2",
+          "label": "The Player image"
+        },
+        {
+          "type": "image_picker",
+          "id": "symbol_image_3",
+          "label": "The Trickster image"
+        },
+        {
+          "type": "image_picker",
+          "id": "symbol_image_4",
+          "label": "The Helper image"
+        },
+        {
+          "type": "textarea",
+          "id": "tagline",
+          "label": "Slogan",
+          "default": "Serious about design.\nPlayful by nature."
+        },
+        {
+          "type": "range",
+          "id": "tagline_size",
+          "label": "Slogan size",
+          "min": 14,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "default": 30
+        }
+      ]
+    },
+    {
+      "type": "legal",
+      "name": "Bottom bar",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "copyright",
+          "label": "Copyright text",
+          "default": "© [year] mish-mash",
+          "info": "[year] shows the current year."
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Legal menu",
+          "info": "For Distance Sales Agreement, KVKK, Privacy and similar pages."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_policies",
+          "label": "Show store policies when no menu is chosen",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_payment_icons",
+          "label": "Show payment icons",
+          "default": true
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "MM · Footer"
+      "name": "MM · Footer",
+      "blocks": [
+        {
+          "type": "newsletter"
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "open_on_mobile": true
+          }
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Characters"
+          }
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Help"
+          }
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Mish Mash",
+            "badge_link": "Blog"
+          }
+        },
+        {
+          "type": "brand"
+        },
+        {
+          "type": "legal"
+        }
+      ]
     }
   ]
 }

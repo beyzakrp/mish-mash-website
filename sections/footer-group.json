@@ -13,32 +13,81 @@
   "sections": {
     "mm_footer": {
       "type": "mm-footer",
+      "blocks": {
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "eyebrow": "Join the mix",
+            "heading": "New objects, new stories\nand the odd surprise.",
+            "text": "",
+            "placeholder": "Your email",
+            "button_label": "Sign up",
+            "success": "You're in. Welcome to the club.",
+            "layout": "side"
+          }
+        },
+        "menu_shop": {
+          "type": "menu",
+          "settings": {
+            "menu": "footer",
+            "open_on_mobile": true,
+            "heading": "Shop"
+          }
+        },
+        "menu_characters": {
+          "type": "menu",
+          "settings": {
+            "heading": "Characters"
+          }
+        },
+        "menu_help": {
+          "type": "menu",
+          "settings": {
+            "heading": "Help"
+          }
+        },
+        "menu_mishmash": {
+          "type": "menu",
+          "settings": {
+            "heading": "Mish Mash",
+            "badge_link": "Blog",
+            "badge_text": "New"
+          }
+        },
+        "brand": {
+          "type": "brand",
+          "settings": {
+            "logo_image": "shopify://shop_images/mm-white.svg",
+            "mark_height": 150,
+            "show_symbols": true,
+            "symbol_colour": "hover",
+            "symbol_gap": 68,
+            "symbol_motion": "spin",
+            "tagline": "Serious about design.\nPlayful by nature.",
+            "tagline_size": 30
+          }
+        },
+        "legal": {
+          "type": "legal",
+          "settings": {
+            "copyright": "\u00a9 [year] mish-mash",
+            "show_payment_icons": true
+          }
+        }
+      },
+      "block_order": [
+        "newsletter",
+        "menu_shop",
+        "menu_characters",
+        "menu_help",
+        "menu_mishmash",
+        "brand",
+        "legal"
+      ],
       "settings": {
-        "eyebrow": "The mish-mash letter",
-        "heading": "Small joys,\nstraight to your inbox.",
-        "text": "New objects, early access and the odd surprise. No spam, just good company.",
-        "placeholder": "Your email",
-        "success": "You're in. Welcome to the club.",
-        "menu_1": "footer",
-        "menu_heading_1": "Shop",
-        "menu_2": "",
-        "menu_heading_2": "Help",
-        "menu_3": "",
-        "menu_heading_3": "About",
-        "social_heading": "Follow",
-        "instagram": "https://www.instagram.com/mishmash.lab/",
-        "tiktok": "",
-        "pinterest": "",
-        "logo_image": "shopify://shop_images/mm-white.svg",
-        "mark_height": 150,
-        "show_symbols": true,
-        "symbol_colour": "hover",
-        "symbol_gap": 68,
-        "symbol_motion": "spin",
-        "tagline": "Serious about design.\nPlayful by nature.",
-        "show_payment_icons": true,
         "background": "#171514",
         "text_color": "#faf9f5",
+        "heading_colour": "#FB7FB0",
         "accent": "{{ settings.color_palette.color3 }}"
       }
     },
