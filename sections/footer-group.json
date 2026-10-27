@@ -25,11 +25,11 @@
             "success": "You're in. Welcome to the club.",
             "layout": "side",
             "button_background": "{{ settings.color_palette.background }}",
-            "button_text": "#110E0F",
+            "button_text": "#110e0f",
             "button_border": "#faf9f5",
             "button_border_width": 3,
             "button_hover_background": "#faf9f5",
-            "button_hover_text": "#192FDA"
+            "button_hover_text": "#192fda"
           }
         },
         "menu_shop": {
@@ -48,12 +48,12 @@
         "menu_characters": {
           "type": "menu",
           "settings": {
-            "menu": "",
+            "menu": "characters",
             "heading": "Characters",
             "link_symbols": true,
             "badge_link": "",
             "badge_text": "New",
-            "badge_background": "#ccdb65",
+            "badge_background": "{{ settings.color_palette.background }}",
             "badge_text_colour": "#171514",
             "open_on_mobile": false
           }
@@ -118,9 +118,9 @@
       ],
       "settings": {
         "background": "#171514",
-        "text_color": "#faf9f5",
+        "text_color": "#FFFFFF",
         "heading_colour": "{{ settings.color_palette.color3 }}",
-        "accent": "{{ settings.color_palette.color3 }}",
+        "accent": "{{ settings.color_palette.background }}",
         "columns": 0,
         "column_gap": 40,
         "heading_size": 13,
