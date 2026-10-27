@@ -807,7 +807,21 @@
         "accent": "#fb7fb0",
         "padding_top": 90,
         "padding_bottom": 90,
-        "padding_mobile": 55
+        "padding_mobile": 55,
+        "button_background": "{{ settings.color_palette.color3 }}",
+        "button_text": "{{ settings.color_palette.foreground }}",
+        "button_border": "{{ settings.color_palette.foreground }}",
+        "button_hover_background": "{{ settings.color_palette.color1 }}",
+        "button_hover_text": "#FFFFFF",
+        "button_hover_border": "#FFFFFF",
+        "button_border_width": 3,
+        "button_radius": 40,
+        "button_padding_y": 17,
+        "button_padding_x": 42,
+        "button_min_width": 0,
+        "button_font_size": 15,
+        "button_letter_spacing": 8,
+        "button_uppercase": true
       }
     },
     "mishmash_story": {

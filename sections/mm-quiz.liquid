@@ -45,7 +45,7 @@
           </div>
         {%- endif -%}
         {%- if question_count > 0 -%}
-          <button type="button" class="mm-quiz__button" data-quiz-start>{{ section.settings.start_label | escape }} <span aria-hidden="true">→</span></button>
+          <button type="button" class="mm-button mm-quiz__start" data-quiz-start>{{ section.settings.start_label | escape }}</button>
         {%- endif -%}
       </div>
 
@@ -165,6 +165,7 @@
 
 {% style %}
 #mm-{{ section.id }} .mm-quiz__box{--mm-quiz-card:{{ section.settings.card_background }};--mm-quiz-radius:{{ section.settings.card_radius }}px;min-height:{{ section.settings.min_height }}px}
+{%- capture start_selector -%}#mm-{{ section.id }} .mm-quiz__start{%- endcapture -%}{% render 'mm-button-style', settings: section.settings, selector: start_selector %}
 {% endstyle %}
 
 {% stylesheet %}
@@ -184,6 +185,7 @@
 @keyframes mm-quiz-float{0%,100%{translate:0 0}50%{translate:0 -10px}}
 .mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
 .mm-quiz .mm-quiz__button{align-self:flex-start;justify-self:start;display:inline-flex;align-items:center;gap:18px;border:0;border-radius:100px;padding:17px 28px;background:var(--mm-ink);color:var(--mm-paper);font:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;transition:background .25s,color .25s,translate .3s}
+.mm-quiz__start{align-self:flex-start;justify-self:start;font-family:inherit;font-weight:700;line-height:1.2;cursor:pointer}
 .mm-quiz .mm-quiz__button:hover{background:var(--mm-accent);color:var(--mm-ink);translate:0 -2px}
 .mm-quiz__count{font-size:12px;font-weight:700;letter-spacing:.16em;opacity:.55}
 .mm-quiz__question h3{font-size:clamp(26px,3.2vw,46px);line-height:1.05;max-width:22ch}
@@ -377,6 +379,125 @@ if (!customElements.get('mm-quiz')) {
       "step": 20,
       "unit": "px",
       "default": 520
+    },
+    {
+      "type": "header",
+      "content": "Start button"
+    },
+    {
+      "type": "paragraph",
+      "content": "Same style options as the opening image button."
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_border",
+      "label": "Button border",
+      "info": "Leave empty for no border colour."
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button background on hover",
+      "default": "#FB7FB0"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text",
+      "label": "Button text on hover",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border",
+      "label": "Button border on hover"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Button border thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "button_padding_y",
+      "label": "Button height padding",
+      "min": 6,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "button_padding_x",
+      "label": "Button side padding",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_min_width",
+      "label": "Button minimum width",
+      "min": 0,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button text size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "button_letter_spacing",
+      "label": "Button letter spacing",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "button_uppercase",
+      "label": "Uppercase button text",
+      "default": true
     },
     {
       "type": "header",
