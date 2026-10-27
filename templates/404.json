@@ -90,7 +90,8 @@
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 100,
         "padding-block-end": 100
-      }
+      },
+      "disabled": true
     },
     "product_list_JEfKQC": {
       "type": "product-list",
@@ -319,9 +320,62 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "mm_404": {
+      "type": "mm-404",
+      "blocks": {
+        "suspect_trickster": {
+          "type": "suspect",
+          "settings": {
+            "character": "trickster",
+            "name": "The Trickster",
+            "excuse": "Hid this page. Again. Classic.",
+            "background": "#192FDA",
+            "text_colour": "#FFFFFF"
+          }
+        },
+        "suspect_player": {
+          "type": "suspect",
+          "settings": {
+            "character": "player",
+            "name": "The Player",
+            "excuse": "Turned it into a game of hide and seek. Still counting.",
+            "background": "#CCDB65",
+            "text_colour": "#171514"
+          }
+        },
+        "suspect_showoff": {
+          "type": "suspect",
+          "settings": {
+            "character": "showoff",
+            "name": "The Show-off",
+            "excuse": "Moved it somewhere more photogenic.",
+            "background": "#970C38",
+            "text_colour": "#FFFFFF"
+          }
+        },
+        "suspect_helper": {
+          "type": "suspect",
+          "settings": {
+            "character": "helper",
+            "name": "The Helper",
+            "excuse": "Tidied it away. They really meant well.",
+            "background": "#FB7FB0",
+            "text_colour": "#171514"
+          }
+        }
+      },
+      "block_order": [
+        "suspect_trickster",
+        "suspect_player",
+        "suspect_showoff",
+        "suspect_helper"
+      ],
+      "settings": {}
     }
   },
   "order": [
+    "mm_404",
     "main",
     "product_list_JEfKQC"
   ]

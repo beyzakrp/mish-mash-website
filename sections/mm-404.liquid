@@ -1,0 +1,620 @@
+{%- liquid
+  assign first_suspect = section.blocks | first
+  assign start_bg = section.settings.background
+  assign start_ink = section.settings.text_color
+  if section.settings.colour_mode == 'suspect' and first_suspect
+    assign start_bg = first_suspect.settings.background
+    assign start_ink = first_suspect.settings.text_colour
+  endif
+-%}
+<section class="mm-home mm-404" id="mm-{{ section.id }}">
+  <mm-not-found
+    class="mm-404__stage mm-pad"
+    data-mode="{{ section.settings.colour_mode }}"
+    data-start="{{ section.settings.start_with }}"
+    style="--mm-404-bg: {{ start_bg }}; --mm-404-ink: {{ start_ink }};"
+  >
+    {%- if section.settings.show_floaters -%}
+      <div class="mm-404__floaters" aria-hidden="true">
+        {%- assign floaters = 'showoff,player,trickster,helper,player,showoff' | split: ',' -%}
+        {%- for floater in floaters -%}
+          <span class="mm-404__floater" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: floater | append: '.svg' | asset_url }}); --i: {{ forloop.index0 }};"></span>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="mm-404__inner">
+      {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+
+      <div class="mm-404__code mm-display" role="img" aria-label="404">
+        <span aria-hidden="true">4</span>
+        <button type="button" class="mm-404__zero" data-blame aria-label="{{ section.settings.hint | default: 'Blame someone else' | escape }}">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              if block.settings.symbol_image != blank
+                assign suspect_symbol = block.settings.symbol_image | image_url: width: 600
+              else
+                assign suspect_symbol = 'mm-symbol-' | append: block.settings.character | append: '.svg' | asset_url
+              endif
+            -%}
+            <span class="mm-404__symbol{% if forloop.first %} is-active{% endif %}" data-symbol="{{ forloop.index0 }}" style="--mm-symbol-url: url({{ suspect_symbol }});" aria-hidden="true"></span>
+          {%- else -%}
+            <span class="mm-404__symbol is-active" style="--mm-symbol-url: url({{ 'mm-symbol-trickster.svg' | asset_url }});" aria-hidden="true"></span>
+          {%- endfor -%}
+        </button>
+        <span aria-hidden="true">4</span>
+      </div>
+
+      {%- if section.settings.heading != blank -%}<h1 class="mm-404__heading mm-display">{{ section.settings.heading | escape | newline_to_br }}</h1>{%- endif -%}
+      {%- if section.settings.text != blank -%}<p class="mm-404__text">{{ section.settings.text | escape }}</p>{%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="mm-404__suspects" aria-live="polite">
+          {%- for block in section.blocks -%}
+            <div
+              class="mm-404__suspect"
+              data-suspect="{{ forloop.index0 }}"
+              data-bg="{{ block.settings.background }}"
+              data-ink="{{ block.settings.text_colour }}"
+              {% unless forloop.first %}hidden{% endunless %}
+              {{ block.shopify_attributes }}
+            >
+              <span class="mm-404__suspect-label">{{ section.settings.suspect_label | escape }}</span>
+              <strong class="mm-404__suspect-name">{{ block.settings.name | escape }}</strong>
+              <span class="mm-404__suspect-excuse">{{ block.settings.excuse | escape }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <div class="mm-404__actions">
+        {%- if section.settings.button_label != blank -%}
+          <a class="mm-button mm-404__button" href="{{ section.settings.button_link | default: routes.root_url }}">{{ section.settings.button_label | escape }}</a>
+        {%- endif -%}
+        {%- if section.settings.link_label != blank -%}
+          <a class="mm-404__link" href="{{ section.settings.link | default: routes.all_products_collection_url }}">{{ section.settings.link_label | escape }} {% render 'mm-icon', icon: 'arrow-up-right' %}</a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.hint != blank and section.blocks.size > 1 -%}
+        <p class="mm-404__hint">{{ section.settings.hint | escape }}</p>
+      {%- endif -%}
+    </div>
+  </mm-not-found>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }}{--mm-404-code:{{ section.settings.code_size }}px;--mm-404-code-mobile:{{ section.settings.code_mobile }}px;--mm-404-heading:{{ section.settings.heading_size }}px;--mm-404-heading-mobile:{{ section.settings.heading_mobile }}px;--mm-404-min:{{ section.settings.min_height }}svh}
+{%- capture button_selector -%}#mm-{{ section.id }} .mm-404__button{%- endcapture -%}{% render 'mm-button-style', settings: section.settings, selector: button_selector %}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-404{overflow:hidden}
+.mm-404__stage{position:relative;display:grid;place-items:center;min-height:var(--mm-404-min,80svh);padding-inline:5%;background:var(--mm-404-bg,var(--mm-paper));color:var(--mm-404-ink,var(--mm-ink));transition:background-color .6s ease,color .6s ease;isolation:isolate;text-align:center}
+.mm-404__inner{position:relative;z-index:1;display:grid;justify-items:center;gap:20px;max-width:760px}
+.mm-404__code{display:flex;align-items:center;justify-content:center;gap:clamp(4px,1.5vw,20px);font-size:var(--mm-404-code,220px);line-height:.85;letter-spacing:-.04em}
+.mm-404__zero{position:relative;display:grid;width:.82em;height:.82em;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mm-404__zero:focus-visible{outline:3px solid currentColor;outline-offset:8px;border-radius:50%}
+.mm-404__symbol{grid-area:1/1;width:100%;height:100%;background-color:currentColor;-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;opacity:0;scale:.4;rotate:-120deg;transition:opacity .35s ease,scale .6s var(--mm-ease-spring,cubic-bezier(.34,1.56,.64,1)),rotate .6s var(--mm-ease-spring,cubic-bezier(.34,1.56,.64,1))}
+.mm-404__symbol.is-active{opacity:1;scale:1;rotate:0deg;animation:mm-404-sway 4s ease-in-out .8s infinite}
+.mm-404__zero:hover .mm-404__symbol.is-active{animation-duration:1s}
+@keyframes mm-404-sway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.mm-home .mm-404__heading{margin:0;font-size:var(--mm-404-heading,54px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance}
+.mm-404__text{max-width:48ch;font-size:17px;line-height:1.55;opacity:.85}
+.mm-404__suspects{display:grid;min-width:min(100%,420px)}
+.mm-404__suspect{grid-area:1/1;display:grid;justify-items:center;gap:4px;padding:16px 26px;border:2px dashed currentColor;border-radius:24px;animation:mm-404-in .5s var(--mm-ease-spring,cubic-bezier(.34,1.56,.64,1))}
+.mm-404__suspect[hidden]{display:none}
+.mm-404__suspect-label{font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;opacity:.75}
+.mm-404__suspect-name{font-size:22px;line-height:1.2}
+.mm-404__suspect-excuse{font-size:15px;line-height:1.45}
+@keyframes mm-404-in{from{opacity:0;translate:0 10px;scale:.96}}
+.mm-404__actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px 28px;margin-top:8px}
+.mm-home .mm-404__link{display:inline-flex;align-items:center;gap:8px;padding-bottom:3px;border-bottom:1px solid;font-size:14px;font-weight:700}
+.mm-404__hint{font-size:13px;opacity:.7}
+.mm-404__floaters{position:absolute;inset:0;z-index:0;pointer-events:none}
+.mm-404__floater{position:absolute;width:clamp(36px,6vw,84px);aspect-ratio:1;background-color:currentColor;opacity:.12;-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;animation:mm-404-drift 9s ease-in-out infinite;animation-delay:calc(var(--i) * -1.4s)}
+.mm-404__floater:nth-child(1){top:10%;left:7%}
+.mm-404__floater:nth-child(2){top:16%;right:9%}
+.mm-404__floater:nth-child(3){bottom:14%;left:12%}
+.mm-404__floater:nth-child(4){bottom:9%;right:6%}
+.mm-404__floater:nth-child(5){top:48%;left:2%}
+.mm-404__floater:nth-child(6){top:52%;right:2%}
+@keyframes mm-404-drift{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -22px;rotate:25deg}}
+@media(max-width:749px){
+  .mm-404__code{font-size:var(--mm-404-code-mobile,130px)}
+  .mm-home .mm-404__heading{font-size:var(--mm-404-heading-mobile,36px)}
+  .mm-404__text{font-size:15px}
+  .mm-404__floater:nth-child(n+5){display:none}
+}
+@media(prefers-reduced-motion:reduce){.mm-404__symbol.is-active,.mm-404__floater,.mm-404__suspect{animation:none}}
+{% endstylesheet %}
+
+{% javascript %}
+if (!customElements.get('mm-not-found')) {
+  customElements.define(
+    'mm-not-found',
+    class MMNotFound extends HTMLElement {
+      connectedCallback() {
+        this.suspects = [...this.querySelectorAll('[data-suspect]')];
+        this.symbols = [...this.querySelectorAll('[data-symbol]')];
+        this.index = 0;
+        if (this.suspects.length > 1 && this.dataset.start === 'random' && !window.Shopify?.designMode) {
+          this.show(Math.floor(Math.random() * this.suspects.length));
+        }
+        this.querySelector('[data-blame]')?.addEventListener('click', () => {
+          if (this.suspects.length > 1) this.show((this.index + 1) % this.suspects.length);
+        });
+        document.addEventListener('shopify:block:select', (event) => {
+          const position = this.suspects.findIndex((suspect) => suspect.contains(event.target));
+          if (position > -1) this.show(position);
+        });
+      }
+
+      show(position) {
+        this.index = position;
+        this.suspects.forEach((suspect, i) => (suspect.hidden = i !== position));
+        this.symbols.forEach((symbol, i) => symbol.classList.toggle('is-active', i === position));
+        if (this.dataset.mode === 'suspect') {
+          const suspect = this.suspects[position];
+          this.style.setProperty('--mm-404-bg', suspect.dataset.bg);
+          this.style.setProperty('--mm-404-ink', suspect.dataset.ink);
+        }
+      }
+    }
+  );
+}
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "MM · 404",
+  "class": "mm-404-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Error 404 · Page not found"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Well, this is a mish-mash."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "The page you are looking for has wandered off. We have a few suspects."
+    },
+    {
+      "type": "text",
+      "id": "suspect_label",
+      "label": "Suspect label",
+      "default": "Prime suspect"
+    },
+    {
+      "type": "text",
+      "id": "hint",
+      "label": "Hint under the buttons",
+      "default": "Not convinced? Tap the 0 to blame someone else."
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Take me home"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Leave empty for the homepage."
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Second link label",
+      "default": "Browse all objects"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Second link",
+      "info": "Leave empty for all products."
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "button_border",
+      "label": "Button border",
+      "info": "Leave empty for no border colour."
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button background on hover",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text",
+      "label": "Button text on hover",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border",
+      "label": "Button border on hover"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Button border thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "button_padding_y",
+      "label": "Button height padding",
+      "min": 6,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "button_padding_x",
+      "label": "Button side padding",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_min_width",
+      "label": "Button minimum width",
+      "min": 0,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button text size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "button_letter_spacing",
+      "label": "Button letter spacing",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "button_uppercase",
+      "label": "Uppercase button text",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "404 number"
+    },
+    {
+      "type": "range",
+      "id": "code_size",
+      "label": "Number size",
+      "min": 100,
+      "max": 360,
+      "step": 10,
+      "unit": "px",
+      "default": 240
+    },
+    {
+      "type": "range",
+      "id": "code_mobile",
+      "label": "Number size on mobile",
+      "min": 60,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 130
+    },
+    {
+      "type": "select",
+      "id": "colour_mode",
+      "label": "Background",
+      "default": "suspect",
+      "options": [
+        {
+          "value": "suspect",
+          "label": "Changes with the suspect"
+        },
+        {
+          "value": "fixed",
+          "label": "Section background colour"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "start_with",
+      "label": "First suspect",
+      "default": "random",
+      "options": [
+        {
+          "value": "first",
+          "label": "First block"
+        },
+        {
+          "value": "random",
+          "label": "Random on each visit"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_floaters",
+      "label": "Floating symbols in the background",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum height",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FB7FB0"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "suspect",
+      "name": "Suspect",
+      "settings": [
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Character",
+          "default": "trickster",
+          "options": [
+            {
+              "value": "showoff",
+              "label": "The Show-off"
+            },
+            {
+              "value": "player",
+              "label": "The Player"
+            },
+            {
+              "value": "trickster",
+              "label": "The Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "The Helper"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "The Trickster"
+        },
+        {
+          "type": "textarea",
+          "id": "excuse",
+          "label": "What they did",
+          "default": "Hid this page. Again. Classic."
+        },
+        {
+          "type": "image_picker",
+          "id": "symbol_image",
+          "label": "Custom symbol",
+          "info": "Optional. A transparent PNG or SVG shape, shown in the text colour."
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background",
+          "default": "#192FDA"
+        },
+        {
+          "type": "color",
+          "id": "text_colour",
+          "label": "Text colour",
+          "default": "#FFFFFF"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · 404",
+      "blocks": [
+        {
+          "type": "suspect",
+          "settings": {
+            "character": "trickster",
+            "name": "The Trickster",
+            "excuse": "Hid this page. Again. Classic.",
+            "background": "#192FDA",
+            "text_colour": "#FFFFFF"
+          }
+        },
+        {
+          "type": "suspect",
+          "settings": {
+            "character": "player",
+            "name": "The Player",
+            "excuse": "Turned it into a game of hide and seek. Still counting.",
+            "background": "#CCDB65",
+            "text_colour": "#171514"
+          }
+        },
+        {
+          "type": "suspect",
+          "settings": {
+            "character": "showoff",
+            "name": "The Show-off",
+            "excuse": "Moved it somewhere more photogenic.",
+            "background": "#970C38",
+            "text_colour": "#FFFFFF"
+          }
+        },
+        {
+          "type": "suspect",
+          "settings": {
+            "character": "helper",
+            "name": "The Helper",
+            "excuse": "Tidied it away. They really meant well.",
+            "background": "#FB7FB0",
+            "text_colour": "#171514"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
