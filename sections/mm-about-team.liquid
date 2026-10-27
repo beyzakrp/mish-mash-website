@@ -18,18 +18,18 @@
         {%- liquid
   case member_symbol
     when 'showoff'
-      assign member_colour = '#1E6448'
+      assign member_colour = '#970C38'
     when 'player'
-      assign member_colour = '#F37400'
+      assign member_colour = '#CCDB65'
     when 'trickster'
-      assign member_colour = '#4CA7FF'
+      assign member_colour = '#192FDA'
     when 'helper'
-      assign member_colour = '#FF6EA7'
+      assign member_colour = '#FB7FB0'
     else
       assign member_colour = 'currentColor'
   endcase
 -%}
-        <article class="mm-member" style="--mm-char: {{ member_colour }};" {{ block.shopify_attributes }}>
+        <article class="mm-member" style="--mm-char: {{ member_colour }}; --mm-char-ink: {% if member_symbol == 'player' or member_symbol == 'helper' %}#171514{% else %}#fff{% endif %};" {{ block.shopify_attributes }}>
           <div class="mm-member__media">
             {%- if block.settings.image != blank -%}
               {{ block.settings.image | image_url: width: 900 | image_tag: alt: block.settings.name, loading: 'lazy', widths: '300,500,700,900', sizes: '(min-width: 750px) 25vw, 50vw' }}
@@ -70,7 +70,7 @@
 .mm-member__media{position:relative;aspect-ratio:var(--mm-team-ratio,4/5);border-radius:var(--mm-team-radius,18px);overflow:hidden;isolation:isolate}
 .mm-member__media>img{width:100%;height:100%;object-fit:cover;display:block;transition:scale 1.2s cubic-bezier(.22,1,.36,1),filter .5s}
 .mm-member:hover .mm-member__media>img{scale:1.05;filter:saturate(.7) brightness(.85)}
-.mm-member__fact{position:absolute;inset:auto 12px 12px;display:grid;gap:6px;padding:16px;border-radius:14px;background:var(--mm-char);color:#fff;opacity:0;translate:0 16px;transition:opacity .35s,translate .55s cubic-bezier(.22,1,.36,1)}
+.mm-member__fact{position:absolute;inset:auto 12px 12px;display:grid;gap:6px;padding:16px;border-radius:14px;background:var(--mm-char);color:var(--mm-char-ink,#fff);opacity:0;translate:0 16px;transition:opacity .35s,translate .55s cubic-bezier(.22,1,.36,1)}
 .mm-member__fact p:not(.mm-eyebrow){font-size:15px;line-height:1.4}
 .mm-member:hover .mm-member__fact,.mm-member:focus-within .mm-member__fact{opacity:1;translate:0 0}
 .mm-member__badge{position:absolute;top:12px;right:12px;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--mm-paper);transition:rotate .8s cubic-bezier(.34,1.56,.64,1)}
@@ -218,7 +218,7 @@
       "type": "color",
       "id": "accent",
       "label": "Accent colour",
-      "default": "#FF6EA7"
+      "default": "#FB7FB0"
     },
     {
       "type": "range",

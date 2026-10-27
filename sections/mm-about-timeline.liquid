@@ -17,13 +17,13 @@
         {%- liquid
   case step_symbol
     when 'showoff'
-      assign step_colour = '#1E6448'
+      assign step_colour = '#970C38'
     when 'player'
-      assign step_colour = '#F37400'
+      assign step_colour = '#CCDB65'
     when 'trickster'
-      assign step_colour = '#4CA7FF'
+      assign step_colour = '#192FDA'
     when 'helper'
-      assign step_colour = '#FF6EA7'
+      assign step_colour = '#FB7FB0'
     else
       assign step_colour = 'currentColor'
   endcase
@@ -143,7 +143,7 @@ if (!customElements.get('mm-timeline')) {
       "type": "color",
       "id": "line_colour",
       "label": "Line colour",
-      "default": "#FF6EA7"
+      "default": "#FB7FB0"
     },
     {
       "type": "color",
@@ -211,7 +211,7 @@ if (!customElements.get('mm-timeline')) {
       "type": "color",
       "id": "accent",
       "label": "Accent colour",
-      "default": "#FF6EA7"
+      "default": "#FB7FB0"
     },
     {
       "type": "range",

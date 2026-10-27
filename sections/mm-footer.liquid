@@ -84,7 +84,7 @@
       </a>
       {%- if section.settings.show_symbols -%}
         <ul class="mm-footer__symbols mm-footer__symbols--{{ section.settings.symbol_colour }}{% if section.settings.symbol_motion != 'none' %} mm-footer__symbols--{{ section.settings.symbol_motion }}{% endif %}" role="list" aria-hidden="true">
-          {%- assign footer_symbols = 'showoff:#1E6448,player:#F37400,trickster:#4CA7FF,helper:#FF6EA7' | split: ',' -%}
+          {%- assign footer_symbols = 'showoff:#970C38,player:#CCDB65,trickster:#192FDA,helper:#FB7FB0' | split: ',' -%}
           {%- for pair in footer_symbols -%}
             {%- liquid
               assign parts = pair | split: ':'
@@ -359,7 +359,7 @@
       "type": "color",
       "id": "accent",
       "label": "Accent colour",
-      "default": "#FF6EA7"
+      "default": "#FB7FB0"
     }
   ],
   "presets": [

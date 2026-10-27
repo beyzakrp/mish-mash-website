@@ -66,13 +66,13 @@
                   endif
                   case mix_character
                     when 'showoff'
-                      assign mix_tint = '#D7E8DE'
+                      assign mix_tint = '#F5D9E0'
                     when 'player'
-                      assign mix_tint = '#FFE3C8'
+                      assign mix_tint = '#F1F5D6'
                     when 'trickster'
-                      assign mix_tint = '#D9ECFF'
+                      assign mix_tint = '#DCE0FA'
                     else
-                      assign mix_tint = '#FFDCEA'
+                      assign mix_tint = '#FEE2EE'
                   endcase
                   if block.settings.stage_colour != blank and block.settings.stage_colour != 'rgba(0,0,0,0)'
                     assign mix_tint = block.settings.stage_colour
@@ -81,13 +81,13 @@
                 {%- liquid
   case mix_character
     when 'showoff'
-      assign mix_colour = '#1E6448'
+      assign mix_colour = '#970C38'
     when 'player'
-      assign mix_colour = '#F37400'
+      assign mix_colour = '#CCDB65'
     when 'trickster'
-      assign mix_colour = '#4CA7FF'
+      assign mix_colour = '#192FDA'
     when 'helper'
-      assign mix_colour = '#FF6EA7'
+      assign mix_colour = '#FB7FB0'
     else
       assign mix_colour = 'currentColor'
   endcase
@@ -99,6 +99,7 @@
                   data-name="{{ mix_name | escape }}"
                   data-text="{{ block.settings.text | escape }}"
                   data-colour="{{ mix_colour }}"
+                  data-ink="{% assign mix_brightness = mix_colour | color_brightness %}{% if mix_brightness > 150 %}#171514{% else %}#fff{% endif %}"
                   data-tint="{{ mix_tint }}"
                   data-symbol="{{ 'mm-symbol-' | append: mix_character | append: '.svg' | asset_url }}"
                   style="--mm-char: {{ mix_colour }};"
@@ -175,7 +176,7 @@
 .mm-mix__option--character:hover .mm-symbol-mask,.mm-mix__option--character[aria-pressed="true"] .mm-symbol-mask{background-color:var(--mm-char);rotate:90deg}
 .mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
 .mm-mix__stage{position:relative;display:grid;grid-template-rows:1fr auto;border-radius:var(--mm-mix-radius);background:var(--mm-mix-tint,#FFDCEA);overflow:hidden;isolation:isolate;transition:background-color .7s ease}
-.mm-mix__bg-symbol{position:absolute;inset:8% 8% 22%;z-index:-1;background-color:var(--mm-mix-colour,#FF6EA7);opacity:var(--mm-mix-symbol-opacity);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:background-color .7s ease,scale .8s cubic-bezier(.34,1.56,.64,1),rotate .8s cubic-bezier(.34,1.56,.64,1)}
+.mm-mix__bg-symbol{position:absolute;inset:8% 8% 22%;z-index:-1;background-color:var(--mm-mix-colour,#FB7FB0);opacity:var(--mm-mix-symbol-opacity);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:background-color .7s ease,scale .8s cubic-bezier(.34,1.56,.64,1),rotate .8s cubic-bezier(.34,1.56,.64,1)}
 .mm-mix__bg-symbol--spin{animation:mm-mix-spin 60s linear infinite}
 .mm-mix__stage.is-swapping .mm-mix__bg-symbol{scale:.6;rotate:-40deg}
 @keyframes mm-mix-spin{to{rotate:360deg}}
@@ -191,7 +192,7 @@
 .mm-mix__price{font-size:18px;font-weight:700}
 .mm-mix__price:empty{display:none}
 .mm-mix__button{display:inline-flex;align-items:center;gap:16px;border-radius:100px;padding:15px 24px;background:var(--mm-ink);color:var(--mm-paper)!important;font-size:14px;font-weight:700;transition:background .25s,color .25s,translate .3s}
-.mm-mix__button:hover{background:var(--mm-mix-colour);color:#fff!important;translate:0 -2px}
+.mm-mix__button:hover{background:var(--mm-mix-colour);color:var(--mm-mix-ink,#fff)!important;translate:0 -2px}
 @media(max-width:749px){.mm-mix__studio{grid-template-columns:1fr}.mm-mix__stage{order:-1;height:460px!important}.mm-mix__controls{gap:24px}}
 @media(prefers-reduced-motion:reduce){.mm-mix__bg-symbol,.mm-mix__object{animation:none;transition:opacity .2s}}
 {% endstylesheet %}
@@ -232,6 +233,7 @@ if (!customElements.get('mm-mix')) {
         if (character instanceof HTMLElement) {
           stage.style.setProperty('--mm-mix-tint', character.dataset.tint || '');
           stage.style.setProperty('--mm-mix-colour', character.dataset.colour || '');
+          stage.style.setProperty('--mm-mix-ink', character.dataset.ink || '');
           this.setText('[data-mix-character-name]', character.dataset.name);
           this.setText('[data-mix-text]', character.dataset.text);
           const symbol = this.querySelector('[data-mix-symbol]');
@@ -429,7 +431,7 @@ if (!customElements.get('mm-mix')) {
       "type": "color",
       "id": "accent",
       "label": "Accent colour",
-      "default": "#FF6EA7"
+      "default": "#FB7FB0"
     },
     {
       "type": "range",

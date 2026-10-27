@@ -5,7 +5,7 @@
   @param {object} settings - The section settings (background, text_color, accent, padding_*, heading_*).
   @param {string} id - The section id.
 {%- enddoc -%}
-#mm-{{ id }}{--mm-paper:{{ settings.background }};--mm-ink:{{ settings.text_color }};--mm-accent:{{ settings.accent | default: '#FF6EA7' }};background:var(--mm-paper);color:var(--mm-ink)}
+#mm-{{ id }}{--mm-paper:{{ settings.background }};--mm-ink:{{ settings.text_color }};--mm-accent:{{ settings.accent | default: '#FB7FB0' }};background:var(--mm-paper);color:var(--mm-ink)}
 #mm-{{ id }} .mm-pad{padding-top:{{ settings.padding_top }}px;padding-bottom:{{ settings.padding_bottom }}px}
 #mm-{{ id }} h2{font-size:{{ settings.heading_size }}px}
 @media(max-width:749px){

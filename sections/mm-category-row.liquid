@@ -1,5 +1,5 @@
 {%- liquid
-  assign character_colours = 'showoff:#1E6448,player:#F37400,trickster:#4CA7FF,helper:#FF6EA7' | split: ','
+  assign character_colours = 'showoff:#970C38,player:#CCDB65,trickster:#192FDA,helper:#FB7FB0' | split: ','
   assign stock_images = 'mm-reference-story.webp,mm-reference-hero.webp,mm-reference-mobile.webp' | split: ','
 -%}
 <section class="mm-home" id="mm-{{ section.id }}">
@@ -31,7 +31,7 @@
             endif
           endfor
           assign accent_ink = '#171514'
-          if character == 'showoff'
+          if character == 'showoff' or character == 'trickster'
             assign accent_ink = '#FFFFFF'
           endif
         -%}

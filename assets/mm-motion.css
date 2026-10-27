@@ -85,10 +85,10 @@
 /* Personality badge */
 .mm-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 6px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.02em;line-height:1.3;background:var(--mm-badge-bg);color:var(--mm-badge-ink)}
 .mm-badge img{width:16px;height:16px;object-fit:contain;filter:var(--mm-badge-filter,brightness(0))}
-.mm-badge--showoff{--mm-badge-bg:#1e6448;--mm-badge-ink:#fff;--mm-badge-filter:brightness(0) invert(1)}
-.mm-badge--player{--mm-badge-bg:#f37400;--mm-badge-ink:#171514}
-.mm-badge--trickster{--mm-badge-bg:#4ca7ff;--mm-badge-ink:#171514}
-.mm-badge--helper{--mm-badge-bg:#ff6ea7;--mm-badge-ink:#171514}
+.mm-badge--showoff{--mm-badge-bg:#970c38;--mm-badge-ink:#fff;--mm-badge-filter:brightness(0) invert(1)}
+.mm-badge--player{--mm-badge-bg:#ccdb65;--mm-badge-ink:#171514}
+.mm-badge--trickster{--mm-badge-bg:#192fda;--mm-badge-ink:#171514}
+.mm-badge--helper{--mm-badge-bg:#fb7fb0;--mm-badge-ink:#171514}
 .mm-badge--large{gap:8px;padding:6px 14px 6px 8px;font-size:12px}
 .mm-badge--large img{width:22px;height:22px}
 .mm-badge__line{font-weight:400;opacity:.85}
@@ -100,9 +100,9 @@
 .cart-drawer__content>.mm-shipping{padding-inline:var(--padding-lg,20px)}
 .mm-shipping p{margin:0 0 9px}
 .mm-shipping__bar{height:6px;border-radius:6px;background:#1715141a;overflow:hidden}
-.mm-shipping__bar span{display:block;height:100%;width:var(--mm-shipping-progress);border-radius:inherit;background:#ff6ea7;transition:width .6s var(--mm-ease-out)}
-.mm-shipping.is-unlocked .mm-shipping__bar span{background:#1e6448}
-.mm-shipping.is-unlocked p span{color:#1e6448}
+.mm-shipping__bar span{display:block;height:100%;width:var(--mm-shipping-progress);border-radius:inherit;background:#fb7fb0;transition:width .6s var(--mm-ease-out)}
+.mm-shipping.is-unlocked .mm-shipping__bar span{background:#970c38}
+.mm-shipping.is-unlocked p span{color:#970c38}
 
 /* Cart drawer suggestions */
 .mm-upsell{padding:18px 0 6px;border-top:1px solid #17151414;margin-top:12px}
@@ -181,8 +181,8 @@
 .mm-object-arrow{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#faf9f5;color:#171514;font-size:21px;transition:background .35s,color .35s,transform .45s var(--mm-ease-out,cubic-bezier(.16,1,.3,1))}
 @media(hover:hover){
   .mm-object:hover .mm-object-media img{transform:scale(1.06)}
-  .mm-object:hover .mm-object-badge{background:var(--mm-accent);color:#faf9f5;transform:rotate(-10deg) scale(1.08)}
-  .mm-object:hover .mm-object-arrow{background:var(--mm-accent);color:#faf9f5;transform:rotate(45deg)}
+  .mm-object:hover .mm-object-badge{background:var(--mm-accent);color:var(--mm-accent-ink,#faf9f5);transform:rotate(-10deg) scale(1.08)}
+  .mm-object:hover .mm-object-arrow{background:var(--mm-accent);color:var(--mm-accent-ink,#faf9f5);transform:rotate(45deg)}
 }
 .mm-object:focus-visible{outline-offset:4px}
 

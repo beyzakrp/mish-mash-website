@@ -28,10 +28,10 @@
         "overlay": 45,
         "background": "#ddd9cd",
         "text_color": "#ffffff",
-        "button_background": "#4ca7ff",
+        "button_background": "#192fda",
         "button_text": "#290b13",
         "button_border": "{{ settings.color_palette.foreground }}",
-        "button_hover_background": "#ff6ea7",
+        "button_hover_background": "#fb7fb0",
         "button_hover_text": "#ffffff",
         "button_hover_border": "#ffffff",
         "button_border_width": 3,
@@ -262,7 +262,7 @@
             "caption": "",
             "size": "large",
             "icon": "vase",
-            "colour": "#ff6ea7"
+            "colour": "#fb7fb0"
           }
         },
         "object_lamp": {
@@ -273,7 +273,7 @@
             "caption": "",
             "size": "medium",
             "icon": "lamp",
-            "colour": "#f37400"
+            "colour": "#ccdb65"
           }
         },
         "object_clock": {
@@ -284,7 +284,7 @@
             "caption": "",
             "size": "small",
             "icon": "clock",
-            "colour": "#4ca7ff"
+            "colour": "#192fda"
           }
         },
         "object_candle": {
@@ -295,7 +295,7 @@
             "caption": "",
             "size": "small",
             "icon": "candle",
-            "colour": "#1e6448"
+            "colour": "#970c38"
           }
         },
         "object_frame": {
@@ -368,7 +368,7 @@
             "description": "Just looks good.",
             "character": "showoff",
             "symbol_filter": "brightness(0) invert(1)",
-            "background": "#1e6448",
+            "background": "#970c38",
             "text_color": "#ffffff",
             "link": "",
             "collection": ""
@@ -381,7 +381,7 @@
             "description": "Touch. Play. Combine.",
             "character": "player",
             "symbol_filter": "brightness(0)",
-            "background": "#f37400",
+            "background": "#ccdb65",
             "text_color": "#171514",
             "link": "",
             "collection": ""
@@ -393,9 +393,9 @@
             "heading": "The Trickster",
             "description": "Small surprise. Big joy.",
             "character": "trickster",
-            "symbol_filter": "brightness(0)",
-            "background": "#4ca7ff",
-            "text_color": "#171514",
+            "symbol_filter": "brightness(0) invert(1)",
+            "background": "#192fda",
+            "text_color": "#ffffff",
             "link": "",
             "collection": ""
           }
@@ -407,7 +407,7 @@
             "description": "Looks good. Works too.",
             "character": "helper",
             "symbol_filter": "brightness(0)",
-            "background": "#ff6ea7",
+            "background": "#fb7fb0",
             "text_color": "#171514",
             "link": "",
             "collection": ""
@@ -517,7 +517,7 @@
         "heading_mobile": 36,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "accent": "#ff6ea7",
+        "accent": "#fb7fb0",
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55
@@ -589,7 +589,7 @@
         "heading_mobile": 36,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "accent": "#ff6ea7",
+        "accent": "#fb7fb0",
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55
@@ -667,7 +667,7 @@
         "gap": 16,
         "card_background": "#FFFFFF",
         "card_text": "#171514",
-        "star_colour": "#F37400",
+        "star_colour": "#CCDB65",
         "show_stars": true,
         "show_symbols": true,
         "show_product_image": true,
@@ -676,7 +676,7 @@
         "heading_mobile": 36,
         "background": "#FAF9F5",
         "text_color": "#171514",
-        "accent": "#FF6EA7",
+        "accent": "#FB7FB0",
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55
@@ -804,7 +804,7 @@
         "heading_mobile": 36,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "accent": "#ff6ea7",
+        "accent": "#fb7fb0",
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55
@@ -825,13 +825,13 @@
         "show_symbol": true,
         "symbol": "showoff",
         "symbol_size": 140,
-        "symbol_color": "#4ca7ff",
+        "symbol_color": "#192fda",
         "background": "#f2fffa",
         "text_color": "#171514",
         "button_background": "{{ settings.color_palette.background }}",
         "button_text": "{{ settings.color_palette.color1 }}",
-        "button_border": "#1e6448",
-        "button_hover_background": "#1e6448",
+        "button_border": "#970c38",
+        "button_hover_background": "#970c38",
         "button_hover_text": "#ffffff",
         "button_hover_border": "",
         "button_border_width": 3,
@@ -943,7 +943,7 @@
         "heading_mobile": 36,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "accent": "#ff6ea7",
+        "accent": "#fb7fb0",
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55

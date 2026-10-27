@@ -46,13 +46,13 @@
             {%- liquid
   case character
     when 'showoff'
-      assign character_colour = '#1E6448'
+      assign character_colour = '#970C38'
     when 'player'
-      assign character_colour = '#F37400'
+      assign character_colour = '#CCDB65'
     when 'trickster'
-      assign character_colour = '#4CA7FF'
+      assign character_colour = '#192FDA'
     when 'helper'
-      assign character_colour = '#FF6EA7'
+      assign character_colour = '#FB7FB0'
     else
       assign character_colour = 'currentColor'
   endcase
@@ -90,13 +90,13 @@
           {%- liquid
   case symbol
     when 'showoff'
-      assign symbol_colour = '#1E6448'
+      assign symbol_colour = '#970C38'
     when 'player'
-      assign symbol_colour = '#F37400'
+      assign symbol_colour = '#CCDB65'
     when 'trickster'
-      assign symbol_colour = '#4CA7FF'
+      assign symbol_colour = '#192FDA'
     when 'helper'
-      assign symbol_colour = '#FF6EA7'
+      assign symbol_colour = '#FB7FB0'
     else
       assign symbol_colour = 'currentColor'
   endcase
@@ -534,7 +534,7 @@ if (!customElements.get('mm-live-clock')) {
       "type": "color",
       "id": "accent",
       "label": "Accent colour",
-      "default": "#FF6EA7"
+      "default": "#FB7FB0"
     },
     {
       "type": "range",

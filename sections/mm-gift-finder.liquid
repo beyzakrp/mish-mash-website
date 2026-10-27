@@ -29,13 +29,13 @@
                 {%- liquid
   case gift_symbol
     when 'showoff'
-      assign gift_colour = '#1E6448'
+      assign gift_colour = '#970C38'
     when 'player'
-      assign gift_colour = '#F37400'
+      assign gift_colour = '#CCDB65'
     when 'trickster'
-      assign gift_colour = '#4CA7FF'
+      assign gift_colour = '#192FDA'
     when 'helper'
-      assign gift_colour = '#FF6EA7'
+      assign gift_colour = '#FB7FB0'
     else
       assign gift_colour = 'currentColor'
   endcase
@@ -397,7 +397,7 @@ if (!customElements.get('mm-gift')) {
       "type": "color",
       "id": "accent",
       "label": "Accent colour",
-      "default": "#FF6EA7"
+      "default": "#FB7FB0"
     },
     {
       "type": "range",
