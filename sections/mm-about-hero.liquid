@@ -30,7 +30,7 @@
       {%- endif -%}
       {%- if section.settings.text != blank -%}<div class="mm-ahero__text">{{ section.settings.text }}</div>{%- endif -%}
       {%- if section.settings.button_label != blank -%}
-        <a class="mm-ahero__button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">→</span></a>
+        <a class="mm-button mm-ahero__button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }}</a>
       {%- endif -%}
     </div>
     </div>
@@ -51,6 +51,7 @@
 
 {% style %}
 #mm-{{ section.id }}{--mm-ahero-size:{{ section.settings.heading_size }}px;--mm-ahero-mobile:{{ section.settings.heading_mobile }}px;--mm-ahero-symbol:{{ section.settings.symbol_size }}px;--mm-ahero-image-height:{{ section.settings.image_height }}px;--mm-ahero-radius:{{ section.settings.image_radius }}px}
+{%- capture button_selector -%}#mm-{{ section.id }} .mm-ahero__button{%- endcapture -%}{% render 'mm-button-style', settings: section.settings, selector: button_selector %}
 {% endstyle %}
 
 {% stylesheet %}
@@ -62,9 +63,8 @@
 .mm-ahero__heading em{font-style:normal;-webkit-text-stroke:1.5px currentColor;color:transparent}
 .mm-ahero__text{font-size:clamp(16px,1.4vw,20px);line-height:1.55;max-width:56ch}
 .mm-ahero__text p{margin:0 0 .6em}
-.mm-home .mm-ahero__button{display:inline-flex;align-items:center;gap:18px;border-radius:100px;padding:17px 28px;background:var(--mm-ink);color:var(--mm-paper);font-size:14px;font-weight:700;justify-self:start;transition:background .25s,color .25s,translate .3s}
+.mm-ahero__button{justify-self:start;font-weight:700;line-height:1.2}
 .mm-ahero--center .mm-ahero__button{justify-self:center}
-.mm-home .mm-ahero__button:hover{background:var(--mm-accent);color:var(--mm-ink);translate:0 -2px}
 .mm-ahero__symbols{position:absolute;inset:0;pointer-events:none}
 .mm-ahero__symbol{position:absolute;width:var(--mm-ahero-symbol,88px);animation:mm-ahero-float 6s ease-in-out infinite}
 .mm-ahero__symbol .mm-symbol-mask{width:100%;animation:mm-ahero-in 1.2s cubic-bezier(.34,1.56,.64,1) both}
@@ -122,6 +122,125 @@
       "type": "url",
       "id": "button_link",
       "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "paragraph",
+      "content": "Same style options as the opening image button."
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "button_border",
+      "label": "Button border",
+      "info": "Leave empty for no border colour."
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button background on hover",
+      "default": "#FB7FB0"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text",
+      "label": "Button text on hover",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border",
+      "label": "Button border on hover"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Button border thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "button_padding_y",
+      "label": "Button height padding",
+      "min": 6,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "button_padding_x",
+      "label": "Button side padding",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_min_width",
+      "label": "Button minimum width",
+      "min": 0,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button text size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "button_letter_spacing",
+      "label": "Button letter spacing",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "button_uppercase",
+      "label": "Uppercase button text",
+      "default": true
     },
     {
       "type": "select",
