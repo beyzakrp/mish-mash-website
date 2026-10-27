@@ -34,6 +34,7 @@
     "type_letter_spacing_h6": "heading-loose",
     "type_case_h6": "uppercase",
     "page_background_color": "{{ settings.color_palette.background }}",
+    "badge_position": "top-right",
     "badge_corner_radius": 0,
     "badge_sale_background_color": "{{ settings.color_palette.color1 }}",
     "badge_sale_text_color": "{{ settings.color_palette.background }}",
