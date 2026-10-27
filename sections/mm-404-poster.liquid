@@ -1,0 +1,624 @@
+{%- liquid
+  assign lost_path = request.path | default: '/somewhere-nice' | escape
+  case section.settings.photo_character
+    when 'showoff'
+      assign photo_colour = '#970C38'
+    when 'player'
+      assign photo_colour = '#CCDB65'
+    when 'trickster'
+      assign photo_colour = '#192FDA'
+    else
+      assign photo_colour = '#FB7FB0'
+  endcase
+-%}
+<section class="mm-home mm-lost" id="mm-{{ section.id }}">
+  <div class="mm-pad mm-lost__wrap mm-lost__wrap--{{ section.settings.layout }}">
+    <div class="mm-lost__copy">
+      {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h1 class="mm-lost__heading mm-display">{{ section.settings.heading | escape | newline_to_br }}</h1>{%- endif -%}
+      {%- if section.settings.text != blank -%}<p class="mm-lost__text">{{ section.settings.text | escape }}</p>{%- endif -%}
+      <div class="mm-lost__actions">
+        {%- if section.settings.button_label != blank -%}
+          <a class="mm-button mm-lost__button" href="{{ section.settings.button_link | default: routes.root_url }}">{{ section.settings.button_label | escape }}</a>
+        {%- endif -%}
+        {%- if section.settings.link_label != blank -%}
+          <a class="mm-lost__link" href="{{ section.settings.link | default: routes.all_products_collection_url }}">{{ section.settings.link_label | escape }} {% render 'mm-icon', icon: 'arrow-up-right' %}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="mm-lost__board">
+      <article class="mm-lost__poster" aria-label="{{ section.settings.poster_title | escape }}">
+        <span class="mm-lost__tape mm-lost__tape--left" aria-hidden="true"></span>
+        <span class="mm-lost__tape mm-lost__tape--right" aria-hidden="true"></span>
+
+        <p class="mm-lost__title mm-display">{{ section.settings.poster_title | escape }}</p>
+        {%- if section.settings.poster_subtitle != blank -%}<p class="mm-lost__subtitle">{{ section.settings.poster_subtitle | escape }}</p>{%- endif -%}
+
+        <div class="mm-lost__photo" style="--mm-lost-photo: {{ photo_colour }};">
+          {%- if section.settings.photo_image != blank -%}
+            {{ section.settings.photo_image | image_url: width: 900 | image_tag: alt: '', loading: 'eager', class: 'mm-lost__photo-image', widths: '400,600,900', sizes: '(min-width: 990px) 420px, 80vw' }}
+          {%- else -%}
+            <span class="mm-lost__photo-symbol" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: section.settings.photo_character | append: '.svg' | asset_url }});" aria-hidden="true"></span>
+          {%- endif -%}
+          {%- if section.settings.stamp != blank -%}<span class="mm-lost__stamp" aria-hidden="true">{{ section.settings.stamp | escape }}</span>{%- endif -%}
+        </div>
+
+        {%- assign has_details = false -%}
+        {%- for block in section.blocks -%}{%- if block.type == 'detail' -%}{%- assign has_details = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
+        {%- if has_details -%}
+          <dl class="mm-lost__details">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'detail' -%}
+                <div {{ block.shopify_attributes }}>
+                  <dt>{{ block.settings.label | escape }}</dt>
+                  <dd>{{ block.settings.value | escape | replace: '[path]', lost_path }}</dd>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </dl>
+        {%- endif -%}
+
+        {%- assign has_tabs = false -%}
+        {%- for block in section.blocks -%}{%- if block.type == 'tab' -%}{%- assign has_tabs = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
+        {%- if has_tabs -%}
+          {%- if section.settings.tabs_heading != blank -%}<p class="mm-lost__tabs-heading">{{ section.settings.tabs_heading | escape }}</p>{%- endif -%}
+          <ul class="mm-lost__tabs" role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'tab' -%}
+                <li style="--i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+                  <a class="mm-lost__tab" href="{{ block.settings.link | default: routes.root_url }}"><span>{{ block.settings.label | escape }}</span></a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </article>
+    </div>
+  </div>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }}{--mm-lost-paper:{{ section.settings.poster_colour }};--mm-lost-paper-ink:{{ section.settings.poster_text }};--mm-lost-tape-1:{{ section.settings.tape_1 }};--mm-lost-tape-2:{{ section.settings.tape_2 }};--mm-lost-tilt:{{ section.settings.tilt }}deg;--mm-lost-title:{{ section.settings.title_size }}px;--mm-lost-heading:{{ section.settings.heading_size }}px;--mm-lost-heading-mobile:{{ section.settings.heading_mobile }}px;--mm-lost-stamp:{{ section.settings.stamp_colour }}}
+{%- capture button_selector -%}#mm-{{ section.id }} .mm-lost__button{%- endcapture -%}{% render 'mm-button-style', settings: section.settings, selector: button_selector %}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-lost{overflow:hidden}
+.mm-lost__wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:clamp(40px,6vw,110px);padding-inline:5%}
+.mm-lost__wrap--poster-left .mm-lost__copy{order:2}
+.mm-lost__copy{display:grid;justify-items:start;gap:20px;max-width:560px}
+.mm-home .mm-lost__heading{margin:0;font-size:var(--mm-lost-heading,54px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance}
+.mm-lost__text{font-size:17px;line-height:1.55;opacity:.85;max-width:46ch}
+.mm-lost__actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:8px}
+.mm-home .mm-lost__link{display:inline-flex;align-items:center;gap:8px;padding-bottom:3px;border-bottom:1px solid;font-size:14px;font-weight:700}
+.mm-lost__board{display:grid;place-items:center;padding:24px 0}
+.mm-lost__poster{position:relative;width:min(100%,460px);padding:34px 30px 0;background:var(--mm-lost-paper);color:var(--mm-lost-paper-ink);box-shadow:0 1px 0 rgba(0,0,0,.04),0 24px 50px -18px rgba(23,21,20,.35);rotate:var(--mm-lost-tilt,-3deg);transition:rotate .6s var(--mm-ease-spring,cubic-bezier(.34,1.56,.64,1));text-align:center}
+.mm-lost__poster:hover{rotate:calc(var(--mm-lost-tilt,-3deg) * -.4)}
+.mm-lost__tape{position:absolute;top:-14px;width:110px;height:30px;opacity:.9;mix-blend-mode:multiply}
+.mm-lost__tape--left{left:-18px;background:var(--mm-lost-tape-1);rotate:-28deg}
+.mm-lost__tape--right{right:-18px;background:var(--mm-lost-tape-2);rotate:24deg}
+.mm-home .mm-lost__title{margin:0;font-size:var(--mm-lost-title,76px);line-height:.9;letter-spacing:-.02em;text-transform:uppercase}
+.mm-lost__subtitle{margin-top:10px!important;font-size:12px;font-weight:700;letter-spacing:.17em;text-transform:uppercase}
+.mm-lost__photo{position:relative;display:grid;place-items:center;aspect-ratio:4/3;margin:22px 0 18px;border:2px solid currentColor;background:color-mix(in srgb,var(--mm-lost-photo) 16%,var(--mm-lost-paper));overflow:hidden}
+.mm-lost__photo-symbol{width:52%;aspect-ratio:1;background-color:var(--mm-lost-photo);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;animation:mm-lost-peek 5s ease-in-out infinite}
+.mm-lost__photo-image{width:100%;height:100%;object-fit:cover;display:block}
+@keyframes mm-lost-peek{0%,100%{translate:0 0;rotate:-6deg}40%{translate:-6% 3%;rotate:8deg}70%{translate:5% -2%;rotate:-2deg}}
+.mm-lost__stamp{position:absolute;right:12px;bottom:14px;padding:6px 12px;border:3px solid var(--mm-lost-stamp,#970C38);border-radius:6px;color:var(--mm-lost-stamp,#970C38);font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;rotate:-12deg;opacity:.85}
+.mm-lost__details{display:grid;gap:8px;margin:0 0 22px;text-align:left;font-size:14px;line-height:1.4}
+.mm-lost__details div{display:grid;grid-template-columns:minmax(90px,auto) 1fr;gap:12px;padding-bottom:8px;border-bottom:1px dashed color-mix(in srgb,currentColor 35%,transparent)}
+.mm-lost__details dt{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding-top:2px}
+.mm-lost__details dd{margin:0;overflow-wrap:anywhere}
+.mm-lost__tabs-heading{font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;margin-bottom:10px!important}
+.mm-lost__tabs{display:flex;margin:0 -30px;padding:0;list-style:none;border-top:2px dashed currentColor}
+.mm-lost__tabs li{flex:1 1 0;min-width:0;transform-origin:50% 0;transition:rotate .45s var(--mm-ease-spring,cubic-bezier(.34,1.56,.64,1)),translate .45s var(--mm-ease-spring,cubic-bezier(.34,1.56,.64,1))}
+.mm-lost__tabs li+li{border-left:2px dashed currentColor}
+.mm-lost__tabs li:hover{rotate:calc(-6deg + var(--i) * 3deg);translate:0 6px}
+.mm-home .mm-lost__tab{display:grid;place-items:center;width:100%;height:136px;padding:14px 4px;}
+.mm-lost__tab span{writing-mode:vertical-rl;rotate:180deg;white-space:nowrap}
+.mm-home .mm-lost__tab{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background .25s,color .25s}
+.mm-home .mm-lost__tab:hover,.mm-home .mm-lost__tab:focus-visible{background:var(--mm-lost-paper-ink);color:var(--mm-lost-paper)}
+@media(max-width:989px){
+  .mm-lost__wrap{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .mm-lost__wrap--poster-left .mm-lost__copy{order:0}
+  .mm-lost__copy{justify-items:center}
+  .mm-lost__actions{justify-content:center}
+}
+@media(max-width:749px){
+  .mm-home .mm-lost__heading{font-size:var(--mm-lost-heading-mobile,36px)}
+  .mm-lost__text{font-size:15px}
+  .mm-lost__poster{padding:28px 20px 0}
+  .mm-home .mm-lost__title{font-size:calc(var(--mm-lost-title,76px) * .72)}
+  .mm-lost__tabs{margin-inline:-20px}
+  .mm-home .mm-lost__tab{height:124px;font-size:11px}
+  .mm-lost__poster{width:calc(100% - 24px)}
+  .mm-lost__tape{width:80px;height:24px}
+}
+@media(prefers-reduced-motion:reduce){.mm-lost__photo-symbol{animation:none}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · 404 poster",
+  "class": "mm-404-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Error 404"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Have you seen\nthis page?"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "It was here a minute ago. We have put up posters and everything. While we look, take one of the tabs or head back home."
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout on desktop",
+      "default": "poster-right",
+      "options": [
+        {
+          "value": "poster-right",
+          "label": "Poster on the right"
+        },
+        {
+          "value": "poster-left",
+          "label": "Poster on the left"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Take me home"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Leave empty for the homepage."
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Second link label",
+      "default": "Browse all objects"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Second link",
+      "info": "Leave empty for all products."
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "button_border",
+      "label": "Button border",
+      "info": "Leave empty for no border colour."
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button background on hover",
+      "default": "#FB7FB0"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text",
+      "label": "Button text on hover",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border",
+      "label": "Button border on hover"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Button border thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "button_padding_y",
+      "label": "Button height padding",
+      "min": 6,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "button_padding_x",
+      "label": "Button side padding",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_min_width",
+      "label": "Button minimum width",
+      "min": 0,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button text size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "button_letter_spacing",
+      "label": "Button letter spacing",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "button_uppercase",
+      "label": "Uppercase button text",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Poster"
+    },
+    {
+      "type": "text",
+      "id": "poster_title",
+      "label": "Poster title",
+      "default": "Missing"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Poster title size",
+      "min": 40,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "text",
+      "id": "poster_subtitle",
+      "label": "Poster subtitle",
+      "default": "One page · answers to 404"
+    },
+    {
+      "type": "select",
+      "id": "photo_character",
+      "label": "Symbol in the photo",
+      "default": "trickster",
+      "options": [
+        {
+          "value": "showoff",
+          "label": "The Show-off"
+        },
+        {
+          "value": "player",
+          "label": "The Player"
+        },
+        {
+          "value": "trickster",
+          "label": "The Trickster"
+        },
+        {
+          "value": "helper",
+          "label": "The Helper"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "photo_image",
+      "label": "Photo",
+      "info": "Optional. Replaces the symbol."
+    },
+    {
+      "type": "text",
+      "id": "stamp",
+      "label": "Stamp text",
+      "default": "Still lost"
+    },
+    {
+      "type": "color",
+      "id": "stamp_colour",
+      "label": "Stamp colour",
+      "default": "#970C38"
+    },
+    {
+      "type": "text",
+      "id": "tabs_heading",
+      "label": "Tear-off tabs heading",
+      "default": "Tear one off, go somewhere nice"
+    },
+    {
+      "type": "color",
+      "id": "poster_colour",
+      "label": "Poster colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "poster_text",
+      "label": "Poster text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "tape_1",
+      "label": "Left tape colour",
+      "default": "#CCDB65"
+    },
+    {
+      "type": "color",
+      "id": "tape_2",
+      "label": "Right tape colour",
+      "default": "#FB7FB0"
+    },
+    {
+      "type": "range",
+      "id": "tilt",
+      "label": "Poster tilt",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "unit": "°",
+      "default": -3
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 58
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FB7FB0"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "detail",
+      "name": "Poster detail",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Last seen"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Text",
+          "info": "[path] shows the address the visitor typed.",
+          "default": "[path]"
+        }
+      ]
+    },
+    {
+      "type": "tab",
+      "name": "Tear-off tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Home"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · 404 poster",
+      "blocks": [
+        {
+          "type": "detail",
+          "settings": {
+            "label": "Last seen",
+            "value": "[path]"
+          }
+        },
+        {
+          "type": "detail",
+          "settings": {
+            "label": "Looks like",
+            "value": "Probably good-looking. Definitely playful."
+          }
+        },
+        {
+          "type": "detail",
+          "settings": {
+            "label": "If found",
+            "value": "Please return to mish-mash. No questions asked."
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Home",
+            "link": "/"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Shop all",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Take the quiz",
+            "link": "/"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Our story",
+            "link": "/pages/about-us"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Contact",
+            "link": "/pages/contact"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

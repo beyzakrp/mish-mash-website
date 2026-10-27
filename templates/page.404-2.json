@@ -35,10 +35,84 @@
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 40,
         "padding-block-end": 80
-      }
+      },
+      "disabled": true
+    },
+    "mm_404_poster": {
+      "type": "mm-404-poster",
+      "blocks": {
+        "detail_1": {
+          "type": "detail",
+          "settings": {
+            "label": "Last seen",
+            "value": "[path]"
+          }
+        },
+        "detail_2": {
+          "type": "detail",
+          "settings": {
+            "label": "Looks like",
+            "value": "Probably good-looking. Definitely playful."
+          }
+        },
+        "detail_3": {
+          "type": "detail",
+          "settings": {
+            "label": "If found",
+            "value": "Please return to mish-mash. No questions asked."
+          }
+        },
+        "tab_4": {
+          "type": "tab",
+          "settings": {
+            "label": "Home",
+            "link": "/"
+          }
+        },
+        "tab_5": {
+          "type": "tab",
+          "settings": {
+            "label": "Shop all",
+            "link": "/collections/all"
+          }
+        },
+        "tab_6": {
+          "type": "tab",
+          "settings": {
+            "label": "Take the quiz",
+            "link": "/"
+          }
+        },
+        "tab_7": {
+          "type": "tab",
+          "settings": {
+            "label": "Our story",
+            "link": "/pages/about-us"
+          }
+        },
+        "tab_8": {
+          "type": "tab",
+          "settings": {
+            "label": "Contact",
+            "link": "/pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "detail_1",
+        "detail_2",
+        "detail_3",
+        "tab_4",
+        "tab_5",
+        "tab_6",
+        "tab_7",
+        "tab_8"
+      ],
+      "settings": {}
     }
   },
   "order": [
+    "mm_404_poster",
     "main"
   ]
 }
