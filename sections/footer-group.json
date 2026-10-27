@@ -61,7 +61,7 @@
         "menu_help": {
           "type": "menu",
           "settings": {
-            "menu": "",
+            "menu": "help",
             "heading": "Help",
             "link_symbols": true,
             "badge_link": "",
@@ -74,7 +74,7 @@
         "menu_mishmash": {
           "type": "menu",
           "settings": {
-            "menu": "",
+            "menu": "mish-mash",
             "heading": "Mish Mash",
             "link_symbols": true,
             "badge_link": "Blog",
@@ -118,7 +118,7 @@
       ],
       "settings": {
         "background": "#171514",
-        "text_color": "#FFFFFF",
+        "text_color": "#ffffff",
         "heading_colour": "{{ settings.color_palette.color3 }}",
         "accent": "{{ settings.color_palette.background }}",
         "columns": 0,
