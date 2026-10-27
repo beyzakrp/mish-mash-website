@@ -384,7 +384,7 @@ p:empty {
   grid-column: 1 / -1;
 
   @media screen and (min-width: 750px) {
-    padding-inline: var(--page-margin);
+    padding-inline: calc(var(--page-margin)*2);
   }
 }
 
