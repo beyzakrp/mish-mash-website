@@ -23,35 +23,65 @@
             "placeholder": "Your email",
             "button_label": "Sign up",
             "success": "You're in. Welcome to the club.",
-            "layout": "side"
+            "layout": "side",
+            "button_background": "{{ settings.color_palette.background }}",
+            "button_text": "#110E0F",
+            "button_border": "#faf9f5",
+            "button_border_width": 3,
+            "button_hover_background": "#faf9f5",
+            "button_hover_text": "#192FDA"
           }
         },
         "menu_shop": {
           "type": "menu",
           "settings": {
             "menu": "footer",
-            "open_on_mobile": true,
-            "heading": "Shop"
+            "heading": "Shop",
+            "link_symbols": true,
+            "badge_link": "",
+            "badge_text": "New",
+            "badge_background": "{{ settings.color_palette.color3 }}",
+            "badge_text_colour": "#171514",
+            "open_on_mobile": true
           }
         },
         "menu_characters": {
           "type": "menu",
           "settings": {
-            "heading": "Characters"
+            "menu": "",
+            "heading": "Characters",
+            "link_symbols": true,
+            "badge_link": "",
+            "badge_text": "New",
+            "badge_background": "#ccdb65",
+            "badge_text_colour": "#171514",
+            "open_on_mobile": false
           }
         },
         "menu_help": {
           "type": "menu",
           "settings": {
-            "heading": "Help"
+            "menu": "",
+            "heading": "Help",
+            "link_symbols": true,
+            "badge_link": "",
+            "badge_text": "New",
+            "badge_background": "#ccdb65",
+            "badge_text_colour": "#171514",
+            "open_on_mobile": false
           }
         },
         "menu_mishmash": {
           "type": "menu",
           "settings": {
+            "menu": "",
             "heading": "Mish Mash",
+            "link_symbols": true,
             "badge_link": "Blog",
-            "badge_text": "New"
+            "badge_text": "New",
+            "badge_background": "#ccdb65",
+            "badge_text_colour": "#171514",
+            "open_on_mobile": false
           }
         },
         "brand": {
@@ -70,7 +100,9 @@
         "legal": {
           "type": "legal",
           "settings": {
-            "copyright": "\u00a9 [year] mish-mash",
+            "copyright": "© [year] mish-mash",
+            "menu": "",
+            "show_policies": true,
             "show_payment_icons": true
           }
         }
@@ -87,8 +119,22 @@
       "settings": {
         "background": "#171514",
         "text_color": "#faf9f5",
-        "heading_colour": "#FB7FB0",
-        "accent": "{{ settings.color_palette.color3 }}"
+        "heading_colour": "{{ settings.color_palette.color3 }}",
+        "accent": "{{ settings.color_palette.color3 }}",
+        "columns": 0,
+        "column_gap": 40,
+        "heading_size": 13,
+        "link_size": 15,
+        "link_gap": 11,
+        "mobile_accordion": true,
+        "nav_label": "Footer",
+        "newsletter_heading_size": 40,
+        "dividers": true,
+        "block_gap": 28,
+        "padding_top": 44,
+        "padding_bottom": 20,
+        "padding_side": 5,
+        "padding_mobile": 48
       }
     },
     "section_bfa9EJ": {
