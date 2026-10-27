@@ -66,7 +66,8 @@
         "gradient_direction": "to top",
         "padding-block-start": 40,
         "padding-block-end": 0
-      }
+      },
+      "disabled": true
     },
     "main": {
       "type": "main-collection",
@@ -244,9 +245,80 @@
         "padding-block-start": 32,
         "padding-block-end": 32
       }
+    },
+    "mm_shop_hero": {
+      "type": "mm-shop-hero",
+      "blocks": {
+        "chip_1": {
+          "type": "chip",
+          "settings": {
+            "label": "The Show-off",
+            "character": "showoff"
+          }
+        },
+        "chip_2": {
+          "type": "chip",
+          "settings": {
+            "label": "The Player",
+            "character": "player"
+          }
+        },
+        "chip_3": {
+          "type": "chip",
+          "settings": {
+            "label": "The Trickster",
+            "character": "trickster"
+          }
+        },
+        "chip_4": {
+          "type": "chip",
+          "settings": {
+            "label": "The Helper",
+            "character": "helper"
+          }
+        },
+        "chip_5": {
+          "type": "chip",
+          "settings": {
+            "label": "Vases"
+          }
+        },
+        "chip_6": {
+          "type": "chip",
+          "settings": {
+            "label": "Lamps"
+          }
+        },
+        "chip_7": {
+          "type": "chip",
+          "settings": {
+            "label": "Clocks",
+            "link": "shopify://collections/clock"
+          }
+        },
+        "chip_8": {
+          "type": "chip",
+          "settings": {
+            "label": "Candles",
+            "link": "shopify://collections/candelabra"
+          }
+        }
+      },
+      "block_order": [
+        "chip_1",
+        "chip_2",
+        "chip_3",
+        "chip_4",
+        "chip_5",
+        "chip_6",
+        "chip_7",
+        "chip_8"
+      ],
+      "settings": {}
     }
   },
   "order": [
+    "mm_shop_hero",
     "section",
     "main"
   ]

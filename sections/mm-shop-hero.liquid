@@ -1,0 +1,468 @@
+{%- liquid
+  assign hero_collection = collection
+  assign symbol_names = 'showoff,player,trickster,helper' | split: ','
+  assign hero_heading = section.settings.heading | escape | newline_to_br
+  for name in symbol_names
+    assign token = '[' | append: name | append: ']'
+    assign symbol_url = 'mm-symbol-' | append: name | append: '.svg' | asset_url
+    capture symbol_html
+      echo '<span class="mm-shero__inline mm-shero__inline--' | append: name | append: '" style="--mm-symbol-url: url(' | append: symbol_url | append: ');" aria-hidden="true"></span>'
+    endcapture
+    assign hero_heading = hero_heading | replace: token, symbol_html
+  endfor
+  assign product_count = hero_collection.products_count | default: 0
+  assign count_text = section.settings.count_text | replace: '[count]', product_count
+-%}
+<section class="mm-home mm-shero" id="mm-{{ section.id }}">
+  <div class="mm-pad mm-shero__wrap">
+    <div class="mm-shero__copy">
+      {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h1 class="mm-shero__heading mm-display">{{ hero_heading }}</h1>{%- endif -%}
+      {%- if section.settings.text != blank -%}<p class="mm-shero__text">{{ section.settings.text | escape }}</p>{%- endif -%}
+      {%- if section.settings.show_count and section.settings.count_text != blank -%}
+        <p class="mm-shero__count"><span class="mm-shero__dot" aria-hidden="true"></span>{{ count_text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_collage -%}
+      <div class="mm-shero__collage" aria-hidden="true">
+        {%- assign card_colours = '#970C38,#CCDB65,#192FDA,#FB7FB0' | split: ',' -%}
+        {%- for i in (1..4) -%}
+          {%- liquid
+            assign image_key = 'image_' | append: i
+            assign card_image = section.settings[image_key]
+            if card_image == blank
+              assign product_index = i | minus: 1
+              assign card_image = hero_collection.products[product_index].featured_image
+            endif
+            assign colour_index = i | minus: 1
+          -%}
+          <div class="mm-shero__card" style="--i: {{ forloop.index0 }}; --mm-card-colour: {{ card_colours[colour_index] }};">
+            {%- if card_image != blank -%}
+              {{ card_image | image_url: width: 700 | image_tag: alt: '', loading: 'eager', widths: '300,500,700', sizes: '(min-width: 990px) 260px, 40vw' }}
+            {%- else -%}
+              <span class="mm-shero__card-symbol" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: symbol_names[colour_index] | append: '.svg' | asset_url }});"></span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="mm-shero__bar">
+      {%- if section.settings.chips_label != blank -%}<p class="mm-shero__bar-label">{{ section.settings.chips_label | escape }}</p>{%- endif -%}
+      <ul class="mm-shero__chips" role="list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            case block.settings.character
+              when 'showoff'
+                assign chip_colour = '#970C38'
+                assign chip_ink = '#FFFFFF'
+              when 'player'
+                assign chip_colour = '#CCDB65'
+                assign chip_ink = '#171514'
+              when 'trickster'
+                assign chip_colour = '#192FDA'
+                assign chip_ink = '#FFFFFF'
+              when 'helper'
+                assign chip_colour = '#FB7FB0'
+                assign chip_ink = '#171514'
+              else
+                assign chip_colour = section.settings.chip_hover
+                assign chip_ink = section.settings.chip_hover_text
+            endcase
+          -%}
+          <li {{ block.shopify_attributes }}>
+            <a class="mm-shero__chip" href="{{ block.settings.link | default: '#' }}" style="--mm-chip: {{ chip_colour }}; --mm-chip-ink: {{ chip_ink }};">
+              {%- if block.settings.character != 'none' -%}
+                <span class="mm-shero__chip-symbol" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: block.settings.character | append: '.svg' | asset_url }});" aria-hidden="true"></span>
+              {%- endif -%}
+              {{ block.settings.label | escape }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      {%- if section.settings.scroll_label != blank -%}
+        <a class="mm-shero__scroll" href="#mm-{{ section.id }}-end">{{ section.settings.scroll_label | escape }} {% render 'mm-icon', icon: 'arrow-down' %}</a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+  <span id="mm-{{ section.id }}-end" class="mm-shero__end"></span>
+</section>
+
+{%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
+{% style %}{{ mm_section_css }}{% endstyle %}
+
+{% style %}
+#mm-{{ section.id }}{--mm-shero-heading:{{ section.settings.heading_size }}px;--mm-shero-heading-mobile:{{ section.settings.heading_mobile }}px;--mm-shero-chip-hover:{{ section.settings.chip_hover }};--mm-shero-chip-hover-text:{{ section.settings.chip_hover_text }};--mm-shero-card-radius:{{ section.settings.card_radius }}px}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-shero{position:relative;overflow:hidden}
+.mm-shero__wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:center;gap:clamp(32px,5vw,90px);padding-inline:5%}
+.mm-shero__copy{display:grid;justify-items:start;gap:20px}
+.mm-home .mm-shero__heading{margin:0;font-size:var(--mm-shero-heading,84px);line-height:.98;letter-spacing:-.035em;text-wrap:balance}
+.mm-shero__inline{display:inline-block;width:.78em;height:.78em;margin:0 .06em;vertical-align:-.04em;background-color:var(--mm-inline,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;animation:mm-shero-wiggle 6s ease-in-out infinite}
+.mm-shero__inline--showoff{--mm-inline:#970C38}
+.mm-shero__inline--player{--mm-inline:#CCDB65;animation-delay:-1.5s}
+.mm-shero__inline--trickster{--mm-inline:#192FDA;animation-delay:-3s}
+.mm-shero__inline--helper{--mm-inline:#FB7FB0;animation-delay:-4.5s}
+@keyframes mm-shero-wiggle{0%,100%{rotate:0deg}20%{rotate:-14deg}40%{rotate:10deg}55%{rotate:0deg}}
+.mm-shero__text{max-width:46ch;font-size:17px;line-height:1.55;opacity:.85}
+.mm-shero__count{display:inline-flex;align-items:center;gap:10px;padding:9px 16px;border:1px solid color-mix(in srgb,var(--mm-ink) 25%,transparent);border-radius:100px;font-size:13px;font-weight:700;letter-spacing:.04em}
+.mm-shero__dot{width:8px;height:8px;border-radius:50%;background:var(--mm-accent);animation:mm-shero-pulse 1.8s ease-in-out infinite}
+@keyframes mm-shero-pulse{50%{scale:1.6;opacity:.5}}
+.mm-shero__collage{position:relative;aspect-ratio:1;max-width:520px;width:100%;justify-self:center}
+.mm-shero__card{position:absolute;width:52%;aspect-ratio:4/5;border-radius:var(--mm-shero-card-radius,14px);overflow:hidden;background:color-mix(in srgb,var(--mm-card-colour) 22%,var(--mm-paper));border:4px solid var(--mm-card-colour);box-shadow:0 22px 40px -20px rgba(23,21,20,.45);transition:translate .6s var(--mm-ease-spring,cubic-bezier(.34,1.56,.64,1)),rotate .6s var(--mm-ease-spring,cubic-bezier(.34,1.56,.64,1)),scale .4s ease}
+.mm-shero__card img{width:100%;height:100%;object-fit:cover;display:block}
+.mm-shero__card:nth-child(1){top:2%;left:2%;rotate:-9deg;z-index:2}
+.mm-shero__card:nth-child(2){top:0;right:2%;rotate:7deg;z-index:1}
+.mm-shero__card:nth-child(3){bottom:0;left:10%;rotate:5deg;z-index:3}
+.mm-shero__card:nth-child(4){bottom:4%;right:0;rotate:-6deg;z-index:4}
+.mm-shero__collage:hover .mm-shero__card:nth-child(1){translate:-6% -4%;rotate:-14deg}
+.mm-shero__collage:hover .mm-shero__card:nth-child(2){translate:6% -5%;rotate:12deg}
+.mm-shero__collage:hover .mm-shero__card:nth-child(3){translate:-5% 5%;rotate:9deg}
+.mm-shero__collage:hover .mm-shero__card:nth-child(4){translate:6% 4%;rotate:-11deg}
+.mm-shero__card-symbol{display:block;width:56%;aspect-ratio:1;margin:auto;position:absolute;inset:0;background-color:var(--mm-card-colour);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
+.mm-shero__bar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;padding:22px 5%;border-top:1px solid color-mix(in srgb,var(--mm-ink) 14%,transparent);border-bottom:1px solid color-mix(in srgb,var(--mm-ink) 14%,transparent)}
+.mm-shero__bar-label{font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;opacity:.7}
+.mm-shero__chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.mm-home .mm-shero__chip{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border:1.5px solid color-mix(in srgb,var(--mm-ink) 30%,transparent);border-radius:100px;font-size:14px;font-weight:700;transition:background .25s,color .25s,border-color .25s,translate .3s}
+.mm-home .mm-shero__chip:hover,.mm-home .mm-shero__chip:focus-visible{background:var(--mm-chip);border-color:var(--mm-chip);color:var(--mm-chip-ink);translate:0 -2px}
+.mm-shero__chip-symbol{width:16px;height:16px;flex:none;background-color:var(--mm-chip);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:background-color .25s,rotate .5s var(--mm-ease-spring,cubic-bezier(.34,1.56,.64,1))}
+.mm-shero__chip:hover .mm-shero__chip-symbol{background-color:currentColor;rotate:90deg}
+.mm-home .mm-shero__scroll{display:inline-flex;align-items:center;gap:8px;margin-left:auto;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.mm-shero__scroll .mm-icon{animation:mm-shero-bob 1.6s ease-in-out infinite}
+@keyframes mm-shero-bob{50%{translate:0 4px}}
+.mm-shero__end{display:block;scroll-margin-top:90px}
+@media(max-width:989px){
+  .mm-shero__wrap{grid-template-columns:1fr}
+  .mm-shero__collage{max-width:440px}
+}
+@media(max-width:749px){
+  .mm-home .mm-shero__heading{font-size:var(--mm-shero-heading-mobile,46px)}
+  .mm-shero__text{font-size:15px}
+  .mm-shero__wrap{padding-inline:20px}
+  .mm-shero__collage{max-width:340px}
+  .mm-shero__card{border-width:3px}
+  .mm-shero__bar{flex-wrap:nowrap;flex-direction:column;align-items:stretch;padding:18px 0 18px 20px}
+  .mm-shero__chips{flex-wrap:nowrap;overflow-x:auto;padding-right:20px;scrollbar-width:none}
+  .mm-shero__chips::-webkit-scrollbar{display:none}
+  .mm-shero__chips li{flex:none}
+  .mm-shero__scroll{display:none!important}
+}
+@media(prefers-reduced-motion:reduce){.mm-shero__inline,.mm-shero__dot,.mm-shero__scroll .mm-icon{animation:none}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · Shop all hero",
+  "class": "mm-shero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "The whole mix"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Write [showoff], [player], [trickster] or [helper] to drop a character symbol into the heading.",
+      "default": "Every [player] object,\nall mixed [trickster] up."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Vases, lamps, clocks and other good company. Four personalities, one big mish-mash. Find the one that feels like you."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "count_text",
+      "label": "Product count text",
+      "info": "[count] shows the number of products.",
+      "default": "[count] objects · 4 personalities"
+    },
+    {
+      "type": "header",
+      "content": "Photos"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collage",
+      "label": "Show photo collage",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "Empty photos use the first products of the collection."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Photo 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Photo 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Photo 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Photo 4"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Photo corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Shortcuts"
+    },
+    {
+      "type": "text",
+      "id": "chips_label",
+      "label": "Shortcuts label",
+      "default": "Jump to"
+    },
+    {
+      "type": "text",
+      "id": "scroll_label",
+      "label": "Scroll link label",
+      "default": "See everything"
+    },
+    {
+      "type": "color",
+      "id": "chip_hover",
+      "label": "Shortcut hover colour",
+      "info": "For shortcuts without a character.",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "chip_hover_text",
+      "label": "Shortcut hover text",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "cocogoose",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "proxima",
+          "label": "Proxima Nova"
+        },
+        {
+          "value": "cocogoose",
+          "label": "Cocogoose Regular"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 84
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 46
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent colour",
+      "default": "#FB7FB0"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Mobile spacing",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "chip",
+      "name": "Shortcut",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Vases"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "character",
+          "label": "Character symbol",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "showoff",
+              "label": "The Show-off"
+            },
+            {
+              "value": "player",
+              "label": "The Player"
+            },
+            {
+              "value": "trickster",
+              "label": "The Trickster"
+            },
+            {
+              "value": "helper",
+              "label": "The Helper"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · Shop all hero",
+      "blocks": [
+        {
+          "type": "chip",
+          "settings": {
+            "label": "The Show-off",
+            "character": "showoff"
+          }
+        },
+        {
+          "type": "chip",
+          "settings": {
+            "label": "The Player",
+            "character": "player"
+          }
+        },
+        {
+          "type": "chip",
+          "settings": {
+            "label": "The Trickster",
+            "character": "trickster"
+          }
+        },
+        {
+          "type": "chip",
+          "settings": {
+            "label": "The Helper",
+            "character": "helper"
+          }
+        },
+        {
+          "type": "chip",
+          "settings": {
+            "label": "Vases"
+          }
+        },
+        {
+          "type": "chip",
+          "settings": {
+            "label": "Lamps"
+          }
+        },
+        {
+          "type": "chip",
+          "settings": {
+            "label": "Clocks"
+          }
+        },
+        {
+          "type": "chip",
+          "settings": {
+            "label": "Candles"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
