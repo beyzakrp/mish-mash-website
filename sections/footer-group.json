@@ -26,7 +26,7 @@
         "menu_3": "",
         "menu_heading_3": "About",
         "social_heading": "Follow",
-        "instagram": "",
+        "instagram": "https://www.instagram.com/mishmash.lab/",
         "tiktok": "",
         "pinterest": "",
         "logo_image": "shopify://shop_images/mm-white.svg",
@@ -39,7 +39,7 @@
         "show_payment_icons": true,
         "background": "#171514",
         "text_color": "#faf9f5",
-        "accent": "#fb7fb0"
+        "accent": "{{ settings.color_palette.color3 }}"
       }
     },
     "section_bfa9EJ": {
