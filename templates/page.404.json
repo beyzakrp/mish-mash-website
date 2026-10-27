@@ -9,35 +9,6 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "blocks": {
-        "heading": {
-          "type": "text",
-          "name": "t:names.title",
-          "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
-            "width": "100%",
-            "type_preset": "h2"
-          }
-        },
-        "page-content": {
-          "type": "page-content",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "heading",
-        "page-content"
-      ],
-      "settings": {
-        "gap": 32,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 40,
-        "padding-block-end": 80
-      },
-      "disabled": true
-    },
     "mm_404": {
       "type": "mm-404",
       "blocks": {
@@ -47,8 +18,8 @@
             "character": "trickster",
             "name": "The Trickster",
             "excuse": "Hid this page. Again. Classic.",
-            "background": "#192FDA",
-            "text_colour": "#FFFFFF"
+            "background": "#192fda",
+            "text_colour": "#ffffff"
           }
         },
         "suspect_player": {
@@ -57,7 +28,7 @@
             "character": "player",
             "name": "The Player",
             "excuse": "Turned it into a game of hide and seek. Still counting.",
-            "background": "#CCDB65",
+            "background": "#ccdb65",
             "text_colour": "#171514"
           }
         },
@@ -67,8 +38,8 @@
             "character": "showoff",
             "name": "The Show-off",
             "excuse": "Moved it somewhere more photogenic.",
-            "background": "#970C38",
-            "text_colour": "#FFFFFF"
+            "background": "#970c38",
+            "text_colour": "#ffffff"
           }
         },
         "suspect_helper": {
@@ -77,7 +48,7 @@
             "character": "helper",
             "name": "The Helper",
             "excuse": "Tidied it away. They really meant well.",
-            "background": "#FB7FB0",
+            "background": "#fb7fb0",
             "text_colour": "#171514"
           }
         }
@@ -88,7 +59,96 @@
         "suspect_showoff",
         "suspect_helper"
       ],
-      "settings": {}
+      "settings": {
+        "eyebrow": "Error 404 · Page not found",
+        "heading": "Well, this is a mish-mash.",
+        "text": "The page you are looking for has wandered off. We have a few suspects.",
+        "suspect_label": "Prime suspect",
+        "hint": "Not convinced? Tap the icon to blame someone else.",
+        "button_label": "Take me home",
+        "button_link": "",
+        "link_label": "Browse all objects",
+        "link": "",
+        "button_background": "#171514",
+        "button_text": "#faf9f5",
+        "button_border": "",
+        "button_hover_background": "#faf9f5",
+        "button_hover_text": "#171514",
+        "button_hover_border": "",
+        "button_border_width": 0,
+        "button_radius": 40,
+        "button_padding_y": 17,
+        "button_padding_x": 32,
+        "button_min_width": 0,
+        "button_font_size": 13,
+        "button_letter_spacing": 4,
+        "button_uppercase": true,
+        "code_size": 240,
+        "code_mobile": 130,
+        "colour_mode": "suspect",
+        "start_with": "random",
+        "show_floaters": true,
+        "min_height": 80,
+        "heading_font": "cocogoose",
+        "heading_size": 54,
+        "heading_mobile": 34,
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "accent": "#fb7fb0",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "padding_mobile": 60
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "t:names.title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {
+            "text_color": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
     }
   },
   "order": [
