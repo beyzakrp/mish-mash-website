@@ -9,11 +9,11 @@
  */
 {
   "current": {
-    "logo": "shopify://shop_images/Only-text-logo-black.svg",
-    "logo_inverse": "shopify://shop_images/Only-text-logo-white.svg",
+    "logo": "shopify://shop_images/mm-black.svg",
+    "logo_inverse": "shopify://shop_images/mm-white.svg",
     "logo_height": 45,
     "logo_height_mobile": 28,
-    "favicon": "shopify://shop_images/Only-text-logo-white.svg",
+    "favicon": "shopify://shop_images/flower.svg",
     "page_text_color": "{{ settings.color_palette.foreground }}",
     "type_body_font": "red_hat_display_n5",
     "type_subheading_font": "red_hat_display_n5",
@@ -78,11 +78,12 @@
     "mm_heading_font": "cocogoose",
     "content_for_index": [],
     "color_palette": {
-      "background": "#FAF9F5",
-      "foreground": "#171514",
-      "color1": "#970C38",
-      "color3": "#E9E6DF",
-      "color4": "#D0CAC4"
+      "background": "#faf9f5",
+      "foreground": "#110E0F",
+      "color1": "#970c38",
+      "color3": "#CCDB65",
+      "color4": "#192FDA",
+      "color2": "#FB7FB0"
     }
   },
   "presets": {
