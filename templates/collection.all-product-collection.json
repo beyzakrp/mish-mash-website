@@ -9,6 +9,108 @@
  */
 {
   "sections": {
+    "mm_shop_hero_HrKUAT": {
+      "type": "mm-shop-hero",
+      "blocks": {
+        "chip_WRqQcz": {
+          "type": "chip",
+          "settings": {
+            "label": "The Show-off",
+            "link": "",
+            "character": "showoff"
+          }
+        },
+        "chip_ERFDXp": {
+          "type": "chip",
+          "settings": {
+            "label": "The Player",
+            "link": "",
+            "character": "player"
+          }
+        },
+        "chip_bwXEKp": {
+          "type": "chip",
+          "settings": {
+            "label": "The Trickster",
+            "link": "",
+            "character": "trickster"
+          }
+        },
+        "chip_m8zDrU": {
+          "type": "chip",
+          "settings": {
+            "label": "The Helper",
+            "link": "",
+            "character": "helper"
+          }
+        },
+        "chip_78qkt7": {
+          "type": "chip",
+          "settings": {
+            "label": "Vases",
+            "link": "",
+            "character": "none"
+          }
+        },
+        "chip_mnKqEk": {
+          "type": "chip",
+          "settings": {
+            "label": "Lamps",
+            "link": "",
+            "character": "none"
+          }
+        },
+        "chip_7jg9QV": {
+          "type": "chip",
+          "settings": {
+            "label": "Clocks",
+            "link": "",
+            "character": "none"
+          }
+        },
+        "chip_XYrycV": {
+          "type": "chip",
+          "settings": {
+            "label": "Candles",
+            "link": "",
+            "character": "none"
+          }
+        }
+      },
+      "block_order": [
+        "chip_WRqQcz",
+        "chip_ERFDXp",
+        "chip_bwXEKp",
+        "chip_m8zDrU",
+        "chip_78qkt7",
+        "chip_mnKqEk",
+        "chip_7jg9QV",
+        "chip_XYrycV"
+      ],
+      "name": "MM · Shop all hero",
+      "settings": {
+        "eyebrow": "The whole mix",
+        "heading": "Every [player] object,\nall mixed [trickster] up.",
+        "text": "Vases, lamps, clocks and other good company. Four personalities, one big mish-mash. Find the one that feels like you.",
+        "show_count": false,
+        "count_text": "[count] objects · 4 personalities",
+        "show_collage": true,
+        "card_radius": 14,
+        "chips_label": "Jump to",
+        "scroll_label": "See everything",
+        "chip_hover": "#171514",
+        "chip_hover_text": "#FAF9F5",
+        "heading_font": "cocogoose",
+        "heading_size": 84,
+        "heading_mobile": 46,
+        "background": "#FAF9F5",
+        "text_color": "#171514",
+        "accent": "#FB7FB0",
+        "padding_top": 70,
+        "padding_bottom": 70,
+        "padding_mobile": 50
+      }
+    },
     "section": {
       "type": "section",
       "blocks": {
@@ -22,10 +124,12 @@
             "alignment": "left",
             "type_preset": "h2",
             "font": "var(--font-body--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -40,6 +144,7 @@
       "block_order": [
         "text_tqQTNE"
       ],
+      "disabled": true,
       "name": "t:names.heading",
       "settings": {
         "content_direction": "row",
@@ -51,23 +156,24 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 12,
         "section_width": "page-width",
+        "section_height": "",
         "section_height_custom": 50,
         "background_media": "none",
         "background_color": "{{ settings.color_palette.background }}",
         "video_position": "cover",
         "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
         "toggle_overlay": false,
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
         "padding-block-start": 40,
         "padding-block-end": 0
-      },
-      "disabled": true
+      }
     },
     "main": {
       "type": "main-collection",
@@ -77,13 +183,15 @@
           "static": true,
           "settings": {
             "enable_filtering": true,
-            "filter_style": "vertical",
+            "filter_style": "horizontal",
             "filter_width": "centered",
             "text_label_case": "default",
             "show_swatch_label": false,
             "show_filter_label": false,
             "enable_sorting": true,
             "enable_grid_density": true,
+            "background_color": "",
+            "text_color": "",
             "padding-block-start": 8,
             "padding-block-end": 8,
             "padding-inline-start": 0,
@@ -98,9 +206,11 @@
           "static": true,
           "settings": {
             "product_card_gap": 8,
+            "background_color": "",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
+            "border_color": "",
             "border_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -115,6 +225,7 @@
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
+                "border_color": "",
                 "border_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -141,16 +252,19 @@
                 "height": "fit",
                 "custom_height": 100,
                 "background_media": "none",
+                "background_color": "",
                 "video_position": "cover",
                 "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
                 "toggle_overlay": false,
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "link": "",
                 "open_in_new_tab": false,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -172,6 +286,7 @@
                     "letter_spacing": "normal",
                     "case": "none",
                     "wrap": "pretty",
+                    "text_color": "",
                     "background": false,
                     "background_color": "#00000026",
                     "corner_radius": 0,
@@ -196,6 +311,7 @@
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
+                    "text_color": "",
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
@@ -235,6 +351,8 @@
         "layout_type": "grid",
         "product_card_size": "medium",
         "mobile_product_card_size": "small",
+        "enable_infinite_scroll": true,
+        "products_per_page": 24,
         "product_grid_width": "centered",
         "full_width_on_mobile": true,
         "columns_gap_horizontal": 16,
@@ -245,80 +363,10 @@
         "padding-block-start": 32,
         "padding-block-end": 32
       }
-    },
-    "mm_shop_hero": {
-      "type": "mm-shop-hero",
-      "blocks": {
-        "chip_1": {
-          "type": "chip",
-          "settings": {
-            "label": "The Show-off",
-            "character": "showoff"
-          }
-        },
-        "chip_2": {
-          "type": "chip",
-          "settings": {
-            "label": "The Player",
-            "character": "player"
-          }
-        },
-        "chip_3": {
-          "type": "chip",
-          "settings": {
-            "label": "The Trickster",
-            "character": "trickster"
-          }
-        },
-        "chip_4": {
-          "type": "chip",
-          "settings": {
-            "label": "The Helper",
-            "character": "helper"
-          }
-        },
-        "chip_5": {
-          "type": "chip",
-          "settings": {
-            "label": "Vases"
-          }
-        },
-        "chip_6": {
-          "type": "chip",
-          "settings": {
-            "label": "Lamps"
-          }
-        },
-        "chip_7": {
-          "type": "chip",
-          "settings": {
-            "label": "Clocks",
-            "link": "shopify://collections/clock"
-          }
-        },
-        "chip_8": {
-          "type": "chip",
-          "settings": {
-            "label": "Candles",
-            "link": "shopify://collections/candelabra"
-          }
-        }
-      },
-      "block_order": [
-        "chip_1",
-        "chip_2",
-        "chip_3",
-        "chip_4",
-        "chip_5",
-        "chip_6",
-        "chip_7",
-        "chip_8"
-      ],
-      "settings": {}
     }
   },
   "order": [
-    "mm_shop_hero",
+    "mm_shop_hero_HrKUAT",
     "section",
     "main"
   ]
