@@ -57,7 +57,7 @@
   assign tallest = section.settings.height | at_least: section.settings.height_mobile
   assign rows = tallest | divided_by: smallest_tile | plus: 2 | at_most: 22
 -%}
-<section class="mm-home mm-pattern{% if section.settings.drift %} mm-pattern--drift{% endif %}{% if section.settings.hover_spin %} mm-pattern--spin{% endif %}{% if section.settings.alternate_rotation %} mm-pattern--alt{% endif %}{% if section.settings.glow %} mm-pattern--glow{% endif %}" id="mm-{{ section.id }}" style="--mm-pattern-url: url({{ symbol_url }});">
+<section class="mm-home mm-pattern{% if section.settings.drift %} mm-pattern--drift{% endif %}{% if section.settings.hover_spin %} mm-pattern--spin{% endif %}{% if section.settings.alternate_rotation %} mm-pattern--alt{% endif %}{% if section.settings.backdrop != 'none' %} mm-pattern--{{ section.settings.backdrop }}{% endif %}" id="mm-{{ section.id }}" style="--mm-pattern-url: url({{ symbol_url }});">
   <div class="mm-pattern__tiles" aria-hidden="true">
     {%- for row in (1..rows) -%}
       <div class="mm-pattern__row">
@@ -103,6 +103,7 @@
   --mm-pattern-glow:{{ section.settings.glow_color }};
   --mm-pattern-glow-opacity:{{ section.settings.glow_opacity }}%;
   --mm-pattern-glow-size:{{ section.settings.glow_size | divided_by: 100.0 }};
+  --mm-pattern-radius:{{ section.settings.backdrop_radius }}px;
   margin-bottom:{{ section.settings.margin_bottom }}px;
 }
 {%- if section.settings.text_lowercase -%}
@@ -141,6 +142,15 @@
 .mm-pattern__text{max-width:70ch;font-size:var(--mm-pattern-text-size,15px);line-height:1.4}
 .mm-pattern__text p{margin:0}
 .mm-pattern--glow .mm-pattern__content:before{content:"";position:absolute;z-index:-1;left:50%;top:50%;width:calc(100% * var(--mm-pattern-glow-size,1.1) + 120px);height:calc(100% * var(--mm-pattern-glow-size,1.1) + 120px);translate:-50% -50%;border-radius:60%;background:radial-gradient(closest-side,color-mix(in srgb,var(--mm-pattern-glow,#000) var(--mm-pattern-glow-opacity,50%),transparent) 0%,color-mix(in srgb,var(--mm-pattern-glow,#000) calc(var(--mm-pattern-glow-opacity,35%) * .6),transparent) 45%,transparent 100%);pointer-events:none}
+.mm-pattern--panel .mm-pattern__content,.mm-pattern--frosted .mm-pattern__content,.mm-pattern--sticker .mm-pattern__content{padding:26px clamp(24px,4vw,48px)}
+.mm-pattern--panel .mm-pattern__content:before,.mm-pattern--frosted .mm-pattern__content:before,.mm-pattern--sticker .mm-pattern__content:before{content:"";position:absolute;inset:0;z-index:-1;border-radius:var(--mm-pattern-radius,20px);pointer-events:none}
+.mm-pattern--panel .mm-pattern__content:before{background:color-mix(in srgb,var(--mm-pattern-glow,#171514) var(--mm-pattern-glow-opacity,85%),transparent)}
+.mm-pattern--frosted .mm-pattern__content:before{background:color-mix(in srgb,var(--mm-pattern-glow,#171514) var(--mm-pattern-glow-opacity,35%),transparent);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);border:1px solid color-mix(in srgb,#fff 25%,transparent)}
+.mm-pattern--sticker .mm-pattern__content{rotate:-2.5deg}
+.mm-pattern--sticker .mm-pattern__content:before{background:var(--mm-pattern-glow,#171514);box-shadow:8px 8px 0 var(--mm-pattern-b)}
+.mm-pattern--band .mm-pattern__content{width:100%;padding:22px 5%;background:color-mix(in srgb,var(--mm-pattern-glow,#171514) var(--mm-pattern-glow-opacity,85%),transparent)}
+.mm-pattern--outline .mm-pattern__big,.mm-pattern--outline .mm-pattern__the{-webkit-text-stroke:var(--mm-pattern-stroke,.12em) var(--mm-pattern-glow,#171514);paint-order:stroke fill;text-shadow:.06em .06em 0 var(--mm-pattern-glow,#171514)}
+.mm-pattern--outline .mm-pattern__text{display:inline;padding:.15em .5em;border-radius:6px;background:var(--mm-pattern-glow,#171514);-webkit-box-decoration-break:clone;box-decoration-break:clone;line-height:1.7}
 @media(max-width:749px){
   .mm-pattern{height:var(--mm-pattern-height-mobile,260px)}
   .mm-pattern__tile{width:var(--mm-pattern-tile-mobile,64px);height:var(--mm-pattern-tile-mobile,64px)}
@@ -439,40 +449,82 @@
       "default": false
     },
     {
-      "type": "checkbox",
-      "id": "glow",
-      "label": "Soft circle behind the text",
-      "info": "A blurred circle that makes the text easier to read.",
-      "default": true
+      "type": "select",
+      "id": "backdrop",
+      "label": "Behind the text",
+      "default": "panel",
+      "info": "Makes the text easier to read on the pattern.",
+      "options": [
+        {
+          "value": "none",
+          "label": "Nothing"
+        },
+        {
+          "value": "panel",
+          "label": "Solid box"
+        },
+        {
+          "value": "frosted",
+          "label": "Frosted glass"
+        },
+        {
+          "value": "sticker",
+          "label": "Tilted sticker"
+        },
+        {
+          "value": "band",
+          "label": "Full-width band"
+        },
+        {
+          "value": "outline",
+          "label": "Outlined letters"
+        },
+        {
+          "value": "glow",
+          "label": "Soft glow"
+        }
+      ]
     },
     {
       "type": "color",
       "id": "glow_color",
-      "label": "Circle colour",
-      "default": "#000000",
-      "visible_if": "{{ section.settings.glow }}"
+      "label": "Backdrop colour",
+      "default": "#171514",
+      "visible_if": "{{ section.settings.backdrop != 'none' }}"
     },
     {
       "type": "range",
       "id": "glow_opacity",
-      "label": "Circle strength",
+      "label": "Backdrop strength",
       "min": 0,
       "max": 90,
       "step": 5,
       "unit": "%",
       "default": 45,
-      "visible_if": "{{ section.settings.glow }}"
+      "visible_if": "{{ section.settings.backdrop != 'none' }}",
+      "info": "Used by solid box, frosted glass, band and soft glow."
     },
     {
       "type": "range",
       "id": "glow_size",
-      "label": "Circle size",
+      "label": "Soft glow size",
       "min": 60,
       "max": 200,
       "step": 5,
       "unit": "%",
       "default": 110,
-      "visible_if": "{{ section.settings.glow }}"
+      "visible_if": "{{ section.settings.backdrop == 'glow' }}"
+    },
+    {
+      "type": "range",
+      "id": "backdrop_radius",
+      "label": "Box corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20,
+      "visible_if": "{{ section.settings.backdrop == 'panel' or section.settings.backdrop == 'frosted' or section.settings.backdrop == 'sticker' }}"
     },
     {
       "type": "header",
