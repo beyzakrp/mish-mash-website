@@ -38,12 +38,12 @@
         "text_size": 15,
         "text_color": "#ffffff",
         "text_shadow": false,
-        "glow_color": "#171514",
-        "glow_opacity": 80,
+        "backdrop": "frosted",
+        "glow_color": "#8C8C8C",
+        "glow_opacity": 40,
         "glow_size": 110,
-        "margin_bottom": 0,
-        "backdrop": "panel",
-        "backdrop_radius": 20
+        "backdrop_radius": 20,
+        "margin_bottom": 0
       }
     },
     "section": {
