@@ -1,12 +1,12 @@
 {% doc %}
   Outputs the personality handle (showoff, player, trickster or helper) for a product, or nothing.
-  Reads the `custom.personality` metafield first, then tags such as "personality:showoff" or "The Show-off".
+  Reads the `custom.character` and `custom.personality` metafields first, then tags such as "personality:showoff" or "The Show-off".
 
   @param {object} product - The product to look up
 {% enddoc %}
 {%- liquid
   assign tag_list = product.tags | join: ','
-  assign candidates = product.metafields.custom.personality.value | append: ',' | append: tag_list
+  assign candidates = product.metafields.custom.character.value | append: ',' | append: product.metafields.custom.personality.value | append: ',' | append: tag_list
   assign found = ''
   assign items = candidates | split: ','
   for item in items

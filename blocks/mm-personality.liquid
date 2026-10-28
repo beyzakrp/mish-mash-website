@@ -1,5 +1,6 @@
 <div class="mm-personality-block" {{ block.shopify_attributes }}>
-  {%- render 'mm-personality-badge', product: closest.product, show_description: block.settings.show_description, class: 'mm-badge--large' -%}
+  {%- assign badge_class = 'mm-badge--' | append: block.settings.size -%}
+  {%- render 'mm-personality-badge', product: closest.product, show_description: block.settings.show_description, class: badge_class -%}
 </div>
 
 {% schema %}
@@ -8,13 +9,23 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Shows the product's personality. Set it with a product tag such as \"personality:showoff\" or a custom.personality metafield (showoff, player, trickster or helper)."
+      "content": "Shows the product's personality. Set it with the Character product metafield (custom.character), a custom.personality metafield or a product tag such as \"personality:showoff\" (showoff, player, trickster or helper)."
     },
     {
       "type": "checkbox",
       "id": "show_description",
       "label": "Show one-liner",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Size",
+      "default": "large",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" }
+      ]
     }
   ],
   "presets": [
