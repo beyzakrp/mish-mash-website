@@ -58,7 +58,7 @@
     "drawer_text_color": "{{ settings.color_palette.foreground }}",
     "palette_input_background": "{{ settings.color_palette.background }}",
     "palette_input_text": "{{ settings.color_palette.foreground }}",
-    "palette_input_border": "{{ settings.color_palette.color3 }}",
+    "palette_input_border": "{{ settings.color_palette.foreground }}",
     "inputs_border_radius": 0,
     "type_preset": "paragraph",
     "popover_background_color": "{{ settings.color_palette.background }}",
