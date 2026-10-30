@@ -36,6 +36,14 @@
     @media screen and (min-width: 990px){#shopify-section-{{ section.id }} .product-grid.product-grid--{{ section.id }}[product-grid-view='default']{grid-template-columns:repeat({{ section.settings.card_columns }},minmax(0,1fr))}}
     #shopify-section-{{ section.id }} .product-grid--{{ section.id }} .mm-card{--mm-card-bg:{{ section.settings.card_image_bg }};--mm-card-pad:{{ section.settings.card_image_padding }}%;--mm-card-title-size:{{ section.settings.card_title_size }}px}
     #shopify-section-{{ section.id }} .product-grid--{{ section.id }}[product-grid-view='zoom-out'] .mm-card__info{display:none}
+    {% if section.settings.card_edge_to_edge %}
+      #shopify-section-{{ section.id }} .product-grid-container{padding-inline:0}
+      #shopify-section-{{ section.id }} .product-grid-container > .collection-wrapper{grid-column:1 / -1;width:100%;max-width:none}
+      #shopify-section-{{ section.id }} .main-collection-grid{padding-inline:0 !important;margin-inline:0 !important}
+      #shopify-section-{{ section.id }} .collection-wrapper:not(:has(.facets-block-wrapper--vertical:not(.hidden):not(#filters-drawer))) > .main-collection-grid{grid-column:1 / -1 !important}
+      #shopify-section-{{ section.id }} .main-collection-grid > div{padding-inline:0}
+      #shopify-section-{{ section.id }} .product-grid.product-grid--{{ section.id }}{width:100%;max-width:none;margin-inline:0}
+    {% endif %}
     {% if section.settings.card_lines %}
       #shopify-section-{{ section.id }} .product-grid--{{ section.id }}[product-grid-view='default']{border-top:1px solid {{ section.settings.card_line_colour }}}
       #shopify-section-{{ section.id }} .product-grid--{{ section.id }}[product-grid-view='default'] .product-grid__item{position:relative;box-shadow:inset -1px 0 0 {{ section.settings.card_line_colour }},inset 0 -1px 0 {{ section.settings.card_line_colour }}}
@@ -342,6 +350,13 @@
           "label": "2"
         }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "card_edge_to_edge",
+      "label": "Products edge to edge",
+      "info": "Removes the side spacing around the products. Filters and headings keep theirs.",
+      "default": true
     },
     {
       "type": "checkbox",
