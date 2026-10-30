@@ -1,0 +1,187 @@
+{%- doc -%}
+  Renders a mish-mash product card: soft image tile, title, price and colour swatches.
+  Card options come from section settings whose ids start with card_.
+
+  @param {object} product - The product
+  @param {object} settings - Section settings (card_ratio, card_fit, card_hover_image, card_character, card_swatches, card_tags, card_sale_label)
+  @param {boolean} [eager] - Load the image eagerly
+  @param {string} [sizes] - Image sizes attribute
+{%- enddoc -%}
+{%- liquid
+  assign card_sizes = sizes | default: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw'
+  assign card_loading = 'lazy'
+  if eager
+    assign card_loading = 'eager'
+  endif
+  assign card_variant = product.selected_or_first_available_variant
+  assign card_image = card_variant.featured_image | default: product.featured_image
+
+  assign hover_image = blank
+  if settings.card_hover_image
+    for media in product.media
+      if media.media_type == 'image' and media.preview_image.src != card_image.src
+        assign hover_image = media.preview_image
+        break
+      endif
+    endfor
+  endif
+
+  assign character = ''
+  if settings.card_character
+    capture character
+      render 'mm-personality', product: product
+    endcapture
+    assign character = character | strip
+  endif
+  case character
+    when 'showoff'
+      assign character_colour = '#970C38'
+    when 'player'
+      assign character_colour = '#CCDB65'
+    when 'trickster'
+      assign character_colour = '#192FDA'
+    when 'helper'
+      assign character_colour = '#FB7FB0'
+    else
+      assign character_colour = ''
+  endcase
+
+  assign swatch_option = blank
+  if settings.card_swatches
+    assign swatch_names = 'color,colour,renk,metal,finish,colors,renkler'
+    for option in product.options_with_values
+      assign option_name = option.name | downcase | strip
+      if swatch_names contains option_name
+        assign swatch_option = option
+        break
+      endif
+    endfor
+  endif
+-%}
+<div class="mm-card{% if character != blank %} mm-card--{{ character }}{% endif %}"{% if character_colour != blank %} style="--mm-card-character: {{ character_colour }};"{% endif %} data-mm-card>
+  <a class="mm-card__media mm-card__media--{{ settings.card_ratio | default: 'portrait' }} mm-card__media--{{ settings.card_fit | default: 'contain' }}" href="{{ card_variant.url | default: product.url }}" tabindex="-1" aria-hidden="true">
+    {%- if card_image != blank -%}
+      {{ card_image | image_url: width: 1200 | image_tag: widths: '360,540,720,960,1200', sizes: card_sizes, loading: card_loading, alt: '', class: 'mm-card__image', data-mm-card-image: '' }}
+      {%- if hover_image != blank -%}
+        {{ hover_image | image_url: width: 1200 | image_tag: widths: '360,540,720,960,1200', sizes: card_sizes, loading: 'lazy', alt: '', class: 'mm-card__image mm-card__image--hover' }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'mm-card__image mm-card__placeholder' }}
+    {%- endif -%}
+    {%- if character != blank -%}
+      <span class="mm-card__symbol" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: character | append: '.svg' | asset_url }});"></span>
+    {%- endif -%}
+    {%- if settings.card_tags -%}
+      {%- if product.available == false -%}
+        <span class="mm-card__tag">{{ 'mishmash.sold_out' | t }}</span>
+      {%- elsif product.compare_at_price > product.price -%}
+        <span class="mm-card__tag mm-card__tag--sale">{{ settings.card_sale_label | default: 'Sale' | escape }}</span>
+      {%- endif -%}
+    {%- endif -%}
+  </a>
+
+  <div class="mm-card__info">
+    <a class="mm-card__title" href="{{ product.url }}">{{ product.title | escape }}</a>
+    <p class="mm-card__price">
+      {%- if product.price_varies -%}
+        {%- assign card_price = product.price | money -%}
+        <span>{{ 'content.price_from' | t: price: card_price }}</span>
+      {%- else -%}
+        <span>{{ product.price | money }}</span>
+      {%- endif -%}
+      {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+    </p>
+    {%- if swatch_option != blank and swatch_option.values.size > 1 -%}
+      <div class="mm-card__swatches">
+        <ul role="list" aria-label="{{ swatch_option.name | escape }}">
+          {%- for value in swatch_option.values limit: 6 -%}
+            {%- liquid
+              assign value_image = value.variant.featured_image | default: blank
+              if value.swatch.image
+                assign swatch_style = 'background-image: url(' | append: value.swatch.image | image_url: width: 40 | append: ')'
+              elsif value.swatch.color
+                assign swatch_style = 'background-color: ' | append: value.swatch.color
+              else
+                assign swatch_style = 'background-color: ' | append: value.name | handleize | remove: '-'
+              endif
+            -%}
+            <li>
+              <button
+                type="button"
+                class="mm-card__swatch{% if forloop.first and swatch_option.selected_value == blank %} is-current{% elsif value.selected %} is-current{% endif %}"
+                style="{{ swatch_style }}"
+                aria-label="{{ value.name | escape }}"
+                data-label="{{ value.name | escape }}"
+                {% if value_image != blank %}data-image="{{ value_image | image_url: width: 960 }}"{% endif %}
+                {% if value.variant %}data-url="{{ value.variant.url }}"{% endif %}
+              ></button>
+            </li>
+          {%- endfor -%}
+          {%- if swatch_option.values.size > 6 -%}<li class="mm-card__more">+{{ swatch_option.values.size | minus: 6 }}</li>{%- endif -%}
+        </ul>
+        <span class="mm-card__swatch-label" data-mm-card-label>{{ swatch_option.selected_value | default: swatch_option.values.first | escape }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+.mm-card{--mm-card-bg:#F4F3EF;position:relative;display:flex;flex-direction:column;height:100%;color:inherit;font-family:var(--font-body--family)}
+.mm-card a{color:inherit;text-decoration:none}
+.mm-card__media{position:relative;display:block;overflow:hidden;background:var(--mm-card-bg);transition:background-color .5s ease}
+.mm-card__media--portrait{aspect-ratio:4/5}
+.mm-card__media--square{aspect-ratio:1}
+.mm-card__media--tall{aspect-ratio:3/4}
+.mm-card__media--landscape{aspect-ratio:5/4}
+.mm-card__image{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity .5s ease,scale .8s cubic-bezier(.22,1,.36,1)}
+.mm-card__media--contain .mm-card__image{object-fit:contain;padding:var(--mm-card-pad,10%)}
+.mm-card__media--cover .mm-card__image{object-fit:cover}
+.mm-card__image--hover{opacity:0}
+.mm-card:hover .mm-card__media:has(.mm-card__image--hover) .mm-card__image:not(.mm-card__image--hover){opacity:0}
+.mm-card:hover .mm-card__image--hover{opacity:1}
+.mm-card:hover .mm-card__image{scale:1.03}
+.mm-card--showoff:hover .mm-card__media,.mm-card--player:hover .mm-card__media,.mm-card--trickster:hover .mm-card__media,.mm-card--helper:hover .mm-card__media{background:color-mix(in srgb,var(--mm-card-character) 14%,var(--mm-card-bg))}
+.mm-card__symbol{position:absolute;top:14px;left:14px;width:20px;height:20px;background-color:var(--mm-card-character,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:rotate .6s cubic-bezier(.34,1.56,.64,1),scale .4s ease}
+.mm-card:hover .mm-card__symbol{rotate:90deg;scale:1.2}
+.mm-card__tag{position:absolute;top:12px;right:12px;padding:4px 9px;background:#FAF9F5;color:#171514;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;line-height:1.3}
+.mm-card__tag--sale{background:#970C38;color:#fff}
+.mm-card__info{display:grid;gap:5px;padding:14px var(--mm-card-info-pad,10px) 18px;font-size:13px;line-height:1.35}
+.mm-card__title{font-size:var(--mm-card-title-size,13px);font-weight:500}
+.mm-card__title:hover{text-decoration:underline;text-underline-offset:3px}
+.mm-card__title:after{content:"";position:absolute;inset:0;z-index:0}
+.mm-card__price{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:0;font-weight:700;font-variant-numeric:tabular-nums}
+.mm-card__price s{font-weight:400;opacity:.55}
+.mm-card__swatches{position:relative;z-index:1;display:flex;align-items:center;gap:8px;margin-top:3px}
+.mm-card__swatches ul{display:flex;align-items:center;gap:5px;margin:0;padding:0;list-style:none}
+.mm-card__swatch{display:block;width:12px;height:12px;padding:0;border:1px solid color-mix(in srgb,currentColor 25%,transparent);background-size:cover;background-position:center;cursor:pointer;outline-offset:2px;transition:scale .2s ease}
+.mm-card__swatch.is-current{outline:1px solid currentColor}
+.mm-card__swatch:hover{scale:1.2}
+.mm-card__more{font-size:11px;opacity:.7}
+.mm-card__swatch-label{font-size:11px;opacity:.75}
+@media(prefers-reduced-motion:reduce){.mm-card__image,.mm-card__symbol{transition:none}}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('pointerover', (event) => {
+  const swatch = event.target instanceof Element ? event.target.closest('.mm-card__swatch') : null;
+  if (swatch) mmCardSwatch(swatch);
+});
+document.addEventListener('click', (event) => {
+  const swatch = event.target instanceof Element ? event.target.closest('.mm-card__swatch') : null;
+  if (!swatch) return;
+  mmCardSwatch(swatch);
+});
+function mmCardSwatch(swatch) {
+  const card = swatch.closest('[data-mm-card]');
+  if (!card) return;
+  card.querySelectorAll('.mm-card__swatch').forEach((item) => item.classList.toggle('is-current', item === swatch));
+  const label = card.querySelector('[data-mm-card-label]');
+  if (label) label.textContent = swatch.dataset.label || '';
+  const image = card.querySelector('[data-mm-card-image]');
+  if (image && swatch.dataset.image) {
+    image.removeAttribute('srcset');
+    image.src = swatch.dataset.image;
+  }
+  if (swatch.dataset.url) card.querySelectorAll('a').forEach((link) => (link.href = swatch.dataset.url));
+}
+{% endjavascript %}

@@ -3,14 +3,22 @@
     <div class="mm-section-head"><div><p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2></div>{% if section.settings.button_label != blank %}<a class="mm-text-link" href="{{ section.settings.collection.url | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span></a>{% endif %}</div>
     {% assign selected_collection = section.settings.collection | default: collections.all %}
     {% if selected_collection.products.size > 0 %}
-      <div class="mm-product-grid">
-        {% for product in selected_collection.products limit: section.settings.product_limit %}
-          <a class="mm-product" href="{{ product.url }}"><div class="mm-product-media">
-            {% if product.featured_image %}{{ product.featured_image | image_url: width: 1000 | image_tag: widths: '300,500,750,1000', sizes: '(min-width: 750px) 25vw, 50vw', loading: 'lazy' }}{% assign alt_media = product.media | where: 'media_type', 'image' | slice: 1 | first %}{% if section.settings.second_image and alt_media %}{{ alt_media.preview_image | image_url: width: 1000 | image_tag: class: 'mm-product-alt', widths: '300,500,750,1000', sizes: '(min-width: 750px) 25vw, 50vw', loading: 'lazy', alt: '' }}{% endif %}{% else %}{{ 'product-1' | placeholder_svg_tag }}{% endif %}
-            <span class="mm-product-arrow" aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span>
-          </div><div class="mm-product-meta"><div><h3>{{ product.title | escape }}</h3>{% if section.settings.show_personality %}{% render 'mm-personality-badge', product: product %}{% endif %}</div>{% if section.settings.show_price %}<span>{{ product.price | money }}</span>{% endif %}</div>{% unless product.available %}<small>{{ 'mishmash.sold_out' | t }}</small>{% endunless %}</a>
-        {% endfor %}
-      </div>
+      {% if section.settings.card_style == 'mishmash' %}
+        <ul class="mm-card-grid{% if section.settings.card_lines %} mm-card-grid--lines{% endif %}" role="list">
+          {% for product in selected_collection.products limit: section.settings.product_limit %}
+            <li>{% render 'mm-product-card', product: product, settings: section.settings, sizes: '(min-width: 990px) 25vw, 50vw' %}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="mm-product-grid">
+          {% for product in selected_collection.products limit: section.settings.product_limit %}
+            <a class="mm-product" href="{{ product.url }}"><div class="mm-product-media">
+              {% if product.featured_image %}{{ product.featured_image | image_url: width: 1000 | image_tag: widths: '300,500,750,1000', sizes: '(min-width: 750px) 25vw, 50vw', loading: 'lazy' }}{% assign alt_media = product.media | where: 'media_type', 'image' | slice: 1 | first %}{% if section.settings.second_image and alt_media %}{{ alt_media.preview_image | image_url: width: 1000 | image_tag: class: 'mm-product-alt', widths: '300,500,750,1000', sizes: '(min-width: 750px) 25vw, 50vw', loading: 'lazy', alt: '' }}{% endif %}{% else %}{{ 'product-1' | placeholder_svg_tag }}{% endif %}
+              <span class="mm-product-arrow" aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span>
+            </div><div class="mm-product-meta"><div><h3>{{ product.title | escape }}</h3>{% if section.settings.show_personality %}{% render 'mm-personality-badge', product: product %}{% endif %}</div>{% if section.settings.show_price %}<span>{{ product.price | money }}</span>{% endif %}</div>{% unless product.available %}<small>{{ 'mishmash.sold_out' | t }}</small>{% endunless %}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
     {% else %}
       <div class="mm-empty"><span aria-hidden="true">{% render 'mm-icon', icon: 'asterisk' %}</span><h3>{{ section.settings.empty_heading | escape }}</h3><p>{{ section.settings.empty_text | escape }}</p></div>
     {% endif %}
@@ -23,8 +31,21 @@
 #mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px}
 @media(max-width:749px){#mm-{{ section.id }} .mm-pad{padding-top:{{ section.settings.padding_mobile }}px;padding-bottom:{{ section.settings.padding_mobile }}px}}
 {% endstyle %}
+{% style %}
+#mm-{{ section.id }} .mm-card-grid{grid-template-columns:repeat({{ section.settings.columns }},minmax(0,1fr));--mm-card-line:{{ section.settings.card_line_colour }}}
+#mm-{{ section.id }} .mm-card{--mm-card-bg:{{ section.settings.card_image_bg }};--mm-card-pad:{{ section.settings.card_image_padding }}%;--mm-card-title-size:{{ section.settings.card_title_size }}px}
+@media(max-width:749px){#mm-{{ section.id }} .mm-card-grid{grid-template-columns:repeat({{ section.settings.card_columns_mobile }},minmax(0,1fr))}}
+{% endstyle %}
 {% style %}#mm-{{ section.id }} .mm-product-grid{grid-template-columns:repeat({{ section.settings.columns }},minmax(0,1fr))}@media(max-width:749px){#mm-{{ section.id }} .mm-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}{% endstyle %}
 {% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}@media(max-width:749px){#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}}{% endstyle %}
+{% stylesheet %}
+.mm-card-grid{display:grid;gap:32px 14px;margin:0;padding:0;list-style:none}
+.mm-card-grid--lines{gap:0;border-top:1px solid var(--mm-card-line,#E6E3DC);border-left:1px solid var(--mm-card-line,#E6E3DC)}
+.mm-card-grid--lines>li{box-shadow:inset -1px 0 0 var(--mm-card-line,#E6E3DC),inset 0 -1px 0 var(--mm-card-line,#E6E3DC)}
+.mm-card-grid--lines .mm-card{padding:0 1px 1px 0}
+@media(max-width:989px) and (min-width:750px){.mm-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "MM · Featured products",
@@ -87,6 +108,153 @@
       "id": "show_price",
       "label": "Show prices",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mish Mash product cards"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card style",
+      "default": "mishmash",
+      "options": [
+        {
+          "value": "mishmash",
+          "label": "Mish Mash cards"
+        },
+        {
+          "value": "classic",
+          "label": "Classic"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_columns_mobile",
+      "label": "Columns on mobile",
+      "default": "2",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "card_lines",
+      "label": "Thin lines between cards",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "card_line_colour",
+      "label": "Line colour",
+      "default": "#E6E3DC"
+    },
+    {
+      "type": "select",
+      "id": "card_ratio",
+      "label": "Image shape",
+      "default": "portrait",
+      "options": [
+        {
+          "value": "portrait",
+          "label": "Portrait 4:5"
+        },
+        {
+          "value": "tall",
+          "label": "Tall 3:4"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape 5:4"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_fit",
+      "label": "Image fit",
+      "default": "contain",
+      "info": "Contain suits cut-out product shots, cover suits lifestyle photos.",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Show the whole product"
+        },
+        {
+          "value": "cover",
+          "label": "Fill the tile"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_image_padding",
+      "label": "Space around the product",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "%",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "card_image_bg",
+      "label": "Image background",
+      "default": "#F4F3EF"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_hover_image",
+      "label": "Show second photo on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_character",
+      "label": "Show character symbol",
+      "info": "Uses the Character product field.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_swatches",
+      "label": "Show colour swatches",
+      "info": "For an option named Color, Colour, Renk or Metal.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_tags",
+      "label": "Show Sale and Sold out tags",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "card_sale_label",
+      "label": "Sale tag text",
+      "default": "Sale"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "label": "Product name size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 13
     },
     {
       "type": "text",

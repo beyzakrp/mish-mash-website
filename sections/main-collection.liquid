@@ -29,6 +29,24 @@
   endif
 %}
 
+{% if section.settings.card_style == 'mishmash' %}
+  {% style %}
+    #shopify-section-{{ section.id }} .product-grid.product-grid--{{ section.id }}[product-grid-view='default']{gap:0;grid-template-columns:repeat({{ section.settings.card_columns_mobile }},minmax(0,1fr))}
+    @media screen and (min-width: 750px){#shopify-section-{{ section.id }} .product-grid.product-grid--{{ section.id }}[product-grid-view='default']{grid-template-columns:repeat({{ section.settings.card_columns | at_most: 3 }},minmax(0,1fr))}}
+    @media screen and (min-width: 990px){#shopify-section-{{ section.id }} .product-grid.product-grid--{{ section.id }}[product-grid-view='default']{grid-template-columns:repeat({{ section.settings.card_columns }},minmax(0,1fr))}}
+    #shopify-section-{{ section.id }} .product-grid--{{ section.id }} .mm-card{--mm-card-bg:{{ section.settings.card_image_bg }};--mm-card-pad:{{ section.settings.card_image_padding }}%;--mm-card-title-size:{{ section.settings.card_title_size }}px}
+    #shopify-section-{{ section.id }} .product-grid--{{ section.id }}[product-grid-view='zoom-out'] .mm-card__info{display:none}
+    {% if section.settings.card_lines %}
+      #shopify-section-{{ section.id }} .product-grid--{{ section.id }}[product-grid-view='default']{border-top:1px solid {{ section.settings.card_line_colour }}}
+      #shopify-section-{{ section.id }} .product-grid--{{ section.id }}[product-grid-view='default'] .product-grid__item{position:relative;box-shadow:inset -1px 0 0 {{ section.settings.card_line_colour }},inset 0 -1px 0 {{ section.settings.card_line_colour }}}
+      #shopify-section-{{ section.id }} .product-grid--{{ section.id }}[product-grid-view='default'] .mm-card__media{margin:0 1px 0 0}
+      #shopify-section-{{ section.id }} .product-grid--{{ section.id }}[product-grid-view='default'] .mm-card{padding-bottom:1px}
+    {% else %}
+      #shopify-section-{{ section.id }} .product-grid.product-grid--{{ section.id }}[product-grid-view='default']{gap:28px 12px}
+    {% endif %}
+  {% endstyle %}
+{% endif %}
+
 {% render 'collection-wrapper-styles' %}
 
 <div
@@ -69,12 +87,22 @@
               data-product-id="{{ product.id }}"
               ref="cards[]"
             >
-              {% content_for 'block',
-                type: '_product-card',
-                id: 'product-card',
-                closest.product: product,
-                product_view_context: 'collection'
-              %}
+              {% if section.settings.card_style == 'mishmash' %}
+                {% liquid
+                  assign card_eager = false
+                  if forloop.index <= section.settings.card_columns and paginate.current_page == 1
+                    assign card_eager = true
+                  endif
+                %}
+                {% render 'mm-product-card', product: product, settings: section.settings, eager: card_eager %}
+              {% else %}
+                {% content_for 'block',
+                  type: '_product-card',
+                  id: 'product-card',
+                  closest.product: product,
+                  product_view_context: 'collection'
+                %}
+              {% endif %}
             </li>
           {% endfor %}
         {% endcapture %}
@@ -95,7 +123,9 @@
 {
   "name": "t:names.collection_container",
   "enabled_on": {
-    "templates": ["collection"]
+    "templates": [
+      "collection"
+    ]
   },
   "settings": [
     {
@@ -267,6 +297,162 @@
       "step": 1,
       "unit": "px",
       "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Mish Mash product cards"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card style",
+      "default": "mishmash",
+      "options": [
+        {
+          "value": "mishmash",
+          "label": "Mish Mash"
+        },
+        {
+          "value": "theme",
+          "label": "Theme default"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_columns",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "card_columns_mobile",
+      "label": "Columns on mobile",
+      "default": "2",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "card_lines",
+      "label": "Thin lines between cards",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "card_line_colour",
+      "label": "Line colour",
+      "default": "#E6E3DC"
+    },
+    {
+      "type": "select",
+      "id": "card_ratio",
+      "label": "Image shape",
+      "default": "portrait",
+      "options": [
+        {
+          "value": "portrait",
+          "label": "Portrait 4:5"
+        },
+        {
+          "value": "tall",
+          "label": "Tall 3:4"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape 5:4"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_fit",
+      "label": "Image fit",
+      "default": "contain",
+      "info": "Contain suits cut-out product shots, cover suits lifestyle photos.",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Show the whole product"
+        },
+        {
+          "value": "cover",
+          "label": "Fill the tile"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_image_padding",
+      "label": "Space around the product",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "%",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "card_image_bg",
+      "label": "Image background",
+      "default": "#F4F3EF"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_hover_image",
+      "label": "Show second photo on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_character",
+      "label": "Show character symbol",
+      "info": "Uses the Character product field.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_swatches",
+      "label": "Show colour swatches",
+      "info": "For an option named Color, Colour, Renk or Metal.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_tags",
+      "label": "Show Sale and Sold out tags",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "card_sale_label",
+      "label": "Sale tag text",
+      "default": "Sale"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "label": "Product name size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 13
     }
   ],
   "presets": []
