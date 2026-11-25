@@ -431,7 +431,7 @@
         "reference_images": true,
         "image_side": "left",
         "show_symbol": true,
-        "symbol": "showoff",
+        "symbol": "trickster",
         "symbol_size": 140,
         "symbol_color": "{{ settings.color_palette.color4 }}",
         "background": "{{ settings.color_palette.color3 }}",
