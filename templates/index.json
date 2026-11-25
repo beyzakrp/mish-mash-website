@@ -253,17 +253,14 @@
       ],
       "settings": {
         "eyebrow": "",
-        "heading": "Meet the objects",
+        "heading": "MEET THE OBJECTS",
         "full_width": true,
         "row_height": 560,
         "background": "#faf9f5",
         "text_color": "#171514",
         "padding_top": 40,
-        "padding_bottom": 0,
-        "padding_mobile": 30,
-        "text_style": "minimal",
-        "heading_size": 28,
-        "heading_mobile": 24
+        "padding_bottom": 15,
+        "padding_mobile": 0
       }
     },
     "mishmash_objects": {
@@ -349,6 +346,43 @@
         "padding_mobile": 55
       }
     },
+    "mishmash_story": {
+      "type": "mm-story",
+      "settings": {
+        "eyebrow": "The mish-mash way",
+        "heading": "Serious about design.\nPlayful by nature.",
+        "description": "A splash of colour. An unexpected shape. A little something that makes an ordinary corner feel like you. That’s where mish-mash comes in.",
+        "story_image": "shopify://shop_images/lamp-sample-4.png",
+        "image_alt": "A colourful object styled in a living space",
+        "button_label": "Shop Now",
+        "button_link": "",
+        "reference_images": true,
+        "image_side": "left",
+        "show_symbol": true,
+        "symbol": "showoff",
+        "symbol_size": 140,
+        "symbol_color": "{{ settings.color_palette.color4 }}",
+        "background": "{{ settings.color_palette.color3 }}",
+        "text_color": "#171514",
+        "button_background": "{{ settings.color_palette.color4 }}",
+        "button_text": "{{ settings.color_palette.background }}",
+        "button_border": "",
+        "button_hover_background": "{{ settings.color_palette.color4 }}",
+        "button_hover_text": "#ffffff",
+        "button_hover_border": "",
+        "button_border_width": 3,
+        "button_radius": 40,
+        "button_padding_y": 17,
+        "button_padding_x": 32,
+        "button_min_width": 0,
+        "button_font_size": 13,
+        "button_letter_spacing": 4,
+        "button_uppercase": true,
+        "heading_font": "theme",
+        "heading_size": 54,
+        "heading_mobile": 38
+      }
+    },
     "mishmash_products": {
       "type": "mm-products",
       "settings": {
@@ -390,6 +424,67 @@
         "heading_font": "theme",
         "heading_size": 28,
         "heading_mobile": 24
+      }
+    },
+    "mm_object_details_wgBFAg": {
+      "type": "mm-object-details",
+      "blocks": {
+        "feature_CyYCYA": {
+          "type": "feature",
+          "settings": {
+            "character": "showoff",
+            "big_text": "",
+            "title": "Quiet by design",
+            "text": "A silent movement, so the only thing you hear is the compliments."
+          }
+        },
+        "feature_XeRrJJ": {
+          "type": "feature",
+          "settings": {
+            "character": "player",
+            "big_text": "",
+            "title": "Colours that mix",
+            "text": "Pair them with any vase, lamp or candle in the collection."
+          }
+        },
+        "feature_AwQYEa": {
+          "type": "feature",
+          "settings": {
+            "character": "trickster",
+            "big_text": "",
+            "title": "A twist of shape",
+            "text": "Familiar enough to read at a glance, odd enough to make you smile."
+          }
+        },
+        "feature_ycPc7y": {
+          "type": "feature",
+          "settings": {
+            "character": "helper",
+            "big_text": "",
+            "title": "Ready to gift",
+            "text": "Wrapped with care and sent with a handwritten note."
+          }
+        }
+      },
+      "block_order": [
+        "feature_CyYCYA",
+        "feature_XeRrJJ",
+        "feature_AwQYEa",
+        "feature_ycPc7y"
+      ],
+      "name": "MM · Object details",
+      "settings": {
+        "eyebrow": "Good to know",
+        "heading": "Why you will love\nthese clocks.",
+        "heading_font": "cocogoose",
+        "heading_size": 44,
+        "heading_mobile": 36,
+        "background": "#FAF9F5",
+        "text_color": "#171514",
+        "accent": "#B5D4F4",
+        "padding_top": 60,
+        "padding_bottom": 70,
+        "padding_mobile": 55
       }
     },
     "mishmash_personalities": {
@@ -534,6 +629,7 @@
         "photo_gjYxg9",
         "photo_7xLnHc"
       ],
+      "disabled": true,
       "name": "MM · Objects in real life",
       "settings": {
         "eyebrow": "Objects in real life",
@@ -546,78 +642,6 @@
         "spot_colour": "#ffffff",
         "spot_icon_colour": "#171514",
         "show_price": true,
-        "heading_font": "cocogoose",
-        "heading_size": 54,
-        "heading_mobile": 36,
-        "background": "#faf9f5",
-        "text_color": "#171514",
-        "accent": "#b5d4f4",
-        "padding_top": 90,
-        "padding_bottom": 90,
-        "padding_mobile": 55
-      }
-    },
-    "mm_details_GFXjG6": {
-      "type": "mm-details",
-      "blocks": {
-        "detail_mwnnHU": {
-          "type": "detail",
-          "settings": {
-            "label": "",
-            "title": "Hand-finished glaze",
-            "text": "<p>Every piece is dipped and finished by hand, so no two are exactly alike.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "detail_aBcCrX": {
-          "type": "detail",
-          "settings": {
-            "label": "",
-            "title": "Soft, rounded edges",
-            "text": "<p>Shapes you want to touch. Safe around kids and clumsy elbows.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "detail_U6LLMr": {
-          "type": "detail",
-          "settings": {
-            "label": "",
-            "title": "Colours that last",
-            "text": "<p>Pigments chosen to stay bright in sunny rooms for years.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        },
-        "detail_dGPnJx": {
-          "type": "detail",
-          "settings": {
-            "label": "",
-            "title": "Packed with care",
-            "text": "<p>Recycled boxes, no plastic, and a little note from us.</p>",
-            "link_label": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "detail_mwnnHU",
-        "detail_aBcCrX",
-        "detail_U6LLMr",
-        "detail_dGPnJx"
-      ],
-      "name": "MM · The little details",
-      "settings": {
-        "eyebrow": "The little details",
-        "heading": "Made to be\nlooked at closely.",
-        "image_side": "left",
-        "ratio": "4 / 5",
-        "radius": 0,
-        "step_height": 60,
-        "zoom": true,
-        "show_numbers": true,
-        "show_counter": true,
         "heading_font": "cocogoose",
         "heading_size": 54,
         "heading_mobile": 36,
@@ -687,6 +711,7 @@
         "review_Bpgkci",
         "review_zfDG3d"
       ],
+      "disabled": true,
       "name": "MM · Reviews",
       "settings": {
         "eyebrow": "Happy homes",
@@ -819,6 +844,7 @@
         "result_bxMWcD",
         "result_bb9Yed"
       ],
+      "disabled": true,
       "name": "MM · Character quiz",
       "settings": {
         "eyebrow": "Which one are you?",
@@ -856,43 +882,6 @@
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55
-      }
-    },
-    "mishmash_story": {
-      "type": "mm-story",
-      "settings": {
-        "eyebrow": "The mish-mash way",
-        "heading": "Serious about design.\nPlayful by nature.",
-        "description": "A splash of colour. An unexpected shape. A little something that makes an ordinary corner feel like you. That’s where mish-mash comes in.",
-        "story_image": "shopify://shop_images/77B0CD5B-CF45-4AF0-BC20-60271A3B9D5D.webp",
-        "image_alt": "A colourful object styled in a living space",
-        "button_label": "Shop Now",
-        "button_link": "",
-        "reference_images": true,
-        "image_side": "left",
-        "show_symbol": true,
-        "symbol": "showoff",
-        "symbol_size": 140,
-        "symbol_color": "#f0541a",
-        "background": "{{ settings.color_palette.color2 }}",
-        "text_color": "#171514",
-        "button_background": "{{ settings.color_palette.background }}",
-        "button_text": "{{ settings.color_palette.color1 }}",
-        "button_border": "#71253d",
-        "button_hover_background": "#71253d",
-        "button_hover_text": "#ffffff",
-        "button_hover_border": "",
-        "button_border_width": 3,
-        "button_radius": 40,
-        "button_padding_y": 17,
-        "button_padding_x": 32,
-        "button_min_width": 0,
-        "button_font_size": 13,
-        "button_letter_spacing": 4,
-        "button_uppercase": true,
-        "heading_font": "theme",
-        "heading_size": 54,
-        "heading_mobile": 38
       }
     },
     "mm_story_GLTbtY": {
@@ -1079,6 +1068,7 @@
         "budget_Mx4tjg",
         "budget_c3pFjq"
       ],
+      "disabled": true,
       "name": "MM · Gift finder",
       "settings": {
         "eyebrow": "Gift finder",
@@ -1114,13 +1104,13 @@
     "mishmash_ticker",
     "mishmash_category_row",
     "mishmash_objects",
+    "mishmash_story",
     "mishmash_products",
+    "mm_object_details_wgBFAg",
     "mishmash_personalities",
     "mm_real_life_39dQg4",
-    "mm_details_GFXjG6",
     "mm_reviews_d8ppdY",
     "mm_quiz_7QXY3G",
-    "mishmash_story",
     "mm_story_GLTbtY",
     "mm_story_nr8Rjb",
     "mm_story_nWBPYH",
