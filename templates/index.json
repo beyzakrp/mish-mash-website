@@ -23,7 +23,7 @@
         "secondary_label": "",
         "secondary_link": "shopify://collections",
         "reference_images": true,
-        "height": 860,
+        "height": 940,
         "mobile_height": 640,
         "heading_size": 80,
         "heading_mobile": 46,
@@ -45,6 +45,8 @@
         "button_letter_spacing": 8,
         "button_uppercase": true,
         "heading_font": "theme",
+        "content_align": "left",
+        "content_align_mobile": "same",
         "height_mode": "fixed"
       }
     },
@@ -348,7 +350,11 @@
         "second_image": true,
         "show_personality": true,
         "show_price": true,
+        "head_style": "simple",
         "card_style": "minimal",
+        "card_gap": 8,
+        "card_gap_vertical": 32,
+        "card_colours_label": "[count] colours",
         "card_columns_mobile": "2",
         "card_lines": true,
         "card_line_colour": "#e6e3dc",
@@ -369,10 +375,10 @@
         "padding_top": 40,
         "padding_bottom": 40,
         "padding_mobile": 55,
+        "padding_side": 16,
         "heading_font": "theme",
         "heading_size": 28,
-        "heading_mobile": 24,
-        "head_style": "simple"
+        "heading_mobile": 24
       }
     },
     "mishmash_personalities": {
