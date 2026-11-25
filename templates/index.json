@@ -385,7 +385,7 @@
             "description": "Just looks good.",
             "character": "showoff",
             "symbol_filter": "brightness(0) invert(1)",
-            "background": "#970c38",
+            "background": "{{ settings.color_palette.color1 }}",
             "text_color": "#ffffff",
             "link": "",
             "collection": ""
@@ -398,7 +398,7 @@
             "description": "Touch. Play. Combine.",
             "character": "player",
             "symbol_filter": "brightness(0)",
-            "background": "#ccdb65",
+            "background": "{{ settings.color_palette.color3 }}",
             "text_color": "#171514",
             "link": "",
             "collection": ""
@@ -411,7 +411,7 @@
             "description": "Small surprise. Big joy.",
             "character": "trickster",
             "symbol_filter": "brightness(0) invert(1)",
-            "background": "#192fda",
+            "background": "{{ settings.color_palette.color4 }}",
             "text_color": "#ffffff",
             "link": "",
             "collection": ""
@@ -424,7 +424,7 @@
             "description": "Looks good. Works too.",
             "character": "helper",
             "symbol_filter": "brightness(0)",
-            "background": "#fb7fb0",
+            "background": "{{ settings.color_palette.color2 }}",
             "text_color": "#171514",
             "link": "",
             "collection": ""
