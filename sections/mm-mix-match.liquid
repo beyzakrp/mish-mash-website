@@ -66,13 +66,13 @@
                   endif
                   case mix_character
                     when 'showoff'
-                      assign mix_tint = '#F5D9E0'
+                      assign mix_tint = '#F1DDE3'
                     when 'player'
-                      assign mix_tint = '#F1F5D6'
+                      assign mix_tint = '#F6F3DC'
                     when 'trickster'
-                      assign mix_tint = '#DCE0FA'
+                      assign mix_tint = '#FDE3D8'
                     else
-                      assign mix_tint = '#FEE2EE'
+                      assign mix_tint = '#EAF2FC'
                   endcase
                   if block.settings.stage_colour != blank and block.settings.stage_colour != 'rgba(0,0,0,0)'
                     assign mix_tint = block.settings.stage_colour
@@ -81,13 +81,13 @@
                 {%- liquid
   case mix_character
     when 'showoff'
-      assign mix_colour = '#970C38'
+      assign mix_colour = '#71253D'
     when 'player'
-      assign mix_colour = '#CCDB65'
+      assign mix_colour = '#CDC167'
     when 'trickster'
-      assign mix_colour = '#192FDA'
+      assign mix_colour = '#F0541A'
     when 'helper'
-      assign mix_colour = '#FB7FB0'
+      assign mix_colour = '#B5D4F4'
     else
       assign mix_colour = 'currentColor'
   endcase
@@ -176,7 +176,7 @@
 .mm-mix__option--character:hover .mm-symbol-mask,.mm-mix__option--character[aria-pressed="true"] .mm-symbol-mask{background-color:var(--mm-char);rotate:90deg}
 .mm-symbol-mask{display:block;aspect-ratio:1;background-color:var(--mm-symbol-color,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat}
 .mm-mix__stage{position:relative;display:grid;grid-template-rows:1fr auto;border-radius:var(--mm-mix-radius);background:var(--mm-mix-tint,#FFDCEA);overflow:hidden;isolation:isolate;transition:background-color .7s ease}
-.mm-mix__bg-symbol{position:absolute;inset:8% 8% 22%;z-index:-1;background-color:var(--mm-mix-colour,#FB7FB0);opacity:var(--mm-mix-symbol-opacity);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:background-color .7s ease,scale .8s cubic-bezier(.34,1.56,.64,1),rotate .8s cubic-bezier(.34,1.56,.64,1)}
+.mm-mix__bg-symbol{position:absolute;inset:8% 8% 22%;z-index:-1;background-color:var(--mm-mix-colour,#B5D4F4);opacity:var(--mm-mix-symbol-opacity);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:background-color .7s ease,scale .8s cubic-bezier(.34,1.56,.64,1),rotate .8s cubic-bezier(.34,1.56,.64,1)}
 .mm-mix__bg-symbol--spin{animation:mm-mix-spin 60s linear infinite}
 .mm-mix__stage.is-swapping .mm-mix__bg-symbol{scale:.6;rotate:-40deg}
 @keyframes mm-mix-spin{to{rotate:360deg}}
@@ -431,7 +431,7 @@ if (!customElements.get('mm-mix')) {
       "type": "color",
       "id": "accent",
       "label": "Accent colour",
-      "default": "#FB7FB0"
+      "default": "#B5D4F4"
     },
     {
       "type": "range",

@@ -18,7 +18,7 @@
             "character": "trickster",
             "name": "The Trickster",
             "excuse": "Hid this page. Again. Classic.",
-            "background": "#192fda",
+            "background": "#f0541a",
             "text_colour": "#ffffff"
           }
         },
@@ -28,7 +28,7 @@
             "character": "player",
             "name": "The Player",
             "excuse": "Turned it into a game of hide and seek. Still counting.",
-            "background": "#ccdb65",
+            "background": "#cdc167",
             "text_colour": "#171514"
           }
         },
@@ -38,7 +38,7 @@
             "character": "showoff",
             "name": "The Show-off",
             "excuse": "Moved it somewhere more photogenic.",
-            "background": "#970c38",
+            "background": "#71253d",
             "text_colour": "#ffffff"
           }
         },
@@ -48,7 +48,7 @@
             "character": "helper",
             "name": "The Helper",
             "excuse": "Tidied it away. They really meant well.",
-            "background": "#fb7fb0",
+            "background": "#b5d4f4",
             "text_colour": "#171514"
           }
         }
@@ -94,7 +94,7 @@
         "heading_mobile": 34,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "accent": "#fb7fb0",
+        "accent": "#b5d4f4",
         "padding_top": 80,
         "padding_bottom": 80,
         "padding_mobile": 60

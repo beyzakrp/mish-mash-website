@@ -94,13 +94,13 @@
                         {%- liquid
                           case link_symbol
                             when 'showoff'
-                              assign link_colour = '#970C38'
+                              assign link_colour = '#71253D'
                             when 'player'
-                              assign link_colour = '#CCDB65'
+                              assign link_colour = '#CDC167'
                             when 'trickster'
-                              assign link_colour = '#192FDA'
+                              assign link_colour = '#F0541A'
                             else
-                              assign link_colour = '#FB7FB0'
+                              assign link_colour = '#B5D4F4'
                           endcase
                         -%}
                         <span class="mm-footer__link-symbol" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: link_symbol | append: '.svg' | asset_url }}); --mm-symbol-color: {{ link_colour }};" aria-hidden="true"></span>
@@ -166,7 +166,7 @@
             </a>
             {%- if block.settings.show_symbols -%}
               <ul class="mm-footer__symbols mm-footer__symbols--{{ block.settings.symbol_colour }}{% if block.settings.symbol_motion != 'none' %} mm-footer__symbols--{{ block.settings.symbol_motion }}{% endif %}" role="list" aria-hidden="true">
-                {%- assign footer_symbols = 'showoff:#970C38,player:#CCDB65,trickster:#192FDA,helper:#FB7FB0' | split: ',' -%}
+                {%- assign footer_symbols = 'showoff:#71253D,player:#CDC167,trickster:#F0541A,helper:#B5D4F4' | split: ',' -%}
                 {%- for pair in footer_symbols -%}
                   {%- liquid
                     assign parts = pair | split: ':'
@@ -250,7 +250,7 @@
 .mm-footer__links a:hover{color:var(--mm-accent)}
 .mm-footer__link-symbol{flex:none;width:1.05em;height:1.05em;background-color:currentColor;-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:background-color .3s,rotate .6s cubic-bezier(.34,1.56,.64,1)}
 .mm-footer__links a:hover .mm-footer__link-symbol{background-color:var(--mm-symbol-color);rotate:90deg}
-.mm-footer__badge{padding:3px 8px;border-radius:100px;background:var(--mm-badge-bg,#CCDB65);color:var(--mm-badge-text,#171514);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.3}
+.mm-footer__badge{padding:3px 8px;border-radius:100px;background:var(--mm-badge-bg,#CDC167);color:var(--mm-badge-text,#171514);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.3}
 .mm-footer__empty{font-size:13px;opacity:.6}
 .mm-footer .mm-footer__mark{padding:0}
 .mm-footer__tagline{font-size:var(--mm-footer-tagline,30px)!important}
@@ -340,13 +340,13 @@ if (!customElements.get('mm-footer-columns')) {
       "type": "color",
       "id": "heading_colour",
       "label": "Column heading colour",
-      "default": "#FB7FB0"
+      "default": "#B5D4F4"
     },
     {
       "type": "color",
       "id": "accent",
       "label": "Link hover colour",
-      "default": "#FB7FB0"
+      "default": "#B5D4F4"
     },
     {
       "type": "header",
@@ -554,7 +554,7 @@ if (!customElements.get('mm-footer-columns')) {
           "type": "color",
           "id": "button_background",
           "label": "Button background",
-          "default": "#FB7FB0"
+          "default": "#B5D4F4"
         },
         {
           "type": "color",
@@ -631,7 +631,7 @@ if (!customElements.get('mm-footer-columns')) {
           "type": "color",
           "id": "badge_background",
           "label": "Badge background",
-          "default": "#CCDB65"
+          "default": "#CDC167"
         },
         {
           "type": "color",

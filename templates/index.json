@@ -264,7 +264,7 @@
             "caption": "",
             "size": "large",
             "icon": "vase",
-            "colour": "#fb7fb0"
+            "colour": "#b5d4f4"
           }
         },
         "object_lamp": {
@@ -275,7 +275,7 @@
             "caption": "",
             "size": "medium",
             "icon": "lamp",
-            "colour": "#ccdb65"
+            "colour": "#cdc167"
           }
         },
         "object_clock": {
@@ -286,7 +286,7 @@
             "caption": "",
             "size": "small",
             "icon": "clock",
-            "colour": "#192fda"
+            "colour": "#f0541a"
           }
         },
         "object_candle": {
@@ -297,7 +297,7 @@
             "caption": "",
             "size": "small",
             "icon": "candle",
-            "colour": "#970c38"
+            "colour": "#71253d"
           }
         },
         "object_frame": {
@@ -534,7 +534,7 @@
         "heading_mobile": 36,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "accent": "#fb7fb0",
+        "accent": "#b5d4f4",
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55
@@ -606,7 +606,7 @@
         "heading_mobile": 36,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "accent": "#fb7fb0",
+        "accent": "#b5d4f4",
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55
@@ -684,7 +684,7 @@
         "gap": 16,
         "card_background": "#ffffff",
         "card_text": "#171514",
-        "star_colour": "#ccdb65",
+        "star_colour": "#cdc167",
         "show_stars": true,
         "show_symbols": true,
         "show_product_image": true,
@@ -693,7 +693,7 @@
         "heading_mobile": 36,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "accent": "#fb7fb0",
+        "accent": "#b5d4f4",
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55
@@ -720,13 +720,13 @@
           "type": "question",
           "settings": {
             "question": "Pick a colour mood.",
-            "answer_1": "Deep green, a bit dramatic",
+            "answer_1": "Deep wine, a bit dramatic",
             "answer_1_character": "showoff",
-            "answer_2": "Orange, loud and happy",
+            "answer_2": "Mustard, loud and happy",
             "answer_2_character": "player",
-            "answer_3": "Sky blue with a twist",
+            "answer_3": "Bright orange with a twist",
             "answer_3_character": "trickster",
-            "answer_4": "Soft pink, always useful",
+            "answer_4": "Soft blue, always useful",
             "answer_4_character": "helper"
           }
         },
@@ -835,7 +835,7 @@
         "heading_mobile": 36,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "accent": "#fb7fb0",
+        "accent": "#b5d4f4",
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55
@@ -856,13 +856,13 @@
         "show_symbol": true,
         "symbol": "showoff",
         "symbol_size": 140,
-        "symbol_color": "#192fda",
+        "symbol_color": "#f0541a",
         "background": "{{ settings.color_palette.color2 }}",
         "text_color": "#171514",
         "button_background": "{{ settings.color_palette.background }}",
         "button_text": "{{ settings.color_palette.color1 }}",
-        "button_border": "#970c38",
-        "button_hover_background": "#970c38",
+        "button_border": "#71253d",
+        "button_hover_background": "#71253d",
         "button_hover_text": "#ffffff",
         "button_hover_border": "",
         "button_border_width": 3,
@@ -893,12 +893,12 @@
         "show_symbol": true,
         "symbol": "player",
         "symbol_size": 140,
-        "symbol_color": "#192fda",
+        "symbol_color": "#f0541a",
         "background": "{{ settings.color_palette.color1 }}",
         "text_color": "#ffffff",
         "button_background": "{{ settings.color_palette.background }}",
         "button_text": "{{ settings.color_palette.color1 }}",
-        "button_border": "#970c38",
+        "button_border": "#71253d",
         "button_hover_background": "{{ settings.color_palette.color3 }}",
         "button_hover_text": "{{ settings.color_palette.foreground }}",
         "button_hover_border": "",
@@ -930,7 +930,7 @@
         "show_symbol": true,
         "symbol": "helper",
         "symbol_size": 140,
-        "symbol_color": "#192fda",
+        "symbol_color": "#f0541a",
         "background": "{{ settings.color_palette.color4 }}",
         "text_color": "{{ settings.color_palette.background }}",
         "button_background": "{{ settings.color_palette.background }}",
@@ -967,7 +967,7 @@
         "show_symbol": true,
         "symbol": "trickster",
         "symbol_size": 140,
-        "symbol_color": "#192fda",
+        "symbol_color": "#f0541a",
         "background": "{{ settings.color_palette.color3 }}",
         "text_color": "{{ settings.color_palette.foreground }}",
         "button_background": "{{ settings.color_palette.background }}",
@@ -1085,7 +1085,7 @@
         "heading_mobile": 36,
         "background": "#faf9f5",
         "text_color": "#171514",
-        "accent": "#fb7fb0",
+        "accent": "#b5d4f4",
         "padding_top": 90,
         "padding_bottom": 90,
         "padding_mobile": 55

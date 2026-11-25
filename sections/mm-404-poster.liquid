@@ -2,13 +2,13 @@
   assign lost_path = request.path | default: '/somewhere-nice' | escape
   case section.settings.photo_character
     when 'showoff'
-      assign photo_colour = '#970C38'
+      assign photo_colour = '#71253D'
     when 'player'
-      assign photo_colour = '#CCDB65'
+      assign photo_colour = '#CDC167'
     when 'trickster'
-      assign photo_colour = '#192FDA'
+      assign photo_colour = '#F0541A'
     else
-      assign photo_colour = '#FB7FB0'
+      assign photo_colour = '#B5D4F4'
   endcase
 -%}
 <section class="mm-home mm-lost" id="mm-{{ section.id }}">
@@ -107,7 +107,7 @@
 .mm-lost__photo-symbol{width:52%;aspect-ratio:1;background-color:var(--mm-lost-photo);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;animation:mm-lost-peek 5s ease-in-out infinite}
 .mm-lost__photo-image{width:100%;height:100%;object-fit:cover;display:block}
 @keyframes mm-lost-peek{0%,100%{translate:0 0;rotate:-6deg}40%{translate:-6% 3%;rotate:8deg}70%{translate:5% -2%;rotate:-2deg}}
-.mm-lost__stamp{position:absolute;right:12px;bottom:14px;padding:6px 12px;border:3px solid var(--mm-lost-stamp,#970C38);border-radius:6px;color:var(--mm-lost-stamp,#970C38);font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;rotate:-12deg;opacity:.85}
+.mm-lost__stamp{position:absolute;right:12px;bottom:14px;padding:6px 12px;border:3px solid var(--mm-lost-stamp,#71253D);border-radius:6px;color:var(--mm-lost-stamp,#71253D);font-size:15px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;rotate:-12deg;opacity:.85}
 .mm-lost__details{display:grid;gap:8px;margin:0 0 22px;text-align:left;font-size:14px;line-height:1.4}
 .mm-lost__details div{display:grid;grid-template-columns:minmax(90px,auto) 1fr;gap:12px;padding-bottom:8px;border-bottom:1px dashed color-mix(in srgb,currentColor 35%,transparent)}
 .mm-lost__details dt{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding-top:2px}
@@ -229,7 +229,7 @@
       "type": "color",
       "id": "button_hover_background",
       "label": "Button background on hover",
-      "default": "#FB7FB0"
+      "default": "#B5D4F4"
     },
     {
       "type": "color",
@@ -384,7 +384,7 @@
       "type": "color",
       "id": "stamp_colour",
       "label": "Stamp colour",
-      "default": "#970C38"
+      "default": "#71253D"
     },
     {
       "type": "text",
@@ -408,13 +408,13 @@
       "type": "color",
       "id": "tape_1",
       "label": "Left tape colour",
-      "default": "#CCDB65"
+      "default": "#CDC167"
     },
     {
       "type": "color",
       "id": "tape_2",
       "label": "Right tape colour",
-      "default": "#FB7FB0"
+      "default": "#B5D4F4"
     },
     {
       "type": "range",
@@ -486,7 +486,7 @@
       "type": "color",
       "id": "accent",
       "label": "Accent colour",
-      "default": "#FB7FB0"
+      "default": "#B5D4F4"
     },
     {
       "type": "range",

@@ -26,7 +26,7 @@
 
     {%- if section.settings.show_collage -%}
       <div class="mm-shero__collage" aria-hidden="true">
-        {%- assign card_colours = '#970C38,#CCDB65,#192FDA,#FB7FB0' | split: ',' -%}
+        {%- assign card_colours = '#71253D,#CDC167,#F0541A,#B5D4F4' | split: ',' -%}
         {%- for i in (1..4) -%}
           {%- liquid
             assign image_key = 'image_' | append: i
@@ -57,16 +57,16 @@
           {%- liquid
             case block.settings.character
               when 'showoff'
-                assign chip_colour = '#970C38'
+                assign chip_colour = '#71253D'
                 assign chip_ink = '#FFFFFF'
               when 'player'
-                assign chip_colour = '#CCDB65'
+                assign chip_colour = '#CDC167'
                 assign chip_ink = '#171514'
               when 'trickster'
-                assign chip_colour = '#192FDA'
+                assign chip_colour = '#F0541A'
                 assign chip_ink = '#FFFFFF'
               when 'helper'
-                assign chip_colour = '#FB7FB0'
+                assign chip_colour = '#B5D4F4'
                 assign chip_ink = '#171514'
               else
                 assign chip_colour = section.settings.chip_hover
@@ -104,10 +104,10 @@
 .mm-shero__copy{display:grid;justify-items:start;gap:20px}
 .mm-home .mm-shero__heading{margin:0;font-size:var(--mm-shero-heading,84px);line-height:.98;letter-spacing:-.035em;text-wrap:balance}
 .mm-shero__inline{display:inline-block;width:.78em;height:.78em;margin:0 .06em;vertical-align:-.04em;background-color:var(--mm-inline,currentColor);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;animation:mm-shero-wiggle 6s ease-in-out infinite}
-.mm-shero__inline--showoff{--mm-inline:#970C38}
-.mm-shero__inline--player{--mm-inline:#CCDB65;animation-delay:-1.5s}
-.mm-shero__inline--trickster{--mm-inline:#192FDA;animation-delay:-3s}
-.mm-shero__inline--helper{--mm-inline:#FB7FB0;animation-delay:-4.5s}
+.mm-shero__inline--showoff{--mm-inline:#71253D}
+.mm-shero__inline--player{--mm-inline:#CDC167;animation-delay:-1.5s}
+.mm-shero__inline--trickster{--mm-inline:#F0541A;animation-delay:-3s}
+.mm-shero__inline--helper{--mm-inline:#B5D4F4;animation-delay:-4.5s}
 @keyframes mm-shero-wiggle{0%,100%{rotate:0deg}20%{rotate:-14deg}40%{rotate:10deg}55%{rotate:0deg}}
 .mm-shero__text{max-width:46ch;font-size:17px;line-height:1.55;opacity:.85}
 .mm-shero__count{display:inline-flex;align-items:center;gap:10px;padding:9px 16px;border:1px solid color-mix(in srgb,var(--mm-ink) 25%,transparent);border-radius:100px;font-size:13px;font-weight:700;letter-spacing:.04em}
@@ -325,7 +325,7 @@
       "type": "color",
       "id": "accent",
       "label": "Accent colour",
-      "default": "#FB7FB0"
+      "default": "#B5D4F4"
     },
     {
       "type": "range",
