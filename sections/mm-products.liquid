@@ -1,9 +1,23 @@
 <section class="mm-home" id="mm-{{ section.id }}">
   <div class="mm-products mm-pad">
-    <div class="mm-section-head"><div><p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2></div>{% if section.settings.button_label != blank %}<a class="mm-text-link" href="{{ section.settings.collection.url | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span></a>{% endif %}</div>
+    {%- assign shop_all_url = section.settings.collection.url | default: routes.all_products_collection_url -%}
+    {%- if section.settings.head_style == 'simple' -%}
+      <div class="mm-products__head">
+        <h2 class="mm-products__heading">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.button_label != blank -%}<a class="mm-products__link" href="{{ shop_all_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">→</span></a>{%- endif -%}
+      </div>
+    {%- else -%}
+      <div class="mm-section-head"><div>{% if section.settings.eyebrow != blank %}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}<h2>{{ section.settings.heading | escape }}</h2></div>{% if section.settings.button_label != blank %}<a class="mm-text-link" href="{{ shop_all_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">{% render 'mm-icon', icon: 'arrow-up-right' %}</span></a>{% endif %}</div>
+    {%- endif -%}
     {% assign selected_collection = section.settings.collection | default: collections.all %}
     {% if selected_collection.products.size > 0 %}
-      {% if section.settings.card_style == 'mishmash' %}
+      {% if section.settings.card_style == 'minimal' %}
+        <ul class="mm-card-grid mm-card-grid--minimal" role="list">
+          {% for product in selected_collection.products limit: section.settings.product_limit %}
+            <li>{% render 'mm-product-card', product: product, settings: section.settings, layout: 'minimal', sizes: '(min-width: 990px) 25vw, 50vw' %}</li>
+          {% endfor %}
+        </ul>
+      {% elsif section.settings.card_style == 'mishmash' %}
         <ul class="mm-card-grid{% if section.settings.card_lines %} mm-card-grid--lines{% endif %}" role="list">
           {% for product in selected_collection.products limit: section.settings.product_limit %}
             <li>{% render 'mm-product-card', product: product, settings: section.settings, sizes: '(min-width: 990px) 25vw, 50vw' %}</li>
@@ -33,12 +47,21 @@
 {% endstyle %}
 {% style %}
 #mm-{{ section.id }} .mm-card-grid{grid-template-columns:repeat({{ section.settings.columns }},minmax(0,1fr));--mm-card-line:{{ section.settings.card_line_colour }}}
+#mm-{{ section.id }} .mm-card-grid--minimal{gap:{{ section.settings.card_gap_vertical }}px {{ section.settings.card_gap }}px}
+#mm-{{ section.id }} .mm-mcard{--mm-card-bg:{{ section.settings.card_image_bg }};--mm-card-pad:{{ section.settings.card_image_padding }}%;--mm-card-title-size:{{ section.settings.card_title_size }}px}
+#mm-{{ section.id }} .mm-pad{padding-left:{{ section.settings.padding_side }}px;padding-right:{{ section.settings.padding_side }}px}
+#mm-{{ section.id }} .mm-products__heading{font-size:{{ section.settings.heading_size }}px}
+@media(max-width:749px){#mm-{{ section.id }} .mm-pad{padding-left:{{ section.settings.padding_side | at_most: 16 }}px;padding-right:{{ section.settings.padding_side | at_most: 16 }}px}#mm-{{ section.id }} .mm-products__heading{font-size:{{ section.settings.heading_mobile }}px}}
 #mm-{{ section.id }} .mm-card{--mm-card-bg:{{ section.settings.card_image_bg }};--mm-card-pad:{{ section.settings.card_image_padding }}%;--mm-card-title-size:{{ section.settings.card_title_size }}px}
 @media(max-width:749px){#mm-{{ section.id }} .mm-card-grid{grid-template-columns:repeat({{ section.settings.card_columns_mobile }},minmax(0,1fr))}}
 {% endstyle %}
 {% style %}#mm-{{ section.id }} .mm-product-grid{grid-template-columns:repeat({{ section.settings.columns }},minmax(0,1fr))}@media(max-width:749px){#mm-{{ section.id }} .mm-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}{% endstyle %}
 {% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_size }}px}@media(max-width:749px){#mm-{{ section.id }} h2{font-size:{{ section.settings.heading_mobile }}px}}{% endstyle %}
 {% stylesheet %}
+.mm-products__head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:22px}
+.mm-home .mm-products__heading{margin:0;font-weight:500;letter-spacing:-.02em;line-height:1.1}
+.mm-home .mm-products__link{flex:none;font-size:14px;font-weight:500}
+.mm-home .mm-products__link:hover{text-decoration:underline;text-underline-offset:3px}
 .mm-card-grid{display:grid;gap:32px 14px;margin:0;padding:0;list-style:none}
 .mm-card-grid--lines{gap:0;border-top:1px solid var(--mm-card-line,#E6E3DC);border-left:1px solid var(--mm-card-line,#E6E3DC)}
 .mm-card-grid--lines>li{box-shadow:inset -1px 0 0 var(--mm-card-line,#E6E3DC),inset 0 -1px 0 var(--mm-card-line,#E6E3DC)}
@@ -115,19 +138,68 @@
     },
     {
       "type": "select",
-      "id": "card_style",
-      "label": "Card style",
-      "default": "mishmash",
+      "id": "head_style",
+      "label": "Heading style",
+      "default": "simple",
       "options": [
         {
+          "value": "simple",
+          "label": "Simple: heading and link on one line"
+        },
+        {
+          "value": "classic",
+          "label": "Large with small heading"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card style",
+      "default": "minimal",
+      "options": [
+        {
+          "value": "minimal",
+          "label": "Simple"
+        },
+        {
           "value": "mishmash",
-          "label": "Mish Mash cards"
+          "label": "Lined grid"
         },
         {
           "value": "classic",
           "label": "Classic"
         }
       ]
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Space between cards",
+      "info": "Simple cards only.",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_gap_vertical",
+      "label": "Space between rows",
+      "info": "Simple cards only.",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "text",
+      "id": "card_colours_label",
+      "label": "Colour count text",
+      "info": "[count] shows the number of colours. Simple cards only.",
+      "default": "[count] colours"
     },
     {
       "type": "select",
@@ -309,6 +381,16 @@
       "step": 5,
       "unit": "px",
       "default": 55
+    },
+    {
+      "type": "range",
+      "id": "padding_side",
+      "label": "Side spacing",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 16
     },
     {
       "type": "select",

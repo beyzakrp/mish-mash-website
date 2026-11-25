@@ -340,15 +340,15 @@
       "type": "mm-products",
       "settings": {
         "eyebrow": "Small objects. A different point of view.",
-        "heading": "The good stuff",
-        "button_label": "Shop all objects",
+        "heading": "New in",
+        "button_label": "Shop all",
         "collection": "",
         "product_limit": 4,
         "columns": 4,
         "second_image": true,
         "show_personality": true,
         "show_price": true,
-        "card_style": "mishmash",
+        "card_style": "minimal",
         "card_columns_mobile": "2",
         "card_lines": true,
         "card_line_colour": "#e6e3dc",
@@ -366,12 +366,13 @@
         "empty_text": "Our collection will appear here soon.",
         "background": "#faf9f5",
         "text_color": "#171514",
-        "padding_top": 90,
-        "padding_bottom": 90,
+        "padding_top": 40,
+        "padding_bottom": 40,
         "padding_mobile": 55,
         "heading_font": "theme",
-        "heading_size": 54,
-        "heading_mobile": 38
+        "heading_size": 28,
+        "heading_mobile": 24,
+        "head_style": "simple"
       }
     },
     "mishmash_personalities": {

@@ -39,6 +39,27 @@
 {% style %}{% if section.settings.heading_font == 'cocogoose' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}{% elsif section.settings.heading_font == 'proxima' %}#mm-{{ section.id }} h1,#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif}{% endif %}{% endstyle %}{% style %}#mm-{{ section.id }} .mm-hero{max-height:none}{% endstyle %}
 {% style %}{% if section.settings.height_mode == 'fill' %}#mm-{{ section.id }} .mm-hero{height:calc(100svh - var(--mm-hero-offset,200px));min-height:480px;max-height:none}@media(max-width:749px){#mm-{{ section.id }} .mm-hero{min-height:420px}}{% endif %}{% endstyle %}
 {% style %}{% if section.settings.height_mode == 'responsive' %}#mm-{{ section.id }} .mm-hero{height:calc(100svh - 138px);min-height:680px;max-height:960px}@media(max-width:749px){#mm-{{ section.id }} .mm-hero{height:80svh;min-height:580px;max-height:800px}}{% endif %}{% endstyle %}
+{% liquid
+  assign align = section.settings.content_align | default: 'left'
+  assign align_mobile = section.settings.content_align_mobile | default: 'same'
+  if align_mobile == 'same'
+    assign align_mobile = align
+  endif
+%}
+{% style %}
+{%- for a in (1..2) -%}
+  {%- if a == 1 -%}{%- assign al = align -%}{%- else -%}{%- assign al = align_mobile -%}@media(max-width:749px){ {%- endif -%}
+  {%- case al -%}
+    {%- when 'center' -%}
+#mm-{{ section.id }} .mm-hero-content{margin-inline:auto;text-align:center}#mm-{{ section.id }} .mm-hero h1,#mm-{{ section.id }} .mm-intro{margin-left:auto;margin-right:auto}#mm-{{ section.id }} .mm-hero:after{background:rgba(0,0,0,{{ section.settings.overlay | times: 0.7 | divided_by: 100.0 }})}
+    {%- when 'right' -%}
+#mm-{{ section.id }} .mm-hero-content{margin-left:auto;margin-right:0;text-align:right}#mm-{{ section.id }} .mm-hero h1,#mm-{{ section.id }} .mm-intro{margin-left:auto;margin-right:0}#mm-{{ section.id }} .mm-hero:after{background:linear-gradient(270deg,rgba(0,0,0,{{ section.settings.overlay | divided_by: 100.0 }}),transparent 85%)}
+    {%- else -%}
+#mm-{{ section.id }} .mm-hero-content{margin-left:0;margin-right:auto;text-align:left}#mm-{{ section.id }} .mm-hero h1,#mm-{{ section.id }} .mm-intro{margin-left:0;margin-right:auto}#mm-{{ section.id }} .mm-hero:after{background:linear-gradient(90deg,rgba(0,0,0,{{ section.settings.overlay | divided_by: 100.0 }}),transparent 85%)}
+  {%- endcase -%}
+  {%- if a == 2 -%}}{%- endif -%}
+{%- endfor -%}
+{% endstyle %}
 {% schema %}
 {
   "name": "MM \u00b7 Opening image",
@@ -296,6 +317,29 @@
           "value": "cocogoose",
           "label": "Cocogoose Regular"
         }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "Text and button alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_align_mobile",
+      "label": "Mobile alignment",
+      "default": "same",
+      "options": [
+        { "value": "same", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
       ]
     },
     {
