@@ -384,7 +384,7 @@
             "description": "Just looks good.",
             "character": "showoff",
             "symbol_filter": "brightness(0) invert(1)",
-            "background": "#970c38",
+            "background": "{{ settings.color_palette.color1 }}",
             "text_color": "#ffffff",
             "link": "",
             "collection": ""

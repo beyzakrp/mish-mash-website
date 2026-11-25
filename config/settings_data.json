@@ -80,11 +80,11 @@
     "content_for_index": [],
     "color_palette": {
       "background": "#faf9f5",
-      "foreground": "#110E0F",
-      "color1": "#970c38",
-      "color3": "#CCDB65",
-      "color4": "#192FDA",
-      "color2": "#FB7FB0"
+      "foreground": "#110e0f",
+      "color1": "#71253D",
+      "color3": "#CDC167",
+      "color4": "#F0541A",
+      "color2": "#B5D4F4"
     }
   },
   "presets": {
