@@ -15,9 +15,9 @@
       <picture class="mm-desktop-image"><source media="(max-width: 600px)" srcset="{{ 'mm-reference-mobile.webp' | asset_url }}"><img class="mm-hero-image" src="{{ 'mm-reference-hero.webp' | asset_url }}" alt="{{ section.settings.image_alt | escape }}" width="2000" height="1333" loading="{{ image_loading }}" fetchpriority="{{ image_priority }}"></picture>
     {% endif %}
     <div class="mm-hero-content">
-      <p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {% if section.settings.eyebrow != blank %}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape | newline_to_br }}</p>{% endif %}
       <h1>{{ section.settings.heading | escape | newline_to_br }}</h1>
-      <p class="mm-intro">{{ section.settings.intro | escape }}</p>
+      {% if section.settings.intro != blank %}<p class="mm-intro">{{ section.settings.intro | escape | newline_to_br }}</p>{% endif %}
       {% if section.settings.button_label != blank %}<a class="mm-button mm-hero-button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }}</a>{% endif %}
     </div>
     {% if section.settings.secondary_label != blank %}<a class="mm-hero-bottom" href="{{ section.settings.secondary_link | default: routes.all_products_collection_url }}">{{ section.settings.secondary_label | escape }} <span aria-hidden="true">{% render 'mm-icon', icon: 'arrow-down' %}</span></a>{% endif %}
@@ -60,6 +60,13 @@
   {%- if a == 2 -%}}{%- endif -%}
 {%- endfor -%}
 {% endstyle %}
+{% style %}
+#mm-{{ section.id }} .mm-hero-content{position:absolute;left:0;right:0;top:{{ section.settings.content_position }}%;transform:translateY(-{{ section.settings.content_position }}%);z-index:1}
+#mm-{{ section.id }} .mm-hero h1{max-width:{{ section.settings.heading_width }}px;margin-bottom:0}
+#mm-{{ section.id }} .mm-intro{margin-top:16px;margin-bottom:0!important}
+#mm-{{ section.id }} .mm-hero-button{margin-top:{{ section.settings.button_gap }}px}
+@media(max-width:749px){#mm-{{ section.id }} .mm-hero-content{top:{{ section.settings.content_position_mobile }}%;transform:translateY(-{{ section.settings.content_position_mobile }}%)}#mm-{{ section.id }} .mm-hero h1{max-width:{{ section.settings.heading_width_mobile }}px}#mm-{{ section.id }} .mm-hero-button{margin-top:{{ section.settings.button_gap_mobile }}px}}
+{% endstyle %}
 {% schema %}
 {
   "name": "MM \u00b7 Opening image",
@@ -74,10 +81,11 @@
       "type": "textarea",
       "id": "heading",
       "label": "Heading",
+      "info": "Press Enter where you want a new line.",
       "default": "A little unexpected.\nA lot of personality."
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "intro",
       "label": "Description",
       "default": "Good company for your everyday spaces."
@@ -318,6 +326,71 @@
           "label": "Cocogoose Regular"
         }
       ]
+    },
+    {
+      "type": "header",
+      "content": "Text layout"
+    },
+    {
+      "type": "range",
+      "id": "content_position",
+      "label": "Text and button height (top → bottom)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_position_mobile",
+      "label": "Mobile text and button height",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "heading_width",
+      "label": "Heading width",
+      "info": "Narrower width moves words to the next line.",
+      "min": 300,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 860
+    },
+    {
+      "type": "range",
+      "id": "heading_width_mobile",
+      "label": "Mobile heading width",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 540
+    },
+    {
+      "type": "range",
+      "id": "button_gap",
+      "label": "Space above button",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "button_gap_mobile",
+      "label": "Mobile space above button",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
     },
     {
       "type": "select",
