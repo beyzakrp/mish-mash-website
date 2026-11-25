@@ -20,6 +20,7 @@
         "image_alt": "Colourful design objects arranged on a sunlit table",
         "button_label": "SHOP NOW",
         "button_link": "",
+        "button_motion": false,
         "secondary_label": "",
         "secondary_link": "shopify://collections",
         "reference_images": true,
@@ -205,6 +206,15 @@
             "text": "Made to be looked at. A sculptural centrepiece that steals the room, with or without flowers."
           }
         },
+        "category_candle": {
+          "type": "category",
+          "settings": {
+            "collection": "lamp",
+            "title": "{{ block.settings.collection.title }}",
+            "character": "trickster",
+            "text": "Not quite what it seems. Playful forms that change character once they are lit."
+          }
+        },
         "category_lamp": {
           "type": "category",
           "settings": {
@@ -216,6 +226,7 @@
         },
         "category_clock": {
           "type": "category",
+          "disabled": true,
           "settings": {
             "collection": "clock",
             "title": "{{ block.settings.collection.title }}",
@@ -223,19 +234,10 @@
             "text": "Time, but make it fun. Bold shapes and colours that turn every glance into a small game."
           }
         },
-        "category_candle": {
-          "type": "category",
-          "settings": {
-            "collection": "lamp",
-            "title": "{{ block.settings.collection.title }}",
-            "character": "trickster",
-            "text": "Not quite what it seems. Playful forms that change character once they are lit."
-          }
-        },
         "category_frame": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "photo-frame",
             "title": "Magnet Frame",
             "character": "player",
             "text": "Swap, stack, rearrange. A frame that lets your memories play musical chairs."
@@ -244,21 +246,24 @@
       },
       "block_order": [
         "category_vase",
+        "category_candle",
         "category_lamp",
         "category_clock",
-        "category_candle",
         "category_frame"
       ],
       "settings": {
         "eyebrow": "",
-        "heading": "MEET THE OBJECTS",
+        "heading": "Meet the objects",
         "full_width": true,
         "row_height": 560,
         "background": "#faf9f5",
         "text_color": "#171514",
         "padding_top": 40,
         "padding_bottom": 0,
-        "padding_mobile": 0
+        "padding_mobile": 30,
+        "text_style": "minimal",
+        "heading_size": 28,
+        "heading_mobile": 24
       }
     },
     "mishmash_objects": {

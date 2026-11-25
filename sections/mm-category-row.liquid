@@ -10,6 +10,9 @@
           {%- if section.settings.eyebrow != blank -%}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
           <h2>{{ section.settings.heading | escape | newline_to_br }}</h2>
         </div>
+        {%- if section.settings.text_style != 'bold' and section.settings.link_label != blank -%}
+          <a class="mm-cat-head-link" href="{{ section.settings.link_url | default: routes.all_products_collection_url }}">{{ section.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+        {%- endif -%}
       </div>
     {%- endif -%}
 
@@ -86,7 +89,31 @@
 #mm-{{ section.id }} .mm-cat-row{gap:0}
 #mm-{{ section.id }} .mm-cat{border-radius:0}
 {%- endif -%}
+{%- if section.settings.text_style == 'bold' -%}
 #mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}
+{%- else -%}
+#mm-{{ section.id }} h2,#mm-{{ section.id }} h3{font-family:'MM Proxima Nova',Arial,sans-serif;font-weight:500;letter-spacing:-.01em;text-transform:none}
+#mm-{{ section.id }} .mm-cat-wrap{padding-left:{{ section.settings.padding_side }}px;padding-right:{{ section.settings.padding_side }}px}
+#mm-{{ section.id }} .mm-cat-wrap .mm-section-head{padding:0;flex-direction:row;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:22px}
+#mm-{{ section.id }} .mm-section-head h2{margin:0;font-family:var(--font-heading--family);font-weight:500;font-size:{{ section.settings.heading_size }}px;line-height:1.1;letter-spacing:-.02em}
+#mm-{{ section.id }} .mm-cat-head-link{flex:none;font-size:14px;font-weight:500}
+#mm-{{ section.id }} .mm-cat-head-link:hover{text-decoration:underline;text-underline-offset:3px}
+#mm-{{ section.id }} .mm-cat-row{gap:{{ section.settings.card_gap }}px}
+#mm-{{ section.id }} .mm-cat{border-radius:0}
+#mm-{{ section.id }} .mm-cat h3,#mm-{{ section.id }} .mm-cat-row:has(.mm-cat:hover,.mm-cat:focus-within) .mm-cat:not(:hover,:focus-within) h3{font-size:{{ section.settings.title_size }}px;line-height:1.2}
+#mm-{{ section.id }} .mm-cat{padding:20px}
+#mm-{{ section.id }} .mm-cat-character{padding:0;background:none;color:inherit;font-weight:500;font-size:11px;letter-spacing:.06em;margin-bottom:8px;display:inline-flex;align-items:center;gap:6px}
+#mm-{{ section.id }} .mm-cat-character:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--mm-accent)}
+#mm-{{ section.id }} .mm-cat-detail p{font-size:14px;padding-top:8px;max-width:300px}
+#mm-{{ section.id }} .mm-cat-cta{font-weight:500;letter-spacing:.02em;margin-top:10px}
+#mm-{{ section.id }} .mm-cat-symbol{width:{{ section.settings.symbol_size }}px}
+#mm-{{ section.id }} .mm-cat:after{height:3px}
+{%- endif -%}
+@media(min-width:750px){
+#mm-{{ section.id }} .mm-cat-row .mm-cat:is(:hover,:focus-within){flex-grow:{{ section.settings.hover_growth | divided_by: 10.0 }}}
+#mm-{{ section.id }} .mm-cat-row:has(.mm-cat:hover,.mm-cat:focus-within) .mm-cat:not(:hover,:focus-within){flex-grow:{% if section.settings.hover_growth < 20 %}.9{% else %}.8{% endif %}}
+}
+@media(max-width:749px){#mm-{{ section.id }} .mm-cat.is-active{height:{{ section.settings.mobile_open_height }}px}{%- if section.settings.text_style != 'bold' -%}#mm-{{ section.id }} .mm-cat-wrap{padding-left:{{ section.settings.padding_side | at_most: 16 }}px;padding-right:{{ section.settings.padding_side | at_most: 16 }}px}#mm-{{ section.id }} .mm-section-head h2{font-size:{{ section.settings.heading_mobile }}px}{%- endif -%}}
 {% endstyle %}
 
 {% schema %}
@@ -94,6 +121,115 @@
   "name": "MM · Category row",
   "max_blocks": 6,
   "settings": [
+    {
+      "type": "select",
+      "id": "text_style",
+      "label": "Text style",
+      "default": "minimal",
+      "options": [
+        { "value": "minimal", "label": "Minimal (Proxima)" },
+        { "value": "bold", "label": "Bold (Cocogoose)" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 28,
+      "visible_if": "{{ section.settings.text_style == 'minimal' }}"
+    },
+    {
+      "type": "range",
+      "id": "heading_mobile",
+      "label": "Mobile heading size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24,
+      "visible_if": "{{ section.settings.text_style == 'minimal' }}"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Right link label",
+      "default": "Shop all",
+      "visible_if": "{{ section.settings.text_style == 'minimal' }}"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Right link",
+      "visible_if": "{{ section.settings.text_style == 'minimal' }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_side",
+      "label": "Side spacing",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ section.settings.text_style == 'minimal' }}"
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Space between cards",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8,
+      "visible_if": "{{ section.settings.text_style == 'minimal' }}"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Card title size",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 20,
+      "visible_if": "{{ section.settings.text_style == 'minimal' }}"
+    },
+    {
+      "type": "range",
+      "id": "symbol_size",
+      "label": "Symbol size",
+      "min": 24,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 44,
+      "visible_if": "{{ section.settings.text_style == 'minimal' }}"
+    },
+    {
+      "type": "range",
+      "id": "hover_growth",
+      "label": "How much the hovered card opens",
+      "info": "10 = no growth, 34 = the original large opening.",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_open_height",
+      "label": "Mobile open card height",
+      "min": 200,
+      "max": 500,
+      "step": 20,
+      "unit": "px",
+      "default": 340
+    },
     {
       "type": "text",
       "id": "eyebrow",
