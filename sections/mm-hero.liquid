@@ -18,7 +18,7 @@
       {% if section.settings.eyebrow != blank %}<p class="mm-eyebrow">{{ section.settings.eyebrow | escape | newline_to_br }}</p>{% endif %}
       <h1>{{ section.settings.heading | escape | newline_to_br }}</h1>
       {% if section.settings.intro != blank %}<p class="mm-intro">{{ section.settings.intro | escape | newline_to_br }}</p>{% endif %}
-      {% if section.settings.button_label != blank %}<a class="mm-button mm-hero-button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }}</a>{% endif %}
+      {% if section.settings.button_label != blank %}<a class="mm-button mm-hero-button"{% unless section.settings.button_motion %} data-mm-magnetic="off"{% endunless %} href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }}</a>{% endif %}
     </div>
     {% if section.settings.secondary_label != blank %}<a class="mm-hero-bottom" href="{{ section.settings.secondary_link | default: routes.all_products_collection_url }}">{{ section.settings.secondary_label | escape }} <span aria-hidden="true">{% render 'mm-icon', icon: 'arrow-down' %}</span></a>{% endif %}
   </div>
@@ -67,6 +67,7 @@
 #mm-{{ section.id }} .mm-hero-button{margin-top:{{ section.settings.button_gap }}px}
 @media(max-width:749px){#mm-{{ section.id }} .mm-hero-content{top:{{ section.settings.content_position_mobile }}%;transform:translateY(-{{ section.settings.content_position_mobile }}%)}#mm-{{ section.id }} .mm-hero h1{max-width:{{ section.settings.heading_width_mobile }}px}#mm-{{ section.id }} .mm-hero-button{margin-top:{{ section.settings.button_gap_mobile }}px}}
 {% endstyle %}
+{% unless section.settings.button_motion %}{% style %}#mm-{{ section.id }} .mm-hero-button,#mm-{{ section.id }} .mm-hero-button:hover,#mm-{{ section.id }} .mm-hero-button span{transform:none!important}{% endstyle %}{% endunless %}
 {% schema %}
 {
   "name": "MM \u00b7 Opening image",
@@ -116,6 +117,12 @@
       "type": "url",
       "id": "button_link",
       "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_motion",
+      "label": "Button moves on hover",
+      "default": true
     },
     {
       "type": "text",
