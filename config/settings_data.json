@@ -13,7 +13,7 @@
     "logo_inverse": "shopify://shop_images/mm-white.svg",
     "logo_height": 45,
     "logo_height_mobile": 28,
-    "favicon": "shopify://shop_images/Union.png",
+    "favicon": "shopify://shop_images/square-logo-favicon.png",
     "page_text_color": "{{ settings.color_palette.foreground }}",
     "type_body_font": "red_hat_display_n5",
     "type_subheading_font": "red_hat_display_n5",
