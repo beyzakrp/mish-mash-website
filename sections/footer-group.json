@@ -17,7 +17,7 @@
         "newsletter": {
           "type": "newsletter",
           "settings": {
-            "band": "showoff",
+            "band": "helper",
             "band_symbol": "none",
             "eyebrow": "Join the mix",
             "heading": "New objects, new stories\nand the odd surprise.",
