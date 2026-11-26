@@ -97,4 +97,4 @@ body:has(#header-component[transparent]) .mm-hero:before{content:"";position:abs
 #header-component#header-component .header__columns,#header-component#header-component[data-menu-style="drawer"] .header__columns{padding-left:16px;padding-right:16px}
 
 /* Theme sections (Dwell page-width): same 16px side margin as mm-* sections */
-body:is(.page-width-wide,.page-width-normal,.page-width-narrow,.page-width-content){--page-margin:max(16px,var(--safe-area-inset-left,0px),var(--safe-area-inset-right,0px))}
+body:is(.page-width-wide,.page-width-normal,.page-width-narrow,.page-width-content){--page-margin:max(16px,var(--safe-area-inset-left,0px),var(--safe-area-inset-right,0px));--page-content-width:100vw;--page-width:calc(100vw + var(--page-margin) * 2)}
