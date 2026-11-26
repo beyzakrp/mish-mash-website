@@ -408,6 +408,7 @@
         "eyebrow": "Good to know",
         "heading": "Why you will love\nthese clocks.",
         "heading_font": "theme",
+        "padding_side": 16,
         "heading_size": 28,
         "heading_mobile": 24,
         "background": "#faf9f5",
@@ -1362,17 +1363,17 @@
       "settings": {
         "content_direction": "row",
         "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
+        "horizontal_alignment": "center",
         "vertical_alignment": "center",
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 16,
-        "section_width": "page-width",
+        "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
         "background_media": "none",
-        "background_color": "",
+        "background_color": "{{ settings.color_palette.background }}",
         "video_position": "cover",
         "background_image_position": "cover",
         "toggle_overlay": false,
@@ -1384,8 +1385,8 @@
         "border_opacity": 100,
         "border_color": "",
         "border_radius": 0,
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-start": 35,
+        "padding-block-end": 35
       }
     },
     "section_bzjcQa": {
@@ -1440,7 +1441,7 @@
                 "horizontal_alignment": "flex-start",
                 "vertical_alignment": "center",
                 "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "center",
+                "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
                 "gap": 12,
                 "width": "fill",
@@ -1476,7 +1477,7 @@
                   "name": "t:names.heading",
                   "settings": {
                     "text": "<h2>Find your perfect match</h2>",
-                    "width": "fit-content",
+                    "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
                     "type_preset": "rte",
@@ -1535,8 +1536,8 @@
               "settings": {
                 "content_direction": "row",
                 "vertical_on_mobile": false,
-                "horizontal_alignment": "center",
-                "vertical_alignment": "center",
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "flex-start",
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
@@ -1569,25 +1570,6 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "button_RfFFQK": {
-                  "type": "button",
-                  "name": "t:names.button",
-                  "settings": {
-                    "label": "View all",
-                    "link": "shopify://collections/all",
-                    "open_in_new_tab": false,
-                    "style_class": "button-secondary",
-                    "custom_button_background": "{{ settings.color_palette.foreground }}",
-                    "custom_button_text": "{{ settings.color_palette.background }}",
-                    "custom_button_border": "{{ settings.color_palette.background }}",
-                    "link_text_color": "",
-                    "width": "fit-content",
-                    "custom_width": 34,
-                    "width_mobile": "fit-content",
-                    "custom_width_mobile": 34
-                  },
-                  "blocks": {}
-                },
                 "button_zYAY3J": {
                   "type": "button",
                   "name": "t:names.button",
@@ -1606,11 +1588,30 @@
                     "custom_width_mobile": 34
                   },
                   "blocks": {}
+                },
+                "button_RfFFQK": {
+                  "type": "button",
+                  "name": "t:names.button",
+                  "settings": {
+                    "label": "View all",
+                    "link": "shopify://collections/all",
+                    "open_in_new_tab": false,
+                    "style_class": "button-secondary",
+                    "custom_button_background": "{{ settings.color_palette.foreground }}",
+                    "custom_button_text": "{{ settings.color_palette.background }}",
+                    "custom_button_border": "{{ settings.color_palette.background }}",
+                    "link_text_color": "",
+                    "width": "fit-content",
+                    "custom_width": 34,
+                    "width_mobile": "fit-content",
+                    "custom_width_mobile": 34
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
-                "button_RfFFQK",
-                "button_zYAY3J"
+                "button_zYAY3J",
+                "button_RfFFQK"
               ]
             }
           },
@@ -1965,7 +1966,7 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 32,
+        "gap": 30,
         "section_width": "page-width",
         "section_height": "",
         "section_height_custom": 50,
