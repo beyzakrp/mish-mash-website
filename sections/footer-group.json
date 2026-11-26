@@ -149,7 +149,7 @@
         "background": "#DEDDD6",
         "text_color": "{{ settings.color_palette.foreground }}",
         "heading_colour": "{{ settings.color_palette.foreground }}",
-        "accent": "{{ settings.color_palette.background }}",
+        "accent": "{{ settings.color_palette.color1 }}",
         "columns": 0,
         "column_gap": 40,
         "heading_size": 13,
