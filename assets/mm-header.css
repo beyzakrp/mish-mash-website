@@ -92,3 +92,6 @@ body:has(#header-component[transparent]) .mm-hero:before{content:"";position:abs
 .mega-menu__content-list-item:hover .resource-card--overlay .resource-card__title:after{opacity:1;translate:0 0}
 
 @media(prefers-reduced-motion:reduce){.header-menu .mm-roll,.header-menu .mm-roll:after{transition:none}.mm-menu-animate :is(.mega-menu__column,.mega-menu__content-list-item){opacity:1;translate:none;filter:none;transition:none}.mega-menu__content-list-item:hover img{scale:none}.mega-menu__content-list-item :is(img,.resource-card__content,.resource-card__title:after){transition:none}}
+
+/* Header side spacing: matches .mm-pad sections (16px) */
+#header-component#header-component .header__columns,#header-component#header-component[data-menu-style="drawer"] .header__columns{padding-left:16px;padding-right:16px}
