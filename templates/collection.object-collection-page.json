@@ -349,9 +349,9 @@
       "settings": {
         "eyebrow": "Good to know",
         "heading": "Why you will love.",
-        "heading_font": "cocogoose",
-        "heading_size": 44,
-        "heading_mobile": 36,
+        "heading_font": "theme",
+        "heading_size": 28,
+        "heading_mobile": 24,
         "background": "#faf9f5",
         "text_color": "#171514",
         "accent": "#b5d4f4",

@@ -46,7 +46,11 @@
 </section>
 
 {%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
-{% style %}{{ mm_section_css }}{% endstyle %}
+{% style %}{{ mm_section_css }}
+#mm-{{ section.id }} .mm-pad{padding-left:{{ section.settings.padding_side }}px;padding-right:{{ section.settings.padding_side }}px}
+@media(max-width:749px){#mm-{{ section.id }} .mm-pad{padding-left:{{ section.settings.padding_side | at_most: 16 }}px;padding-right:{{ section.settings.padding_side | at_most: 16 }}px}}
+{%- if section.settings.heading_font == 'theme' -%}#mm-{{ section.id }} h2{font-weight:500;letter-spacing:-.02em;line-height:1.1}{%- endif -%}
+{% endstyle %}
 
 {% stylesheet %}
 .mm-ofeat__list{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:1px solid color-mix(in srgb,var(--mm-ink) 18%,transparent)}
@@ -110,6 +114,16 @@
           "label": "Cocogoose Regular"
         }
       ]
+    },
+    {
+      "type": "range",
+      "id": "padding_side",
+      "label": "Side spacing",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 16
     },
     {
       "type": "range",
