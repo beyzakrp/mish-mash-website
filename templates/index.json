@@ -194,21 +194,6 @@
         "direction": "left"
       }
     },
-    "divider_LgEDP4": {
-      "type": "divider",
-      "name": "t:names.divider_section",
-      "settings": {
-        "background_color": "",
-        "divider_color": "#B2AEAE",
-        "section_width": "full-width",
-        "thickness": 1,
-        "corner_radius": "square",
-        "width_percent": 100,
-        "alignment_horizontal": "center",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
     "mishmash_category_row": {
       "type": "mm-category-row",
       "blocks": {
@@ -2177,14 +2162,15 @@
           "type": "_content-without-appearance",
           "static": true,
           "settings": {
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "space-between",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
             "gap": 24
           },
           "blocks": {
             "text_Fjzwmp": {
               "type": "text",
               "name": "t:names.caption",
+              "disabled": true,
               "settings": {
                 "text": "<p>FAQ</p>",
                 "width": "fit-content",
@@ -2467,6 +2453,7 @@
             },
             "button_z9qPKx": {
               "type": "button",
+              "disabled": true,
               "settings": {
                 "label": "Shop now",
                 "link": "shopify://collections/all",
@@ -2830,7 +2817,7 @@
               "name": "t:names.jumbo_text",
               "settings": {
                 "text": "special\nto you",
-                "font": "subheading",
+                "font": "body",
                 "alignment": "right",
                 "line_height": "0.8",
                 "letter_spacing": "-0.03em",
@@ -3080,7 +3067,6 @@
   "order": [
     "mishmash_hero",
     "mishmash_ticker",
-    "divider_LgEDP4",
     "mishmash_category_row",
     "mishmash_objects",
     "mm_object_details_wgBFAg",
