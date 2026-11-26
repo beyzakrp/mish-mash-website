@@ -17,6 +17,8 @@
         "newsletter": {
           "type": "newsletter",
           "settings": {
+            "band": "showoff",
+            "band_symbol": "none",
             "eyebrow": "Join the mix",
             "heading": "New objects, new stories\nand the odd surprise.",
             "text": "",
@@ -29,9 +31,7 @@
             "button_border": "#faf9f5",
             "button_border_width": 3,
             "button_hover_background": "#faf9f5",
-            "button_hover_text": "#f0541a",
-            "band": "helper",
-            "band_symbol": "showoff"
+            "button_hover_text": "#f0541a"
           }
         },
         "menu_shop": {
@@ -43,12 +43,13 @@
             "badge_link": "",
             "badge_text": "New",
             "badge_background": "{{ settings.color_palette.color3 }}",
-            "badge_text_colour": "#171514",
+            "badge_text_colour": "{{ settings.color_palette.foreground }}",
             "open_on_mobile": true
           }
         },
         "menu_characters": {
           "type": "menu",
+          "disabled": true,
           "settings": {
             "menu": "characters",
             "heading": "Characters",
@@ -78,36 +79,12 @@
           "settings": {
             "menu": "mish-mash",
             "heading": "Mish Mash",
-            "link_symbols": true,
-            "badge_link": "Blog",
+            "link_symbols": false,
+            "badge_link": "",
             "badge_text": "New",
             "badge_background": "#cdc167",
             "badge_text_colour": "#171514",
             "open_on_mobile": false
-          }
-        },
-        "brand": {
-          "type": "brand",
-          "settings": {
-            "logo_image": "shopify://shop_images/mm-white.svg",
-            "mark_height": 150,
-            "show_symbols": true,
-            "symbol_colour": "hover",
-            "symbol_gap": 68,
-            "symbol_motion": "spin",
-            "tagline": "Serious about design.\nPlayful by nature.",
-            "tagline_size": 30,
-            "layout": "bleed",
-            "crop": 40
-          }
-        },
-        "legal": {
-          "type": "legal",
-          "settings": {
-            "copyright": "© [year] mish-mash",
-            "menu": "",
-            "show_policies": false,
-            "show_payment_icons": true
           }
         },
         "social": {
@@ -120,6 +97,7 @@
             "youtube": "",
             "facebook": "",
             "email": "",
+            "email_label": "Email us",
             "open_on_mobile": false
           }
         },
@@ -129,6 +107,30 @@
             "heading": "Legal",
             "menu": "",
             "open_on_mobile": false
+          }
+        },
+        "legal": {
+          "type": "legal",
+          "settings": {
+            "copyright": "© [year] mish-mash",
+            "menu": "",
+            "show_policies": false,
+            "show_payment_icons": true
+          }
+        },
+        "brand": {
+          "type": "brand",
+          "settings": {
+            "layout": "bleed",
+            "crop": 40,
+            "logo_image": "shopify://shop_images/mm-white.svg",
+            "mark_height": 150,
+            "show_symbols": true,
+            "symbol_colour": "hover",
+            "symbol_gap": 68,
+            "symbol_motion": "spin",
+            "tagline": "Serious about design.\nPlayful by nature.",
+            "tagline_size": 30
           }
         }
       },
@@ -144,9 +146,9 @@
         "brand"
       ],
       "settings": {
-        "background": "#171514",
-        "text_color": "#ffffff",
-        "heading_colour": "{{ settings.color_palette.color3 }}",
+        "background": "#DEDDD6",
+        "text_color": "{{ settings.color_palette.foreground }}",
+        "heading_colour": "{{ settings.color_palette.foreground }}",
         "accent": "{{ settings.color_palette.background }}",
         "columns": 0,
         "column_gap": 40,
