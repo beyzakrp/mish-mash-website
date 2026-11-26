@@ -1,7 +1,7 @@
 {%- liquid
   assign column_count = 0
   for block in section.blocks
-    if block.type == 'menu' or block.type == 'social'
+    if block.type == 'menu' or block.type == 'social' or block.type == 'policies'
       assign column_count = column_count | plus: 1
     endif
   endfor
@@ -14,7 +14,7 @@
 <footer class="mm-home mm-footer{% if section.settings.dividers %} mm-footer--lines{% endif %}" id="mm-{{ section.id }}">
   {%- for block in section.blocks -%}
     {%- assign is_column = false -%}
-    {%- if block.type == 'menu' or block.type == 'social' -%}{%- assign is_column = true -%}{%- endif -%}
+    {%- if block.type == 'menu' or block.type == 'social' or block.type == 'policies' -%}{%- assign is_column = true -%}{%- endif -%}
 
     {%- if is_column and in_columns == false -%}
       {%- assign in_columns = true -%}
@@ -28,7 +28,38 @@
 
     {%- case block.type -%}
       {%- when 'newsletter' -%}
-        <div class="mm-footer__news mm-footer__news--{{ block.settings.layout }}" {{ block.shopify_attributes }}>
+        {%- liquid
+          assign band = block.settings.band
+          assign band_bg = ''
+          case band
+            when 'showoff'
+              assign band_bg = '#71253D'
+            when 'player'
+              assign band_bg = '#CDC167'
+            when 'trickster'
+              assign band_bg = '#F0541A'
+            when 'helper'
+              assign band_bg = '#B5D4F4'
+          endcase
+          assign band_ink = '#171514'
+          if band == 'showoff'
+            assign band_ink = '#FFFFFF'
+          endif
+          case block.settings.band_symbol
+            when 'showoff'
+              assign band_symbol_colour = '#71253D'
+            when 'player'
+              assign band_symbol_colour = '#CDC167'
+            when 'trickster'
+              assign band_symbol_colour = '#F0541A'
+            else
+              assign band_symbol_colour = '#B5D4F4'
+          endcase
+        -%}
+        <div class="mm-footer__news mm-footer__news--{{ block.settings.layout }}{% if band_bg != blank %} mm-footer__news--band{% endif %}"{% if band_bg != blank %} style="--mm-band-bg: {{ band_bg }}; --mm-band-ink: {{ band_ink }};"{% endif %} {{ block.shopify_attributes }}>
+          {%- if band_bg != blank and block.settings.band_symbol != 'none' -%}
+            <span class="mm-footer__band-symbol" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: block.settings.band_symbol | append: '.svg' | asset_url }}); --mm-symbol-color: {{ band_symbol_colour }};" aria-hidden="true"></span>
+          {%- endif -%}
           <div class="mm-footer__news-copy">
             {%- if block.settings.eyebrow != blank -%}<p class="mm-footer__eyebrow">{{ block.settings.eyebrow | escape }}</p>{%- endif -%}
             {%- if block.settings.heading != blank -%}<h2 class="mm-footer__news-heading">{{ block.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
@@ -142,7 +173,34 @@
           </details>
         {%- endif -%}
 
+      {%- when 'policies' -%}
+        {%- assign policy_menu = block.settings.menu -%}
+        <details class="mm-footer__col" data-open-mobile="{{ block.settings.open_on_mobile }}" open {{ block.shopify_attributes }}>
+          <summary class="mm-footer__col-heading">
+            <span>{{ block.settings.heading | escape }}</span>
+            <svg class="mm-footer__chevron" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2 5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <ul class="mm-footer__links" role="list">
+            {%- if policy_menu.links.size > 0 -%}
+              {%- for link in policy_menu.links -%}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{%- endfor -%}
+            {%- else -%}
+              {%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- endfor -%}
+            {%- endif -%}
+          </ul>
+        </details>
+
       {%- when 'brand' -%}
+        {%- if block.settings.layout == 'bleed' -%}
+          <div class="mm-footer__bleed" style="--mm-bleed-gap: {{ block.settings.symbol_gap }}px; --mm-bleed-show: {{ 100 | minus: block.settings.crop | divided_by: 100.0 }};" {{ block.shopify_attributes }}>
+            <ul class="mm-footer__bleed-row mm-footer__symbols--{{ block.settings.symbol_colour }}{% if block.settings.symbol_motion != 'none' %} mm-footer__symbols--{{ block.settings.symbol_motion }}{% endif %}" role="list" aria-hidden="true">
+              {%- assign footer_symbols = 'showoff:#71253D,player:#CDC167,trickster:#F0541A,helper:#B5D4F4' | split: ',' -%}
+              {%- for pair in footer_symbols -%}
+                {%- assign parts = pair | split: ':' -%}
+                <li style="--mm-symbol-url: url({{ 'mm-symbol-' | append: parts[0] | append: '.svg' | asset_url }}); --mm-symbol-color: {{ parts[1] }};"><span class="mm-footer__symbol"></span></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- else -%}
         <div class="mm-footer__mark" {{ block.shopify_attributes }}>
           {%- liquid
             assign logo_ratio = 1.203
@@ -186,6 +244,7 @@
           </div>
           {%- if block.settings.tagline != blank -%}<p class="mm-footer__tagline" style="--mm-footer-tagline: {{ block.settings.tagline_size }}px;">{{ block.settings.tagline | escape | newline_to_br }}</p>{%- endif -%}
         </div>
+        {%- endif -%}
 
       {%- when 'legal' -%}
         <div class="mm-footer__legal" {{ block.shopify_attributes }}>
@@ -217,8 +276,8 @@
 </footer>
 
 {% style %}
-#mm-{{ section.id }}{--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};--mm-accent:{{ section.settings.accent }};--mm-footer-heading:{{ section.settings.heading_colour }};--mm-footer-heading-size:{{ section.settings.heading_size }}px;--mm-footer-link-size:{{ section.settings.link_size }}px;--mm-footer-link-gap:{{ section.settings.link_gap }}px;--mm-footer-col-gap:{{ section.settings.column_gap }}px;--mm-footer-columns:{{ desktop_columns }};--mm-footer-block-gap:{{ section.settings.block_gap }}px;--mm-footer-news-size:{{ section.settings.newsletter_heading_size }}px;background:var(--mm-paper);color:var(--mm-ink);padding:{{ section.settings.padding_top }}px {{ section.settings.padding_side }}% {{ section.settings.padding_bottom }}px}
-@media(max-width:749px){#mm-{{ section.id }}{--mm-footer-block-gap:{{ section.settings.block_gap | times: 0.7 | round }}px;padding:{{ section.settings.padding_mobile }}px 20px {{ section.settings.padding_bottom | at_most: 40 }}px}}
+#mm-{{ section.id }}{--mm-footer-pad-bottom:{{ section.settings.padding_bottom }}px;--mm-footer-pad-side:{{ section.settings.padding_side }}px;--mm-footer-pad-top:{{ section.settings.padding_top }}px;--mm-paper:{{ section.settings.background }};--mm-ink:{{ section.settings.text_color }};--mm-accent:{{ section.settings.accent }};--mm-footer-heading:{{ section.settings.heading_colour }};--mm-footer-heading-size:{{ section.settings.heading_size }}px;--mm-footer-link-size:{{ section.settings.link_size }}px;--mm-footer-link-gap:{{ section.settings.link_gap }}px;--mm-footer-col-gap:{{ section.settings.column_gap }}px;--mm-footer-columns:{{ desktop_columns }};--mm-footer-block-gap:{{ section.settings.block_gap }}px;--mm-footer-news-size:{{ section.settings.newsletter_heading_size }}px;background:var(--mm-paper);color:var(--mm-ink);padding:{{ section.settings.padding_top }}px {{ section.settings.padding_side }}px {{ section.settings.padding_bottom }}px}
+@media(max-width:749px){#mm-{{ section.id }}{--mm-footer-pad-side:{{ section.settings.padding_side | at_most: 16 }}px;--mm-footer-pad-top:{{ section.settings.padding_mobile }}px;--mm-footer-block-gap:{{ section.settings.block_gap | times: 0.7 | round }}px;padding:{{ section.settings.padding_mobile }}px {{ section.settings.padding_side | at_most: 16 }}px {{ section.settings.padding_bottom | at_most: 40 }}px}}
 {% endstyle %}
 
 {% stylesheet %}
@@ -239,6 +298,28 @@
 .mm-footer__news input[type=email]:focus{border-color:var(--mm-ink)}
 .mm-footer__news-button{min-height:56px;padding:0 30px;border-radius:40px;border:var(--mm-fb-border-width,3px) solid var(--mm-fb-border);background:var(--mm-fb-bg);color:var(--mm-fb-text);font:inherit;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .25s,color .25s,translate .3s}
 .mm-footer__news-button:hover{background:var(--mm-fb-hover-bg);color:var(--mm-fb-hover-text);translate:0 -2px}
+.mm-footer__news--band{position:relative;overflow:hidden;margin-inline:calc(var(--mm-footer-pad-side,16px) * -1);padding:clamp(28px,4vw,48px) var(--mm-footer-pad-side,16px);background:var(--mm-band-bg);color:var(--mm-band-ink)}
+.mm-footer__news--band:first-child{margin-top:calc(var(--mm-footer-pad-top,0px) * -1)}
+.mm-footer--lines>.mm-footer__news--band{padding-bottom:clamp(28px,4vw,48px);border-bottom:0}
+.mm-footer__news--band .mm-footer__eyebrow{color:inherit;opacity:.8}
+.mm-footer__news--band input[type=email]{border-color:color-mix(in srgb,var(--mm-band-ink) 45%,transparent)}
+.mm-footer__news--band input[type=email]:focus{border-color:var(--mm-band-ink)}
+.mm-footer__news--band .mm-footer__news-button{border-color:var(--mm-band-ink);background:var(--mm-band-ink);color:var(--mm-band-bg)}
+.mm-footer__news--band .mm-footer__news-button:hover{background:transparent;color:var(--mm-band-ink)}
+.mm-footer__news--band>:not(.mm-footer__band-symbol){position:relative;z-index:1}
+.mm-footer__band-symbol{position:absolute;right:var(--mm-footer-pad-side,16px);top:clamp(16px,2vw,28px);width:clamp(40px,4vw,56px);aspect-ratio:1;background-color:var(--mm-symbol-color);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:rotate .9s cubic-bezier(.34,1.56,.64,1)}
+.mm-footer__news--band:hover .mm-footer__band-symbol{rotate:120deg}
+@media(min-width:990px){.mm-footer__news--band:has(.mm-footer__band-symbol){padding-right:calc(clamp(40px,4vw,56px) + var(--mm-footer-pad-side,16px) + 24px)}}
+@media(max-width:989px){.mm-footer__news--band:has(.mm-footer__band-symbol){padding-top:calc(clamp(40px,4vw,56px) + clamp(16px,2vw,28px) * 1.5)}}
+.mm-footer--lines>.mm-footer__cols+.mm-footer__legal{border-top:0;padding-top:0}
+.mm-footer--lines>.mm-footer__legal:has(+.mm-footer__bleed){border-bottom:0}
+.mm-footer__bleed{container-type:inline-size;overflow:hidden;margin-bottom:calc(var(--mm-footer-pad-bottom,0px) * -1)}
+.mm-footer__bleed-row{--s:calc((100cqw - var(--mm-bleed-gap,24px) * 3) / 4);display:grid;grid-template-columns:repeat(4,var(--s));gap:var(--mm-bleed-gap,24px);height:calc(var(--s) * var(--mm-bleed-show,.6));margin:0;padding:0;list-style:none}
+.mm-footer__bleed-row li{width:var(--s);height:var(--s)}
+.mm-footer__bleed-row .mm-footer__symbol{display:block;width:100%;height:100%;background-color:var(--mm-symbol-color);-webkit-mask:var(--mm-symbol-url) center/contain no-repeat;mask:var(--mm-symbol-url) center/contain no-repeat;transition:background-color .35s,rotate .9s cubic-bezier(.34,1.56,.64,1)}
+.mm-footer__bleed-row.mm-footer__symbols--ink .mm-footer__symbol,.mm-footer__bleed-row.mm-footer__symbols--hover .mm-footer__symbol{background-color:var(--mm-ink)}
+.mm-footer__bleed-row.mm-footer__symbols--hover li:hover .mm-footer__symbol{background-color:var(--mm-symbol-color)}
+.mm-footer__bleed-row.mm-footer__symbols--spin li:hover .mm-footer__symbol{rotate:60deg}
 .mm-footer__message{flex-basis:100%;margin:4px 0 0!important;font-size:13px}
 .mm-footer__cols-grid{display:grid;grid-template-columns:repeat(var(--mm-footer-columns,4),minmax(0,1fr));gap:var(--mm-footer-col-gap,40px)}
 .mm-footer__col summary{list-style:none}
@@ -473,10 +554,10 @@ if (!customElements.get('mm-footer-columns')) {
       "id": "padding_side",
       "label": "Side spacing",
       "min": 0,
-      "max": 12,
-      "step": 1,
-      "unit": "%",
-      "default": 5
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 16
     },
     {
       "type": "range",
@@ -495,6 +576,33 @@ if (!customElements.get('mm-footer-columns')) {
       "name": "Newsletter",
       "limit": 1,
       "settings": [
+        {
+          "type": "select",
+          "id": "band",
+          "label": "Background colour",
+          "default": "none",
+          "options": [
+            { "value": "none", "label": "Same as footer" },
+            { "value": "showoff", "label": "Show-off" },
+            { "value": "player", "label": "Player" },
+            { "value": "trickster", "label": "Trickster" },
+            { "value": "helper", "label": "Helper" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "band_symbol",
+          "label": "Corner symbol",
+          "default": "showoff",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "showoff", "label": "Show-off" },
+            { "value": "player", "label": "Player" },
+            { "value": "trickster", "label": "Trickster" },
+            { "value": "helper", "label": "Helper" }
+          ],
+          "visible_if": "{{ block.settings.band != 'none' }}"
+        },
         {
           "type": "text",
           "id": "eyebrow",
@@ -704,10 +812,56 @@ if (!customElements.get('mm-footer-columns')) {
       ]
     },
     {
+      "type": "policies",
+      "name": "Legal column",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Legal"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "Leave empty to list the store policies automatically."
+        },
+        {
+          "type": "checkbox",
+          "id": "open_on_mobile",
+          "label": "Open on mobile",
+          "default": false
+        }
+      ]
+    },
+    {
       "type": "brand",
       "name": "Logo and symbols",
       "limit": 1,
       "settings": [
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout",
+          "default": "inline",
+          "options": [
+            { "value": "inline", "label": "Logo, symbols and tagline" },
+            { "value": "bleed", "label": "Big symbols cut at the bottom" }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "crop",
+          "label": "How much is cut off",
+          "min": 0,
+          "max": 70,
+          "step": 5,
+          "unit": "%",
+          "default": 40,
+          "visible_if": "{{ block.settings.layout == 'bleed' }}"
+        },
         {
           "type": "image_picker",
           "id": "logo_image",

@@ -29,7 +29,9 @@
             "button_border": "#faf9f5",
             "button_border_width": 3,
             "button_hover_background": "#faf9f5",
-            "button_hover_text": "#f0541a"
+            "button_hover_text": "#f0541a",
+            "band": "helper",
+            "band_symbol": "showoff"
           }
         },
         "menu_shop": {
@@ -94,7 +96,9 @@
             "symbol_gap": 68,
             "symbol_motion": "spin",
             "tagline": "Serious about design.\nPlayful by nature.",
-            "tagline_size": 30
+            "tagline_size": 30,
+            "layout": "bleed",
+            "crop": 40
           }
         },
         "legal": {
@@ -102,8 +106,29 @@
           "settings": {
             "copyright": "© [year] mish-mash",
             "menu": "",
-            "show_policies": true,
+            "show_policies": false,
             "show_payment_icons": true
+          }
+        },
+        "social": {
+          "type": "social",
+          "settings": {
+            "heading": "Social",
+            "instagram": "",
+            "pinterest": "",
+            "tiktok": "",
+            "youtube": "",
+            "facebook": "",
+            "email": "",
+            "open_on_mobile": false
+          }
+        },
+        "legal_column": {
+          "type": "policies",
+          "settings": {
+            "heading": "Legal",
+            "menu": "",
+            "open_on_mobile": false
           }
         }
       },
@@ -113,8 +138,10 @@
         "menu_characters",
         "menu_help",
         "menu_mishmash",
-        "brand",
-        "legal"
+        "social",
+        "legal_column",
+        "legal",
+        "brand"
       ],
       "settings": {
         "background": "#171514",
@@ -132,8 +159,8 @@
         "dividers": true,
         "block_gap": 20,
         "padding_top": 44,
-        "padding_bottom": 20,
-        "padding_side": 5,
+        "padding_bottom": 0,
+        "padding_side": 16,
         "padding_mobile": 48
       }
     },
