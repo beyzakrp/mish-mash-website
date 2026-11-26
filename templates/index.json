@@ -258,7 +258,7 @@
         "link_label": "Shop all",
         "link_url": "",
         "padding_side": 16,
-        "card_gap": 8,
+        "card_gap": 6,
         "title_size": 20,
         "symbol_size": 64,
         "hover_growth": 20,
