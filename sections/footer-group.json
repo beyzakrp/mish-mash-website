@@ -22,7 +22,7 @@
             "eyebrow": "Join the mix",
             "heading": "New objects, new stories\nand the odd surprise.",
             "text": "",
-            "placeholder": "Your email",
+            "placeholder": "Email address",
             "button_label": "Sign up",
             "success": "You're in. Welcome to the club.",
             "layout": "side",
@@ -31,7 +31,13 @@
             "button_border": "#faf9f5",
             "button_border_width": 3,
             "button_hover_background": "#faf9f5",
-            "button_hover_text": "#f0541a"
+            "button_hover_text": "#f0541a",
+            "form_style": "line",
+            "news_padding_top": 48,
+            "news_padding_bottom": 48,
+            "news_padding_mobile": 32,
+            "news_margin_bottom": 0,
+            "form_width": 520
           }
         },
         "menu_shop": {

@@ -99,6 +99,6 @@ body:has(#header-component[transparent]) .mm-hero:before{content:"";position:abs
 /* Theme sections (Dwell page-width): same 16px side margin as mm-* sections */
 body:is(.page-width-wide,.page-width-normal,.page-width-narrow,.page-width-content){--page-margin:max(16px,var(--safe-area-inset-left,0px),var(--safe-area-inset-right,0px));--page-content-width:100vw;--page-width:calc(100vw + var(--page-margin) * 2)}
 
-/* Image comparison sections keep the theme's original side margin and max width */
-.shopify-section:has(.comparison-slider){--page-margin:max(16px,var(--safe-area-inset-left,0px),var(--safe-area-inset-right,0px));--page-content-width:var(--narrow-page-width);--page-width:calc(var(--page-content-width) + (var(--page-margin) * 2))}
-@media screen and (min-width:750px){.shopify-section:has(.comparison-slider){--page-margin:max(40px,var(--safe-area-inset-left,0px),var(--safe-area-inset-right,0px))}}
+/* Image comparison sections and the homepage FAQ keep the theme's original side margin and max width */
+.shopify-section:is(:has(.comparison-slider),[id$="__section_3HAnjw"]){--page-margin:max(16px,var(--safe-area-inset-left,0px),var(--safe-area-inset-right,0px));--page-content-width:var(--narrow-page-width);--page-width:calc(var(--page-content-width) + (var(--page-margin) * 2))}
+@media screen and (min-width:750px){.shopify-section:is(:has(.comparison-slider),[id$="__section_3HAnjw"]){--page-margin:max(40px,var(--safe-area-inset-left,0px),var(--safe-area-inset-right,0px))}}

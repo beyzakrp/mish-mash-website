@@ -56,7 +56,7 @@
               assign band_symbol_colour = '#B5D4F4'
           endcase
         -%}
-        <div class="mm-footer__news mm-footer__news--{{ block.settings.layout }}{% if band_bg != blank %} mm-footer__news--band{% endif %}"{% if band_bg != blank %} style="--mm-band-bg: {{ band_bg }}; --mm-band-ink: {{ band_ink }};"{% endif %} {{ block.shopify_attributes }}>
+        <div class="mm-footer__news mm-footer__news--{{ block.settings.layout }} mm-footer__news--form-{{ block.settings.form_style }}{% if band_bg != blank %} mm-footer__news--band{% endif %}" style="{% if band_bg != blank %}--mm-band-bg: {{ band_bg }}; --mm-band-ink: {{ band_ink }}; {% endif %}--mm-news-pt: {{ block.settings.news_padding_top }}px; --mm-news-pb: {{ block.settings.news_padding_bottom }}px; --mm-news-pm: {{ block.settings.news_padding_mobile }}px; --mm-news-mb: {{ block.settings.news_margin_bottom }}px; --mm-news-form-w: {{ block.settings.form_width }}px;" {{ block.shopify_attributes }}>
           {%- if band_bg != blank and block.settings.band_symbol != 'none' -%}
             <span class="mm-footer__band-symbol" style="--mm-symbol-url: url({{ 'mm-symbol-' | append: block.settings.band_symbol | append: '.svg' | asset_url }}); --mm-symbol-color: {{ band_symbol_colour }};" aria-hidden="true"></span>
           {%- endif -%}
@@ -79,7 +79,13 @@
               required
               {% if form.errors %}aria-invalid="true" aria-describedby="MMFooterMessage-{{ section.id }}"{% endif %}
             >
-            <button type="submit" class="mm-footer__news-button">{{ block.settings.button_label | escape }}</button>
+            {%- if block.settings.form_style == 'line' -%}
+              <button type="submit" class="mm-footer__news-arrow" aria-label="{{ block.settings.button_label | default: 'Sign up' | escape }}">
+                <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><path d="M3 10h13M11 4.5l5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+              </button>
+            {%- else -%}
+              <button type="submit" class="mm-footer__news-button">{{ block.settings.button_label | escape }}</button>
+            {%- endif -%}
             {%- if form.posted_successfully? -%}
               <p class="mm-footer__message" id="MMFooterMessage-{{ section.id }}" role="status">{{ block.settings.success | escape }}</p>
             {%- elsif form.errors -%}
@@ -320,6 +326,16 @@
 .mm-footer__bleed-row.mm-footer__symbols--ink .mm-footer__symbol,.mm-footer__bleed-row.mm-footer__symbols--hover .mm-footer__symbol{background-color:var(--mm-ink)}
 .mm-footer__bleed-row.mm-footer__symbols--hover li:hover .mm-footer__symbol{background-color:var(--mm-symbol-color)}
 .mm-footer__bleed-row.mm-footer__symbols--spin li:hover .mm-footer__symbol{rotate:60deg}
+.mm-footer__news{margin-bottom:var(--mm-news-mb,0px)}
+.mm-footer .mm-footer__news--band,.mm-footer--lines>.mm-footer__news--band{padding-top:var(--mm-news-pt,48px);padding-bottom:var(--mm-news-pb,48px)}
+.mm-footer__news :is(.mm-footer__news-form,form){width:min(100%,var(--mm-news-form-w,520px))}
+.mm-footer__news--form-line :is(.mm-footer__news-form,form){position:relative;flex-wrap:wrap;gap:0}
+.mm-footer__news--form-line input[type=email]{flex:1 1 0;min-height:52px;padding:0 44px 0 0;border:0;border-bottom:1px solid currentColor;border-radius:0;font-size:16px}
+.mm-footer__news--form-line input[type=email]:focus{border-color:currentColor;border-bottom-width:2px;margin-bottom:-1px}
+.mm-footer__news--band.mm-footer__news--form-line input[type=email]{border-color:var(--mm-band-ink)}
+.mm-footer__news-arrow{position:absolute;right:0;top:0;display:grid;place-items:center;width:44px;height:52px;padding:0;border:0;background:none;color:inherit;cursor:pointer}
+.mm-footer__news-arrow svg{transition:translate .3s cubic-bezier(.34,1.56,.64,1)}
+.mm-footer__news-arrow:hover svg,.mm-footer__news-arrow:focus-visible svg{translate:4px 0}
 .mm-footer__message{flex-basis:100%;margin:4px 0 0!important;font-size:13px}
 .mm-footer__cols-grid{display:grid;grid-template-columns:repeat(var(--mm-footer-columns,4),minmax(0,1fr));gap:var(--mm-footer-col-gap,40px)}
 .mm-footer__col summary{list-style:none}
@@ -344,6 +360,7 @@
 .mm-footer__payments svg{display:block;width:38px;height:24px}
 @media(max-width:989px){.mm-footer__news{flex-direction:column;align-items:stretch}.mm-footer__news :is(.mm-footer__news-form,form){flex-basis:auto}.mm-footer__cols-grid{grid-template-columns:repeat(min(var(--mm-footer-columns,4),2),minmax(0,1fr));row-gap:36px}}
 @media(max-width:749px){
+  .mm-footer .mm-footer__news--band,.mm-footer--lines>.mm-footer__news--band{padding-top:var(--mm-news-pm,32px);padding-bottom:var(--mm-news-pm,32px)}
   .mm-footer__news{flex-direction:column;align-items:stretch}
   .mm-home .mm-footer__news-heading{font-size:calc(var(--mm-footer-news-size,40px) * .75)}
   .mm-footer__sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -627,10 +644,75 @@ if (!customElements.get('mm-footer-columns')) {
           "default": "Your email address"
         },
         {
+          "type": "select",
+          "id": "form_style",
+          "label": "Form style",
+          "default": "line",
+          "options": [
+            { "value": "line", "label": "Underline with arrow" },
+            { "value": "pill", "label": "Rounded field and button" }
+          ]
+        },
+        {
           "type": "text",
           "id": "button_label",
           "label": "Button label",
+          "info": "With the arrow style this is read by screen readers only.",
           "default": "Sign up"
+        },
+        {
+          "type": "range",
+          "id": "form_width",
+          "label": "Form width",
+          "min": 240,
+          "max": 800,
+          "step": 20,
+          "unit": "px",
+          "default": 520
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "news_padding_top",
+          "label": "Top padding",
+          "min": 0,
+          "max": 120,
+          "step": 4,
+          "unit": "px",
+          "default": 48
+        },
+        {
+          "type": "range",
+          "id": "news_padding_bottom",
+          "label": "Bottom padding",
+          "min": 0,
+          "max": 120,
+          "step": 4,
+          "unit": "px",
+          "default": 48
+        },
+        {
+          "type": "range",
+          "id": "news_padding_mobile",
+          "label": "Mobile top and bottom padding",
+          "min": 0,
+          "max": 120,
+          "step": 4,
+          "unit": "px",
+          "default": 32
+        },
+        {
+          "type": "range",
+          "id": "news_margin_bottom",
+          "label": "Extra space below",
+          "min": 0,
+          "max": 120,
+          "step": 4,
+          "unit": "px",
+          "default": 0
         },
         {
           "type": "text",
@@ -661,24 +743,28 @@ if (!customElements.get('mm-footer-columns')) {
         {
           "type": "color",
           "id": "button_background",
+          "visible_if": "{{ block.settings.form_style == 'pill' }}",
           "label": "Button background",
           "default": "#B5D4F4"
         },
         {
           "type": "color",
           "id": "button_text",
+          "visible_if": "{{ block.settings.form_style == 'pill' }}",
           "label": "Button text",
           "default": "#171514"
         },
         {
           "type": "color",
           "id": "button_border",
+          "visible_if": "{{ block.settings.form_style == 'pill' }}",
           "label": "Button border",
           "default": "#FAF9F5"
         },
         {
           "type": "range",
           "id": "button_border_width",
+          "visible_if": "{{ block.settings.form_style == 'pill' }}",
           "label": "Button border thickness",
           "min": 0,
           "max": 4,
@@ -689,12 +775,14 @@ if (!customElements.get('mm-footer-columns')) {
         {
           "type": "color",
           "id": "button_hover_background",
+          "visible_if": "{{ block.settings.form_style == 'pill' }}",
           "label": "Button background on hover",
           "default": "#FAF9F5"
         },
         {
           "type": "color",
           "id": "button_hover_text",
+          "visible_if": "{{ block.settings.form_style == 'pill' }}",
           "label": "Button text on hover",
           "default": "#171514"
         }
