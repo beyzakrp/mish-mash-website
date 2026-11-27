@@ -45,7 +45,7 @@
 </section>
 
 {%- capture mm_section_css -%}{% render 'mm-section-style', settings: section.settings, id: section.id %}{%- endcapture -%}
-{% style %}{{ mm_section_css }}{% endstyle %}
+{% style %}{{ mm_section_css }}{%- if section.settings.heading_font == 'theme' -%}#mm-{{ section.id }} :is(.mm-value__symbol,.mm-value__icon){width:28px;height:28px}{%- endif -%}{% endstyle %}
 
 {% style %}
 #mm-{{ section.id }} .mm-values__grid{--mm-values-columns:{{ section.settings.columns }};--mm-value-card:{{ section.settings.card_background }};--mm-value-radius:{{ section.settings.card_radius }}px}

@@ -18,20 +18,20 @@
         "button_label": "Meet the objects",
         "button_link": "",
         "alignment": "left",
-        "show_symbols": true,
+        "show_symbols": false,
         "symbol_size": 88,
         "show_image": true,
         "image_height": 520,
-        "image_radius": 24,
-        "heading_font": "cocogoose",
+        "image_radius": 0,
+        "heading_font": "theme",
         "background": "#faf9f5",
         "text_color": "#171514",
         "accent": "#b5d4f4",
-        "padding_top": 80,
-        "padding_bottom": 60,
-        "padding_mobile": 55,
-        "heading_size": 96,
-        "heading_mobile": 48,
+        "padding_top": 60,
+        "padding_bottom": 40,
+        "padding_mobile": 45,
+        "heading_size": 48,
+        "heading_mobile": 32,
         "button_background": "{{ settings.color_palette.color3 }}",
         "button_text": "{{ settings.color_palette.foreground }}",
         "button_border": "{{ settings.color_palette.foreground }}",
@@ -46,7 +46,8 @@
         "button_font_size": 15,
         "button_letter_spacing": 8,
         "button_uppercase": true
-      }
+      },
+      "disabled": true
     },
     "about_ticker": {
       "type": "mm-ticker",
@@ -183,7 +184,8 @@
         "font_size": 24,
         "duration": 50,
         "direction": "left"
-      }
+      },
+      "disabled": true
     },
     "about_story": {
       "type": "mm-story",
@@ -197,7 +199,7 @@
         "button_link": "",
         "reference_images": true,
         "image_side": "right",
-        "show_symbol": true,
+        "show_symbol": false,
         "symbol": "showoff",
         "symbol_size": 140,
         "symbol_color": "#f0541a",
@@ -218,9 +220,10 @@
         "button_letter_spacing": 4,
         "button_uppercase": true,
         "heading_font": "theme",
-        "heading_size": 54,
-        "heading_mobile": 38
-      }
+        "heading_size": 28,
+        "heading_mobile": 24
+      },
+      "disabled": true
     },
     "about_values": {
       "type": "mm-about-values",
@@ -273,20 +276,21 @@
         "heading": "Small objects,\nbig ideas.",
         "text": "The four things behind every piece we make.",
         "columns": 4,
-        "card_style": "filled",
+        "card_style": "plain",
         "card_background": "#ffffff",
-        "card_radius": 20,
+        "card_radius": 0,
         "show_numbers": true,
-        "heading_font": "cocogoose",
-        "heading_size": 54,
-        "heading_mobile": 36,
+        "heading_font": "theme",
+        "heading_size": 28,
+        "heading_mobile": 24,
         "background": "#faf9f5",
         "text_color": "#171514",
         "accent": "#b5d4f4",
-        "padding_top": 90,
-        "padding_bottom": 90,
-        "padding_mobile": 55
-      }
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_mobile": 45
+      },
+      "disabled": true
     },
     "about_numbers": {
       "type": "mm-about-stats",
@@ -337,18 +341,19 @@
       "settings": {
         "eyebrow": "mish-mash in numbers",
         "heading": "A small studio\nwith big plans.",
-        "number_size": 88,
+        "number_size": 56,
         "dividers": true,
-        "heading_font": "cocogoose",
-        "heading_size": 54,
-        "heading_mobile": 36,
+        "heading_font": "theme",
+        "heading_size": 28,
+        "heading_mobile": 24,
         "background": "#faf9f5",
         "text_color": "#171514",
         "accent": "#b5d4f4",
-        "padding_top": 70,
-        "padding_bottom": 70,
-        "padding_mobile": 55
-      }
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_mobile": 45
+      },
+      "disabled": true
     },
     "about_timeline": {
       "type": "mm-about-timeline",
@@ -399,18 +404,19 @@
       "settings": {
         "eyebrow": "Our story",
         "heading": "How it all\nmish-mashed.",
-        "line_colour": "#b5d4f4",
-        "card_background": "#ffffff",
-        "heading_font": "cocogoose",
-        "heading_size": 54,
-        "heading_mobile": 36,
+        "line_colour": "#e6e3dc",
+        "card_background": "#f4f3ef",
+        "heading_font": "theme",
+        "heading_size": 28,
+        "heading_mobile": 24,
         "background": "#faf9f5",
         "text_color": "#171514",
         "accent": "#b5d4f4",
-        "padding_top": 90,
-        "padding_bottom": 90,
-        "padding_mobile": 55
-      }
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_mobile": 45
+      },
+      "disabled": true
     },
     "about_characters": {
       "type": "mm-personalities",
@@ -480,13 +486,14 @@
         "anchor": "personalities",
         "background": "#faf9f5",
         "text_color": "#171514",
-        "padding_top": 20,
-        "padding_bottom": 90,
-        "padding_mobile": 55,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_mobile": 45,
         "heading_font": "theme",
-        "heading_size": 54,
-        "heading_mobile": 38
-      }
+        "heading_size": 28,
+        "heading_mobile": 24
+      },
+      "disabled": true
     },
     "about_team": {
       "type": "mm-about-team",
@@ -537,17 +544,17 @@
         "text": "Hover to meet their inner character.",
         "columns": 3,
         "ratio": "4 / 5",
-        "radius": 18,
+        "radius": 0,
         "fact_label": "Fun fact",
-        "heading_font": "cocogoose",
-        "heading_size": 54,
-        "heading_mobile": 36,
+        "heading_font": "theme",
+        "heading_size": 28,
+        "heading_mobile": 24,
         "background": "#faf9f5",
         "text_color": "#171514",
         "accent": "#b5d4f4",
-        "padding_top": 90,
-        "padding_bottom": 90,
-        "padding_mobile": 55
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_mobile": 45
       }
     },
     "about_reviews": {
@@ -617,24 +624,25 @@
         "pause_on_hover": true,
         "edge_fade": true,
         "card_width": 340,
-        "card_radius": 18,
+        "card_radius": 0,
         "gap": 16,
-        "card_background": "#ffffff",
+        "card_background": "#f4f3ef",
         "card_text": "#171514",
         "star_colour": "#cdc167",
         "show_stars": true,
-        "show_symbols": true,
+        "show_symbols": false,
         "show_product_image": true,
-        "heading_font": "cocogoose",
-        "heading_size": 54,
-        "heading_mobile": 36,
+        "heading_font": "theme",
+        "heading_size": 28,
+        "heading_mobile": 24,
         "background": "#faf9f5",
         "text_color": "#171514",
         "accent": "#b5d4f4",
-        "padding_top": 90,
-        "padding_bottom": 90,
-        "padding_mobile": 55
-      }
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_mobile": 45
+      },
+      "disabled": true
     },
     "about_closing": {
       "type": "mm-about-cta",
@@ -650,20 +658,21 @@
         "box_text": "#faf9f5",
         "button_colour": "#b5d4f4",
         "button_text_colour": "#171514",
-        "radius": 32,
-        "show_symbols": true,
+        "radius": 0,
+        "show_symbols": false,
         "symbol_size": 110,
         "spin": true,
-        "heading_font": "cocogoose",
-        "heading_size": 54,
-        "heading_mobile": 36,
+        "heading_font": "theme",
+        "heading_size": 40,
+        "heading_mobile": 30,
         "background": "#faf9f5",
         "text_color": "#171514",
         "accent": "#b5d4f4",
-        "padding_top": 40,
-        "padding_bottom": 90,
-        "padding_mobile": 55
-      }
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_mobile": 45
+      },
+      "disabled": true
     },
     "main": {
       "type": "main-page",
@@ -714,9 +723,226 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "about_editorial": {
+      "type": "mm-about-editorial",
+      "blocks": {
+        "statement": {
+          "type": "statement",
+          "settings": {
+            "eyebrow": "About mish-mash",
+            "heading": "Serious about design.\nPlayful by nature.",
+            "text": "We make everyday objects with a little more character. Colourful, a bit unexpected and made to make you smile every time you look at them."
+          }
+        },
+        "image": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/77B0CD5B-CF45-4AF0-BC20-60271A3B9D5D.webp",
+            "ratio": "16 / 9",
+            "caption": ""
+          }
+        },
+        "story": {
+          "type": "text",
+          "settings": {
+            "label": "How it started",
+            "heading": "Why are everyday\nobjects so serious?",
+            "text": "We asked ourselves that question one afternoon and could not stop thinking about it. mish-mash is our answer: objects with a personality, a sense of humour and a job to do.",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "values": {
+          "type": "group",
+          "settings": {
+            "label": "What we believe",
+            "heading": "Small objects,\nbig ideas.",
+            "text": ""
+          }
+        },
+        "value_1": {
+          "type": "item",
+          "settings": {
+            "meta": "",
+            "title": "Made to be noticed",
+            "text": "Bold shapes and honest colours. Objects that hold their own in any room.",
+            "link": ""
+          }
+        },
+        "value_2": {
+          "type": "item",
+          "settings": {
+            "meta": "",
+            "title": "Made to be played with",
+            "text": "Swap, stack, combine. Your home should be allowed to change its mind.",
+            "link": ""
+          }
+        },
+        "value_3": {
+          "type": "item",
+          "settings": {
+            "meta": "",
+            "title": "A little unexpected",
+            "text": "A twist in every piece, so even the everyday feels new.",
+            "link": ""
+          }
+        },
+        "value_4": {
+          "type": "item",
+          "settings": {
+            "meta": "",
+            "title": "Useful, always",
+            "text": "Good looks are nice. Good looks that work every day are better.",
+            "link": ""
+          }
+        },
+        "numbers": {
+          "type": "stats",
+          "settings": {
+            "label": "mish-mash in numbers",
+            "lines": "4 | characters with very different personalities\n5 | everyday objects, reimagined\n100% | designed in Istanbul\n1000+ | happy homes and counting"
+          }
+        },
+        "timeline": {
+          "type": "group",
+          "settings": {
+            "label": "Our story",
+            "heading": "How it all\nmish-mashed.",
+            "text": ""
+          }
+        },
+        "step_1": {
+          "type": "item",
+          "settings": {
+            "meta": "The idea",
+            "title": "A vase with an attitude",
+            "text": "It started with one question: why do everyday objects have to be so serious?",
+            "link": ""
+          }
+        },
+        "step_2": {
+          "type": "item",
+          "settings": {
+            "meta": "The characters",
+            "title": "Four personalities are born",
+            "text": "The Show-off, the Player, the Trickster and the Helper. Every object found its own.",
+            "link": ""
+          }
+        },
+        "step_3": {
+          "type": "item",
+          "settings": {
+            "meta": "The studio",
+            "title": "Prototypes everywhere",
+            "text": "Hundreds of sketches, many colour tests and a few happy accidents.",
+            "link": ""
+          }
+        },
+        "step_4": {
+          "type": "item",
+          "settings": {
+            "meta": "Today",
+            "title": "Hello, your home",
+            "text": "mish-mash objects are finding their way into happy homes.",
+            "link": ""
+          }
+        },
+        "characters": {
+          "type": "group",
+          "settings": {
+            "label": "The characters",
+            "heading": "Four personalities.\nOne happy home.",
+            "text": ""
+          }
+        },
+        "character_1": {
+          "type": "item",
+          "settings": {
+            "meta": "",
+            "title": "The Show-off",
+            "text": "Just looks good.",
+            "link": ""
+          }
+        },
+        "character_2": {
+          "type": "item",
+          "settings": {
+            "meta": "",
+            "title": "The Player",
+            "text": "Touch. Play. Combine.",
+            "link": ""
+          }
+        },
+        "character_3": {
+          "type": "item",
+          "settings": {
+            "meta": "",
+            "title": "The Trickster",
+            "text": "Small surprise. Big joy.",
+            "link": ""
+          }
+        },
+        "character_4": {
+          "type": "item",
+          "settings": {
+            "meta": "",
+            "title": "The Helper",
+            "text": "Looks good. Works too.",
+            "link": ""
+          }
+        },
+        "closing": {
+          "type": "cta",
+          "settings": {
+            "label": "Your turn",
+            "heading": "Find the character\nthat feels like home.",
+            "text": "Four personalities, five objects and endless ways to mix them.",
+            "link_label": "Shop the collection",
+            "link": "",
+            "link2_label": "Take the character quiz",
+            "link2": ""
+          }
+        }
+      },
+      "block_order": [
+        "statement",
+        "image",
+        "story",
+        "values",
+        "value_1",
+        "value_2",
+        "value_3",
+        "value_4",
+        "numbers",
+        "timeline",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "characters",
+        "character_1",
+        "character_2",
+        "character_3",
+        "character_4",
+        "closing"
+      ],
+      "settings": {
+        "background": "#faf9f5",
+        "text_color": "#171514",
+        "display_size": 56,
+        "display_size_mobile": 36,
+        "heading_size": 28,
+        "side_padding": 64,
+        "side_padding_mobile": 20,
+        "row_spacing": 56,
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
     }
   },
   "order": [
+    "about_editorial",
     "about_hero",
     "about_ticker",
     "about_story",

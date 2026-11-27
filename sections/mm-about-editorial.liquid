@@ -1,0 +1,447 @@
+{%- liquid
+  assign in_group = false
+  assign item_index = 0
+  assign characters = 'showoff,player,trickster,helper' | split: ','
+  assign colour_on = section.settings.colour_accents
+-%}
+<section class="mm-ed{% if colour_on %} mm-ed--colour{% endif %} mm-ed--df-{{ section.settings.display_font }} mm-ed--hf-{{ section.settings.heading_font }}{% if colour_on and section.settings.list_symbols %} mm-ed--syms{% endif %}{% if colour_on and section.settings.coloured_numbers %} mm-ed--nums{% endif %}" id="mm-{{ section.id }}">
+  {%- for block in section.blocks -%}
+    {%- if in_group and block.type != 'item' -%}
+          </ol>
+        </div>
+      </div>
+      {%- assign in_group = false -%}
+    {%- endif -%}
+
+    {%- case block.type -%}
+      {%- when 'statement' -%}
+        <div class="mm-ed__statement" {{ block.shopify_attributes }}>
+          {%- if block.settings.eyebrow != blank or block.settings.show_symbols -%}
+            <div class="mm-ed__eyebrow">
+              {%- if block.settings.show_symbols -%}
+                <span class="mm-ed__symbols" aria-hidden="true">
+                  {%- for c in characters -%}<span class="mm-ed__sym" style="--mm-ed-sym: url({{ 'mm-symbol-' | append: c | append: '.svg' | asset_url }}); --mm-ed-c: var(--mm-ed-{{ c }});"></span>{%- endfor -%}
+                </span>
+              {%- endif -%}
+              {%- if block.settings.eyebrow != blank -%}<p class="mm-ed__label">{{ block.settings.eyebrow | escape }}</p>{%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if block.settings.heading != blank -%}<h1 class="mm-ed__display">{{ block.settings.heading | escape | newline_to_br }}</h1>{%- endif -%}
+          {%- if block.settings.text != blank -%}<p class="mm-ed__lead">{{ block.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+        </div>
+
+      {%- when 'image' -%}
+        <figure class="mm-ed__figure" style="--mm-ed-ratio: {{ block.settings.ratio }};" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 2400 | image_tag: widths: '600,900,1200,1800,2400', sizes: '100vw', loading: 'lazy', alt: block.settings.image.alt | default: '' }}
+          {%- else -%}
+            <img src="{{ 'mm-reference-hero.webp' | asset_url }}" alt="" loading="lazy" width="2000" height="1333">
+          {%- endif -%}
+          {%- if block.settings.caption != blank -%}<figcaption class="mm-ed__label">{{ block.settings.caption | escape }}</figcaption>{%- endif -%}
+        </figure>
+
+      {%- when 'text' -%}
+        <div class="mm-ed__row" {{ block.shopify_attributes }}>
+          <p class="mm-ed__label">{{ block.settings.label | escape }}</p>
+          <div class="mm-ed__body">
+            {%- if block.settings.heading != blank -%}<h2 class="mm-ed__heading">{{ block.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+            {%- if block.settings.text != blank -%}<p class="mm-ed__text">{{ block.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+            {%- if block.settings.link_label != blank -%}<a class="mm-ed__link" href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>{%- endif -%}
+          </div>
+        </div>
+
+      {%- when 'group' -%}
+        {%- assign in_group = true -%}
+        {%- assign item_index = 0 -%}
+        <div class="mm-ed__row" {{ block.shopify_attributes }}>
+          <p class="mm-ed__label">{{ block.settings.label | escape }}</p>
+          <div class="mm-ed__body">
+            {%- if block.settings.heading != blank -%}<h2 class="mm-ed__heading">{{ block.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+            {%- if block.settings.text != blank -%}<p class="mm-ed__text">{{ block.settings.text | escape | newline_to_br }}</p>{%- endif -%}
+            <ol class="mm-ed__list" role="list">
+
+      {%- when 'item' -%}
+        {%- assign item_index = item_index | plus: 1 -%}
+        {%- unless in_group -%}
+          <div class="mm-ed__row"><span class="mm-ed__label"></span><div class="mm-ed__body"><ol class="mm-ed__list" role="list">
+        {%- endunless -%}
+        {%- liquid
+          assign item_char = block.settings.character
+          if item_char == 'auto'
+            assign char_pos = item_index | minus: 1 | modulo: 4
+            assign item_char = characters[char_pos]
+          endif
+        -%}
+        <li class="mm-ed__item"{% if item_char != 'none' %} style="--mm-ed-c: var(--mm-ed-{{ item_char }}); --mm-ed-ct: var(--mm-ed-{{ item_char }}-text);"{% endif %} {{ block.shopify_attributes }}>
+          <span class="mm-ed__meta">
+            {%- if colour_on and section.settings.list_symbols and item_char != 'none' -%}<span class="mm-ed__sym" style="--mm-ed-sym: url({{ 'mm-symbol-' | append: item_char | append: '.svg' | asset_url }});" aria-hidden="true"></span>{%- endif -%}
+            <span>{%- if block.settings.meta != blank -%}{{ block.settings.meta | escape }}{%- else -%}{% if item_index < 10 %}0{% endif %}{{ item_index }}{%- endif -%}</span>
+          </span>
+          <span class="mm-ed__item-title">
+            {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{{ block.settings.title | escape }}</a>{%- else -%}{{ block.settings.title | escape }}{%- endif -%}
+          </span>
+          {%- if block.settings.text != blank -%}<span class="mm-ed__item-text">{{ block.settings.text | escape }}</span>{%- endif -%}
+        </li>
+        {%- unless in_group -%}</ol></div></div>{%- endunless -%}
+
+      {%- when 'stats' -%}
+        <div class="mm-ed__row" {{ block.shopify_attributes }}>
+          <p class="mm-ed__label">{{ block.settings.label | escape }}</p>
+          <dl class="mm-ed__stats">
+            {%- assign stat_lines = block.settings.lines | newline_to_br | split: '<br />' -%}
+            {%- for line in stat_lines -%}
+              {%- assign parts = line | split: '|' -%}
+              {%- assign stat_value = parts[0] | strip -%}
+              {%- if stat_value != blank -%}
+                {%- assign stat_pos = forloop.index0 | modulo: 4 -%}
+                <div class="mm-ed__stat" style="--mm-ed-ct: var(--mm-ed-{{ characters[stat_pos] }}-text);">
+                  <dt class="mm-ed__stat-value">{{ stat_value | escape }}</dt>
+                  <dd class="mm-ed__stat-label">{{ parts[1] | strip | escape }}</dd>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </dl>
+        </div>
+
+      {%- when 'cta' -%}
+        <div class="mm-ed__row mm-ed__row--cta{% if block.settings.band != 'none' %} mm-ed__row--band{% endif %}"{% if block.settings.band != 'none' %} style="--mm-ed-band: var(--mm-ed-{{ block.settings.band }}-tint);"{% endif %} {{ block.shopify_attributes }}>
+          <p class="mm-ed__label">{{ block.settings.label | escape }}</p>
+          <div class="mm-ed__body">
+            {%- if block.settings.heading != blank -%}<h2 class="mm-ed__heading">{{ block.settings.heading | escape | newline_to_br }}</h2>{%- endif -%}
+            {%- if block.settings.text != blank -%}<p class="mm-ed__text">{{ block.settings.text | escape }}</p>{%- endif -%}
+            <p class="mm-ed__links">
+              {%- if block.settings.link_label != blank -%}<a class="mm-ed__link" href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>{%- endif -%}
+              {%- if block.settings.link2_label != blank -%}<a class="mm-ed__link" href="{{ block.settings.link2 | default: routes.all_products_collection_url }}">{{ block.settings.link2_label | escape }} <span aria-hidden="true">→</span></a>{%- endif -%}
+            </p>
+          </div>
+        </div>
+    {%- endcase -%}
+
+    {%- if forloop.last and in_group -%}
+          </ol>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+</section>
+
+{% style %}
+#mm-{{ section.id }}{--mm-ed-bg:{{ section.settings.background }};--mm-ed-ink:{{ section.settings.text_color }};--mm-ed-side:{{ section.settings.side_padding }}px;--mm-ed-row:{{ section.settings.row_spacing }}px;--mm-ed-display:{{ section.settings.display_size }}px;--mm-ed-heading:{{ section.settings.heading_size }}px;padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;--mm-ed-pb:{{ section.settings.padding_bottom }}px;--mm-ed-sym-size:{{ section.settings.symbol_size }}px;{% if section.settings.link_line != 'ink' %}--mm-ed-link-line:var(--mm-ed-{{ section.settings.link_line }});{% endif %}}
+@media(max-width:749px){#mm-{{ section.id }}{--mm-ed-side:{{ section.settings.side_padding_mobile }}px;--mm-ed-row:{{ section.settings.row_spacing | times: 0.65 | round }}px;--mm-ed-display:{{ section.settings.display_size_mobile }}px;--mm-ed-heading:{{ section.settings.heading_size | times: 0.8 | round }}px;padding-top:{{ section.settings.padding_top | times: 0.65 | round }}px;padding-bottom:{{ section.settings.padding_bottom | times: 0.65 | round }}px;--mm-ed-pb:{{ section.settings.padding_bottom | times: 0.65 | round }}px}}
+{% endstyle %}
+
+{% stylesheet %}
+.mm-ed{--mm-ed-showoff:#71253D;--mm-ed-player:#CDC167;--mm-ed-trickster:#F0541A;--mm-ed-helper:#B5D4F4;--mm-ed-showoff-text:#71253D;--mm-ed-player-text:#6F6A1E;--mm-ed-trickster-text:#D9480F;--mm-ed-helper-text:#3F6E9E;--mm-ed-showoff-tint:#F1DDE3;--mm-ed-player-tint:#F6F3DC;--mm-ed-trickster-tint:#FDE3D8;--mm-ed-helper-tint:#EAF2FC;--mm-ed-line:color-mix(in srgb,var(--mm-ed-ink) 12%,transparent);--mm-ed-mute:color-mix(in srgb,var(--mm-ed-ink) 55%,transparent);--mm-ed-mono:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,monospace;padding-inline:var(--mm-ed-side,64px);background:var(--mm-ed-bg);color:var(--mm-ed-ink);font-family:'MM Proxima Nova',Arial,sans-serif;font-weight:400}
+.mm-ed *{box-sizing:border-box}
+.mm-ed :is(h1,h2,p,ol,dl,dd,figure){margin:0}
+.mm-ed a{color:inherit;text-decoration:none}
+.mm-ed__label{font-family:var(--mm-ed-mono);font-size:11px;line-height:1.6;letter-spacing:.04em;color:var(--mm-ed-mute)}
+.mm-ed__statement{display:grid;gap:24px;padding-bottom:var(--mm-ed-row)}
+.mm-ed .mm-ed__display{max-width:20ch;font-family:inherit;font-size:var(--mm-ed-display,56px);font-weight:400;line-height:1.05;letter-spacing:-.03em;text-wrap:balance}
+.mm-ed__lead{max-width:46ch;font-size:17px;line-height:1.55;color:var(--mm-ed-mute)}
+.mm-ed__figure{display:grid;gap:12px;padding-bottom:var(--mm-ed-row)}
+.mm-ed__figure img{display:block;width:100%;aspect-ratio:var(--mm-ed-ratio,16 / 9);height:auto;object-fit:cover}
+.mm-ed__row{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:32px;padding-block:var(--mm-ed-row);border-top:1px solid var(--mm-ed-line)}
+.mm-ed__body{display:grid;gap:18px;align-content:start}
+.mm-ed .mm-ed__heading{max-width:24ch;font-family:inherit;font-size:var(--mm-ed-heading,28px);font-weight:400;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+.mm-ed__text{max-width:58ch;font-size:16px;line-height:1.6;color:var(--mm-ed-mute)}
+.mm-ed__links{display:flex;flex-wrap:wrap;gap:12px 32px;padding-top:6px}
+.mm-ed__link{justify-self:start;font-size:15px;border-bottom:1px solid currentColor;padding-bottom:2px}
+.mm-ed__link span{display:inline-block;transition:translate .25s}
+.mm-ed__link:hover span{translate:3px 0}
+.mm-ed__list{display:grid;padding:0;list-style:none;border-top:1px solid var(--mm-ed-line)}
+.mm-ed__heading+.mm-ed__list,.mm-ed__text+.mm-ed__list{margin-top:14px}
+.mm-ed__row>.mm-ed__body>.mm-ed__list:first-child{border-top:0}
+.mm-ed__item{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,4fr) minmax(0,6fr);gap:24px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--mm-ed-line)}
+.mm-ed__item:last-child{border-bottom:0}
+.mm-ed__meta{font-family:var(--mm-ed-mono);font-size:11px;letter-spacing:.04em;color:var(--mm-ed-mute)}
+.mm-ed__item-title{font-size:18px;line-height:1.3;letter-spacing:-.01em}
+.mm-ed__item-title a:hover{text-decoration:underline;text-underline-offset:3px}
+.mm-ed__item-text{font-size:15px;line-height:1.55;color:var(--mm-ed-mute)}
+.mm-ed__stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:32px}
+.mm-ed__stat{display:grid;gap:8px}
+.mm-ed__stat-value{font-size:40px;line-height:1;letter-spacing:-.03em}
+.mm-ed__stat-label{max-width:22ch;font-size:14px;line-height:1.5;color:var(--mm-ed-mute)}
+@media(max-width:749px){
+  .mm-ed__row{grid-template-columns:1fr;gap:16px}
+  .mm-ed__item{grid-template-columns:minmax(0,1fr);gap:4px;padding:16px 0}
+  .mm-ed__stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 16px}
+  .mm-ed__stat-value{font-size:32px}
+}
+/* heading font */
+.mm-ed--df-theme .mm-ed__display,.mm-ed--hf-theme .mm-ed__heading{font-family:var(--font-heading--family,'MM Cocogoose','MM Proxima Nova',Arial,sans-serif);font-weight:var(--font-heading--weight,400);font-synthesis:none}
+.mm-ed--df-theme .mm-ed__display{letter-spacing:-.025em;line-height:1.08}
+.mm-ed--hf-theme .mm-ed__heading{letter-spacing:-.01em;line-height:1.18}
+/* colour accents */
+.mm-ed__eyebrow{display:flex;align-items:center;gap:14px}
+.mm-ed__symbols{display:inline-flex;gap:6px}
+.mm-ed__sym{display:inline-block;flex:none;width:var(--mm-ed-sym-size,14px);aspect-ratio:1;background-color:var(--mm-ed-c,currentColor);-webkit-mask:var(--mm-ed-sym) center/contain no-repeat;mask:var(--mm-ed-sym) center/contain no-repeat}
+.mm-ed__meta{display:inline-flex;align-items:center;gap:10px}
+.mm-ed--colour .mm-ed__item-title a:hover{color:var(--mm-ed-ct,inherit)}
+.mm-ed--colour .mm-ed__item:hover .mm-ed__meta>span:last-child{color:var(--mm-ed-ct,inherit)}
+.mm-ed--nums .mm-ed__stat-value{color:var(--mm-ed-ct,inherit)}
+.mm-ed--colour .mm-ed__link{border-bottom-color:var(--mm-ed-link-line,currentColor)}
+.mm-ed__row--band{margin-inline:calc(var(--mm-ed-side,64px) * -1);padding-inline:var(--mm-ed-side,64px);background:var(--mm-ed-band);border-top:0}
+.mm-ed__row--band .mm-ed__label,.mm-ed__row--band .mm-ed__text{color:color-mix(in srgb,var(--mm-ed-ink) 70%,transparent)}
+.mm-ed__row--band:last-child{margin-bottom:calc(var(--mm-ed-pb,0px) * -1)}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "MM · About (editorial)",
+  "tag": "div",
+  "settings": [
+    { "type": "header", "content": "Fonts" },
+    {
+      "type": "select",
+      "id": "display_font",
+      "label": "Top heading font",
+      "info": "Site heading font matches the homepage headings.",
+      "default": "theme",
+      "options": [
+        { "value": "theme", "label": "Site heading font" },
+        { "value": "proxima", "label": "Proxima Nova" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Row heading font",
+      "default": "theme",
+      "options": [
+        { "value": "theme", "label": "Site heading font" },
+        { "value": "proxima", "label": "Proxima Nova" }
+      ]
+    },
+    { "type": "header", "content": "Colour accents" },
+    {
+      "type": "checkbox",
+      "id": "colour_accents",
+      "label": "Show colour accents",
+      "info": "Turns all colour touches on or off. The top symbols and the band have their own setting in their blocks.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "list_symbols",
+      "label": "Character symbols on list rows",
+      "default": true,
+      "visible_if": "{{ section.settings.colour_accents }}"
+    },
+    {
+      "type": "range",
+      "id": "symbol_size",
+      "label": "Symbol size",
+      "min": 10,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "coloured_numbers",
+      "label": "Coloured numbers",
+      "default": true,
+      "visible_if": "{{ section.settings.colour_accents }}"
+    },
+    {
+      "type": "select",
+      "id": "link_line",
+      "label": "Link underline colour",
+      "default": "ink",
+      "visible_if": "{{ section.settings.colour_accents }}",
+      "options": [ { "value": "ink", "label": "Text colour" }, { "value": "showoff", "label": "The Show-off" }, { "value": "player", "label": "The Player" }, { "value": "trickster", "label": "The Trickster" }, { "value": "helper", "label": "The Helper" } ]
+    },
+    { "type": "header", "content": "Colours and spacing" },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FAF9F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#171514"
+    },
+    {
+      "type": "range",
+      "id": "display_size",
+      "label": "Top heading size",
+      "min": 32,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "display_size_mobile",
+      "label": "Mobile top heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Row heading size",
+      "min": 18,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "side_padding",
+      "label": "Side spacing",
+      "min": 16,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "side_padding_mobile",
+      "label": "Mobile side spacing",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "row_spacing",
+      "label": "Space inside each row",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "statement",
+      "name": "Opening statement",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Small label", "default": "About mish-mash" },
+        { "type": "checkbox", "id": "show_symbols", "label": "Show the four character symbols", "default": true },
+        { "type": "textarea", "id": "heading", "label": "Heading", "default": "Serious about design.\nPlayful by nature." },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        {
+          "type": "select",
+          "id": "ratio",
+          "label": "Shape",
+          "default": "16 / 9",
+          "options": [
+            { "value": "21 / 9", "label": "Wide" },
+            { "value": "16 / 9", "label": "Landscape" },
+            { "value": "4 / 3", "label": "Classic" },
+            { "value": "1 / 1", "label": "Square" }
+          ]
+        },
+        { "type": "text", "id": "caption", "label": "Caption" }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Left label", "default": "How it started" },
+        { "type": "textarea", "id": "heading", "label": "Heading" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "text", "id": "link_label", "label": "Link label" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "List heading",
+      "settings": [
+        { "type": "paragraph", "content": "List items placed after this block are shown as its list." },
+        { "type": "text", "id": "label", "label": "Left label", "default": "What we believe" },
+        { "type": "textarea", "id": "heading", "label": "Heading" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    },
+    {
+      "type": "item",
+      "name": "List item",
+      "settings": [
+        { "type": "text", "id": "meta", "label": "Small label", "info": "Leave empty to number the items 01, 02, 03." },
+        { "type": "select", "id": "character", "label": "Character colour", "default": "auto", "options": [ { "value": "auto", "label": "Automatic (in order)" }, { "value": "none", "label": "None" }, { "value": "showoff", "label": "The Show-off" }, { "value": "player", "label": "The Player" }, { "value": "trickster", "label": "The Trickster" }, { "value": "helper", "label": "The Helper" } ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "List item" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "stats",
+      "name": "Numbers",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Left label", "default": "In numbers" },
+        { "type": "textarea", "id": "lines", "label": "Numbers", "info": "One per line: number | description", "default": "4 | characters\n5 | objects" }
+      ]
+    },
+    {
+      "type": "cta",
+      "name": "Closing",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Left label", "default": "Your turn" },
+        { "type": "select", "id": "band", "label": "Background band", "default": "helper", "options": [ { "value": "none", "label": "None" }, { "value": "showoff", "label": "The Show-off" }, { "value": "player", "label": "The Player" }, { "value": "trickster", "label": "The Trickster" }, { "value": "helper", "label": "The Helper" } ] },
+        { "type": "textarea", "id": "heading", "label": "Heading" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "text", "id": "link_label", "label": "First link label", "default": "Shop the collection" },
+        { "type": "url", "id": "link", "label": "First link" },
+        { "type": "text", "id": "link2_label", "label": "Second link label" },
+        { "type": "url", "id": "link2", "label": "Second link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MM · About (editorial)",
+      "blocks": [
+        { "type": "statement" },
+        { "type": "image" },
+        { "type": "text" }
+      ]
+    }
+  ]
+}
+{% endschema %}

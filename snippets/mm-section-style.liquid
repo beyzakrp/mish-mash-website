@@ -16,4 +16,10 @@
 #mm-{{ id }} :is(h2,h3,.mm-display){font-family:'MM Cocogoose','MM Proxima Nova',Arial,sans-serif;font-weight:400;font-synthesis:none}
 {%- elsif settings.heading_font == 'proxima' -%}
 #mm-{{ id }} :is(h2,h3,.mm-display){font-family:'MM Proxima Nova',Arial,sans-serif}
+{%- elsif settings.heading_font == 'theme' -%}
+{%- comment -%} Simple style: matches the homepage New in section {%- endcomment -%}
+#mm-{{ id }} :is(h2,.mm-display){font-family:var(--font-heading--family);font-weight:500;letter-spacing:-.02em;line-height:1.1;font-synthesis:none}
+#mm-{{ id }} h3{font-weight:500;letter-spacing:-.01em}
+#mm-{{ id }} .mm-pad{padding-left:16px;padding-right:16px}
+#mm-{{ id }} .mm-eyebrow{font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,monospace;font-weight:400;letter-spacing:.06em;opacity:.6}
 {%- endif -%}
