@@ -20,7 +20,7 @@
             "band": "helper",
             "band_symbol": "none",
             "eyebrow": "Join the mix",
-            "heading": "New objects, new stories\nand the odd surprise.",
+            "heading": "New objects, new stories.",
             "text": "",
             "placeholder": "Your email",
             "button_label": "Sign up",
@@ -91,7 +91,7 @@
           "type": "social",
           "settings": {
             "heading": "Social",
-            "instagram": "",
+            "instagram": "https://www.instagram.com/",
             "pinterest": "",
             "tiktok": "",
             "youtube": "",
@@ -126,9 +126,9 @@
             "logo_image": "shopify://shop_images/mm-white.svg",
             "mark_height": 150,
             "show_symbols": true,
-            "symbol_colour": "hover",
+            "symbol_colour": "ink",
             "symbol_gap": 68,
-            "symbol_motion": "spin",
+            "symbol_motion": "none",
             "tagline": "Serious about design.\nPlayful by nature.",
             "tagline_size": 30
           }
@@ -146,7 +146,7 @@
         "brand"
       ],
       "settings": {
-        "background": "#DEDDD6",
+        "background": "#deddd6",
         "text_color": "{{ settings.color_palette.foreground }}",
         "heading_colour": "{{ settings.color_palette.foreground }}",
         "accent": "{{ settings.color_palette.color1 }}",
