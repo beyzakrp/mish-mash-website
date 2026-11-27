@@ -408,7 +408,7 @@
         "eyebrow": "Good to know",
         "heading": "Why you will love\nthese clocks.",
         "heading_font": "theme",
-        "padding_side": 16,
+        "padding_side": 44,
         "heading_size": 28,
         "heading_mobile": 24,
         "background": "#faf9f5",
@@ -899,11 +899,10 @@
     },
     "divider_TdexTA": {
       "type": "divider",
-      "disabled": true,
       "name": "t:names.divider_section",
       "settings": {
         "background_color": "",
-        "divider_color": "",
+        "divider_color": "#B2AEAE",
         "section_width": "full-width",
         "thickness": 1,
         "corner_radius": "square",
@@ -2128,6 +2127,7 @@
     },
     "divider_M9gfBN": {
       "type": "divider",
+      "disabled": true,
       "name": "t:names.divider_section",
       "settings": {
         "background_color": "",
@@ -2478,6 +2478,7 @@
           ]
         }
       },
+      "disabled": true,
       "name": "t:names.editorial",
       "settings": {
         "media_position": "left",
@@ -2497,7 +2498,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h1>FAQ</h1>",
+            "text": "<h2>FAQ</h2>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
@@ -2526,7 +2527,7 @@
             "icon": "caret",
             "dividers": true,
             "divider_color": "",
-            "type_preset": "h5",
+            "type_preset": "paragraph",
             "background_color": "",
             "text_color": "",
             "border": "none",
@@ -2755,10 +2756,9 @@
         "text_aAymaH",
         "accordion_z3CaK8"
       ],
-      "disabled": true,
       "name": "t:names.faq_section",
       "settings": {
-        "content_direction": "row",
+        "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "flex-start",
         "vertical_alignment": "center",
