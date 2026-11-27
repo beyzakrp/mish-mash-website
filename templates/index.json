@@ -902,7 +902,7 @@
       "name": "t:names.divider_section",
       "settings": {
         "background_color": "",
-        "divider_color": "#B2AEAE",
+        "divider_color": "#b2aeae",
         "section_width": "full-width",
         "thickness": 1,
         "corner_radius": "square",
@@ -2782,7 +2782,7 @@
         "border_opacity": 100,
         "border_color": "",
         "border_radius": 0,
-        "padding-block-start": 48,
+        "padding-block-start": 24,
         "padding-block-end": 48
       }
     },
