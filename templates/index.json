@@ -1410,7 +1410,7 @@
       "name": "t:names.divider_section",
       "settings": {
         "background_color": "",
-        "divider_color": "#B2AEAE",
+        "divider_color": "#b2aeae",
         "section_width": "full-width",
         "thickness": 1,
         "corner_radius": "square",
@@ -1427,7 +1427,7 @@
           "type": "group",
           "name": "t:names.content",
           "settings": {
-            "content_direction": "row",
+            "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "center",
@@ -1435,9 +1435,9 @@
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "flex-start",
             "gap": 100,
-            "width": "fill",
+            "width": "fit-content",
             "custom_width": 100,
-            "width_mobile": "fill",
+            "width_mobile": "fit-content",
             "custom_width_mobile": 100,
             "height": "fit",
             "custom_height": 100,
@@ -1693,17 +1693,16 @@
         "group_N3Ef6f",
         "comparison_slider_nN4TAJ"
       ],
-      "disabled": true,
       "name": "t:names.image_compare",
       "settings": {
-        "content_direction": "column",
+        "content_direction": "row",
         "vertical_on_mobile": true,
         "horizontal_alignment": "space-between",
         "vertical_alignment": "center",
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 46,
+        "gap": 44,
         "section_width": "page-width",
         "section_height": "small",
         "section_height_custom": 50,
@@ -2096,6 +2095,7 @@
         "group_87ECa8",
         "comparison_slider_rzz6gP"
       ],
+      "disabled": true,
       "name": "t:names.image_compare",
       "settings": {
         "content_direction": "row",
@@ -2131,7 +2131,7 @@
       "name": "t:names.divider_section",
       "settings": {
         "background_color": "",
-        "divider_color": "#B2AEAE",
+        "divider_color": "#b2aeae",
         "section_width": "full-width",
         "thickness": 1,
         "corner_radius": "square",
